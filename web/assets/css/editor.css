@@ -1,0 +1,11 @@
+#add-lyrics-container {
+	position: absolute;
+	color: black;
+	font-size: 1rem;
+}
+
+#add-lyrics-container textarea {
+	height: 120px;
+	width: 600px;
+	resize: both;
+}

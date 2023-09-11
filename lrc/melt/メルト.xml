@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:ntype="http://namaalert.jp/namatyping">
+	<!-- ニコ生タイピングでは未使用 (title, id, updated) -->
+	<title type="text">NamaTyping Feed</title>
+	<id>tag:namaalert.jp,2010:your_name.id</id>
+	<updated>2010-08-15T00:00:00Z</updated>
+
+	<!-- 現在ニコ生タイピングではひとつの entry 要素のみ対応 -->
+	<entry>
+		<!-- 曲のタイトル -->
+		<title>メルト - supercell</title>
+
+		<!-- rel="alternate" には lrc ファイルを指定します。 -->
+		<link rel="alternate" type="text/plain" href="メルト.lrc"/>
+
+		<!-- 
+			rel="enclosure" には
+			・歌詞の置換ファイル と
+			・動画(wmv形式) または 画像(png, jpeg, bmp形式)と音楽(mp3, wma形式)のセット
+			を指定します。
+			type 属性も下記のように指定すること
+		 -->
+		<link rel="enclosure" type="text/plain" href="メルト.repl.txt"/>
+		<link rel="enclosure" type="image/png" href="メルト.png"/>
+		<link rel="enclosure" type="audio/mpeg" href="メルト.mp3"/>
+		<!--
+		<link rel="enclosure" type="video/x-ms-wmv" href=".wmv"/>
+		-->
+
+		<!-- 
+			歌詞表示時間のオフセット値(秒)  省略時 0.0
+			歌詞ファイルのタイムタグの時間に下記 offset 値が加算されます。
+			（同じ曲でも動画によって、歌詞の表示開始時間が異なる場合、
+			　同じ歌詞ファイルを使用するための設定です。）
+		 -->
+		<ntype:offset>0.0</ntype:offset>
+
+		<!--  再生速度(0.0～5.0 倍) 省略時 1.0 -->
+		<ntype:speed>1.0</ntype:speed>
+
+		<!-- テキストファイルのエンコーディング(shift_jis, utf-8) 省略時: shift_jis -->
+		<ntype:encoding>shift_jis</ntype:encoding>
+
+		<!-- ニコ生タイピングでは未使用(id, updated, author) -->
+		<id>tag:namaalert.jp,2010:your_name.id</id>
+		<updated>2010-08-15T00:00:00Z</updated>
+		<author>
+			<name>your_name</name>
+			<uri>http://your_site.example.jp</uri>
+		</author>
+</entry>
+</feed>

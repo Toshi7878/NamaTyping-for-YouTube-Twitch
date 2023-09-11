@@ -1,0 +1,63 @@
+.platform-select {
+	position: relative;
+}
+
+.platform-select::before,
+.platform-select::after {
+	position: absolute;
+	content: '';
+	pointer-events: none;
+}
+
+.platform-select::before {
+	display: inline-block;
+	right: 4px;
+	width: 15px;
+	height: 25px;
+	background-color: #eef5fd;
+	outline: 1px solid #FFF;
+}
+
+.platform-select:hover::before {
+	background-color: #cfe6fd !important;
+	outline: 2px solid #63a2e1;
+}
+
+.platform-select:active::before {
+	outline: 2px solid #63a2e1 !important;
+}
+
+.platform-select::after {
+	position: absolute;
+	top: 41%;
+	right: 15px;
+	transform: translate(50%, -50%) scaleY(70%) scale(60%);
+	width: 6px;
+	height: 6px;
+	content: '▼';
+}
+
+.platform-select select {
+	appearance: none;
+	width: 130px;
+	padding: 5px;
+	border: none;
+	background-color: #FFF;
+	color: #000;
+	font-size: 1rem;
+	cursor: pointer;
+	border-radius: 0;
+}
+
+.selectbox-001 select:hover {
+	outline: 2px solid #ececec;
+}
+
+.selectbox-001 select:focus {
+	outline: 2px solid #ececec;
+}
+
+
+option {
+	border-radius: 0%;
+}

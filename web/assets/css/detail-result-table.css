@@ -1,0 +1,26 @@
+#result-table-container {
+	display: flex;
+	height: 100%;
+}
+
+#name-box,
+#detail-box {
+	border: 1px solid rgb(153, 153, 153);
+	overflow-y: scroll;
+	resize: horizontal;
+
+
+}
+
+#name-box {
+	width: 30%;
+
+}
+
+#name-box::-webkit-scrollbar {
+	display: none;
+}
+
+#detail-box {
+	width: 70%;
+}

@@ -1,0 +1,42 @@
+/* wrap */
+
+
+:root {
+  --shadow-color: black;
+  --next-shadow-color: white;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow: hidden;
+}
+
+/* video */
+#player,
+#video,
+#sc-widget {
+  z-index: -2;
+}
+
+#player,
+#video,
+#sc-widget,
+#transparent-cover {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+
+#player,
+#video,
+#transparent-cover {
+  width: 100%;
+}
+
+#sc-widget {
+  width: 716px;
+}

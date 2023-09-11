@@ -1,0 +1,24 @@
+@keyframes fadein {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+.next-fade-in {
+	display: inline !important;
+	animation-name: fadein;
+	animation-duration: 0.5s;
+	animation-timing-function: ease-out;
+	animation-fill-mode: forwards;
+}
+
+.title-fade-in {
+	animation-name: fadein;
+	animation-duration: 2.5s;
+	animation-timing-function: ease-out;
+	animation-fill-mode: forwards;
+}
