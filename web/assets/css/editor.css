@@ -2,10 +2,46 @@
 	position: absolute;
 	color: black;
 	font-size: 1rem;
+	top: 60px;
+	width: 100%;
 }
 
 #add-lyrics-container textarea {
 	height: 120px;
-	width: 600px;
 	resize: both;
+	width: 100%;
+}
+
+#seek-range-container {
+	width: 783px;
+	position: absolute;
+	display: flex;
+	align-items: center;
+	top: 20px;
+}
+
+#seek-range-container input {
+	width: 100%;
+}
+
+#player-pause,
+#player-play {
+	zoom: 216%;
+	position: absolute;
+	left: 101%;
+	top: -24px;
+	cursor: pointer;
+}
+
+
+#seek-range-container [id*=player]:hover {
+	background: #2d719f3f;
+	outline: solid 1.1px #9f9f9f;
+
+
+}
+
+#seek-range-container [id*=player]:active {
+	background: rgba(76, 108, 140, 0.6);
+	outline: solid 1.1px #206ab6d1;
 }

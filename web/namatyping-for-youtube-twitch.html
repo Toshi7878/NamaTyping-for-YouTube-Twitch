@@ -68,6 +68,16 @@
 
 		<!-- <div id="height-dragger"></div> -->
 		<div id="word-area" class='text-shadow' style="bottom: 38.4px;">
+			<div id="seek-range-container" class="d-none">
+				<input id="seek-range" type="range" value="0">
+				<span id="player-pause" class="d-none">
+					<img src="assets\img\control-pause.png">
+				</span>
+				<span id="player-play">
+					<img src="assets\img\control.png">
+				</span>
+			</div>
+
 			<div id="add-lyrics-container" style="display:none;">
 				<textarea id="add-lyrics-box"></textarea>
 			</div>
@@ -92,20 +102,7 @@
 					<div></div>
 				</div>
 
-
-				<div id='lyrics'>
-					<div id='lyrics-3'>&#8203;</div>
-					<div id='lyrics-2'>&#8203;</div>
-					<div id="lyrics-1">
-						<div id="lyrics-layer-1">&#8203;</div>
-						<div id="lyrics-layer-2">&#8203;</div>
-					</div>
-					<div id='lyrics-next'>
-						<span id='next-label'>NEXT: </span>
-						<span id='skip'></span>
-						<span id='next'></span>
-					</div>
-				</div>
+				<div id='lyrics'></div>
 			</div>
 
 
@@ -193,6 +190,8 @@
 	<script src="assets\js\events\resize.js"></script>
 	<script src="assets\js\events\transparent-cover.js"></script>
 	<script src="assets\js\events\edit-button.js"></script>
+	<script src="assets\js\events\media-control.js"></script>
+
 
 
 
@@ -206,6 +205,7 @@
 	<script src="assets\js\game\parse-lyrics.js"></script>
 	<script src="assets\js\game\parse-json.js"></script>
 	<script src="assets\js\game\game-start.js"></script>
+	<script src="assets\js\game\set-lyrics.js"></script>
 	<script src="assets\js\game\reset.js"></script>
 	<script src="assets\js\game\scoring.js"></script>
 	<script src="assets\js\game\timer.js"></script>

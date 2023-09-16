@@ -1,21 +1,41 @@
-const YouTubePlayerState = [1, 0, 2, 3, -1]
-const HTMLMediaPlayerState = ['playing', 'ended', 'pause', 'seeking', 'canplay']
-const SoundCloudPlayerState = ['play', 'finish', 'pause', 'seek', 'ready']
+const YouTubePlayerState = {
+	"1":"play",
+	"0":"finish",
+	"2":"pause",
+	"3":"seek",
+	"-1":"ready"
+}
+
+const HTMLMediaPlayerState = {
+	"playing":"play",
+	"ended":"finish",
+	"pause":"pause",
+	"seeking":"seek",
+	"canplay":"ready"
+}
+
+const SoundCloudPlayerState = {
+	"play":"play",
+	"finish":"finish",
+	"pause":"pause",
+	"seek":"seek",
+	"ready":"ready"
+}
 
 class PlayerEvent {
 
-	constructor(playerStateNames) {
+	constructor(playerStateNames, platform) {
 
 		//YouTube or HTML MediaTagのStateEvent名
 		this.playerStateNames = playerStateNames
 
-		if (this.playerStateNames[0] == 'playing') {
+		if (platform == "LocalMedia") {
 			localMedia.player.addEventListener("canplay", this.onPlayerStateChange.bind(this));
 			localMedia.player.addEventListener('playing', this.onPlayerStateChange.bind(this))
 			localMedia.player.addEventListener('pause', this.onPlayerStateChange.bind(this))
 			localMedia.player.addEventListener('ended', this.onPlayerStateChange.bind(this))
 			localMedia.player.addEventListener('seeking', this.onPlayerStateChange.bind(this))
-		}else if(this.playerStateNames[0] == 'play'){
+		}else if(platform == "SoundCloud"){
 			soundCloud.player.bind(SC.Widget.Events.READY, () => playerEvent.onPlayerReady(SC.Widget.Events.READY));
 			soundCloud.player.bind(SC.Widget.Events.PLAY, () => playerEvent.onPlayerStateChange(SC.Widget.Events.PLAY));
 			soundCloud.player.bind(SC.Widget.Events.PAUSE, () => playerEvent.onPlayerStateChange(SC.Widget.Events.PAUSE));
@@ -44,20 +64,22 @@ class PlayerEvent {
 	}
 
 	//動画 音楽プレイヤーの状態が変更された
-	onPlayerStateChange(event) {
+	async onPlayerStateChange(event) {
 		let state
 
 		if (game.platform == 'LocalMedia') {
-			state = event.type
+			state = this.playerStateNames[event.type]
 		}else if(game.platform == 'YouTube'){
-			state = event.data
+			state = this.playerStateNames[event.data]
 		}else if(game.platform == 'SoundCloud'){
-			state = event
+			state = this.playerStateNames[event]
 		}
+
+		toggleEditerBtn(state)
 
 
 		switch (state) {
-			case this.playerStateNames[0]: //再生
+			case "play": //再生
 				console.log("再生")
 		
 				if(!game.isFinished){
@@ -70,10 +92,10 @@ class PlayerEvent {
 					}
 					
 				}
-				
+
 				break;
 
-			case this.playerStateNames[1]: //動画終了
+			case "finish": //動画終了
 				console.log("動画終了")
 				timer.removeTimerEvent()
 				game.isFinished = true
@@ -84,15 +106,14 @@ class PlayerEvent {
 				}else if(game.platform == 'YouTube'){
 					youtube.player.stopVideo()
 				}
-
 				break;
 
-			case this.playerStateNames[2]: //一時停止
+			case "pause": //一時停止
 				console.log("一時停止")
 				timer.removeTimerEvent()
 				break;
 
-			case this.playerStateNames[3]: //再生時間移動
+			case "seek": //再生時間移動
 				console.log("シーク")
 		
 				if(game.isStart && !game.isFinished){
@@ -103,17 +124,19 @@ class PlayerEvent {
 					}else if(game.platform == 'YouTube'){
 						time = youtube.player.getCurrentTime();
 					}else if(game.platform == 'SoundCloud'){
-						soundCloud.player.getPosition(currentTime => time = (currentTime / 1000));
+						time = await new Promise((resolve) => {
+							soundCloud.player.getPosition((currentTime) => resolve(currentTime / 1000));
+						});
 					}
 		
-					if(time){
+					if(time => 0){
 						getLyricsCount(time)
 					}
 				}
 
 				break;
 
-			case this.playerStateNames[4]: //	未スタート、他の動画に切り替えた時など
+			case "ready": //	未スタート、他の動画に切り替えた時など
 
 				let startTime
 				if (game.platform == 'LocalMedia') {
@@ -156,11 +179,7 @@ class TotalTime {
 			this.duration = await new Promise((resolve) => {
 
 				soundCloud.player.getDuration((duration) => {
-
-					if (duration !== null) {
 						resolve(duration / 1000);
-					}
-
 				});
 
 			});
@@ -173,6 +192,8 @@ class TotalTime {
 			this.set([TOTAL_TIME_MM, TOTAL_TIME_SS])
 		}else{
 			document.getElementById("total-second-time").textContent = this.duration.toFixed(2)
+			document.getElementById("seek-range").max = this.duration
+
 		}
 
 	}
@@ -205,8 +226,27 @@ function getLyricsCount(time) {
 
 	if (timer.count < 0) {
 		timer.count = 0
+	}else{
+		timer.updateLyrics(timer.count - 1)
 	}
 
-	timer.updateLyrics(timer.count - 1)
+
+}
+
+
+function toggleEditerBtn(state){
+
+	switch(state){
+		case "play":
+			document.getElementById("player-play").classList.add("d-none")
+			document.getElementById("player-pause").classList.remove("d-none")
+		break;
+
+		case "pause":
+		case "finish":
+			document.getElementById("player-play").classList.remove("d-none")
+			document.getElementById("player-pause").classList.add("d-none")
+		break;
+	}
 
 }

@@ -163,54 +163,153 @@ class CreateMenu {
 			WORD_AREA.style.bottom = `${bottom.toString()}px`
 			WORD_AREA.style.height = `${(window.innerHeight - (top + bottom)).toString()}px`
 			document.getElementById("add-lyrics-container").style.display = 'block'
+			document.getElementById("seek-range-container").classList.remove("d-none")
 	}
 
 }
 
 let createMenu 
 
+document.getElementById("lyrics").addEventListener('keydown', event => {
 
-document.getElementById("add-lyrics-box").addEventListener('keydown', event => {
 
 	if(event.key == 'Tab'){
-		let headLyrics = event.target.value.split(/[\n\s]/)[0]
-		let lyrics = event.target.value.split(/\n/)
-		const space = event.target.value[headLyrics.length]
+		const SELECT_POSITION = window.getSelection().extentOffset
+		const count = +window.getSelection().extentNode.parentNode.parentNode.parentNode.dataset.count
+		const wipeCount = +window.getSelection().extentNode.parentNode.dataset.wipeCount
 
-		if(game.displayLyrics.length > 1 && game.displayLyrics[game.displayLyrics.length-1]['time'].length == 0){
-			const previousArray = game.displayLyrics[game.displayLyrics.length-2]
-
-			if(previousArray){
-					previousArray['time'].push(timer.headTime)
-					previousArray['char'].push('')
-			}
-		}else if(game.displayLyrics.length == 0){
-			game.displayLyrics.push({"time": [],"char": [""]})
-		}
-
-		if(space == '\n'){
-			game.displayLyrics[game.displayLyrics.length-1]['time'].push(timer.headTime)
-			game.displayLyrics[game.displayLyrics.length-1]['char'].push(headLyrics)
-			game.displayLyrics.push({"time": [],"char": [""]})
-			lyrics = lyrics.slice(1)
-		}else if(event.target.value[headLyrics.length] == ' '){
-			headLyrics = headLyrics + ' '
-			game.displayLyrics[game.displayLyrics.length-1]['time'].push(timer.headTime)
-			game.displayLyrics[game.displayLyrics.length-1]['char'].push(headLyrics)
-			lyrics[0] = lyrics[0].slice(headLyrics.length)
+		if(SELECT_POSITION){
+			const TEXT = window.getSelection().extentNode.textContent
+			const SPLICE_TEXT = lyricsSplit(TEXT, SELECT_POSITION)
+			game.displayLyrics[count]['char'].splice(wipeCount, 1,SPLICE_TEXT[0], SPLICE_TEXT[1])
+			game.displayLyrics[count]['time'].splice(wipeCount, 0, timer.headTime)
+		}else{
+			game.displayLyrics[count]['time'][wipeCount-1] = timer.headTime
 		}
 
 
-		event.target.value = lyrics.join('\n')
-
-		// if(game.platform == 'YouTube'){
-		// 	youtube.player.seekTo(0)
-		// }else if(game.platform == 'SoundCloud'){
-		// 	soundCloud.player.seekTo(0);
-		// }
-
+		new Lyrics(game.displayLyrics)
+	
+		if(timer){
+			timer.updateLyrics(timer.count)
+		}
 
 		event.preventDefault()
 	}
 
+	
+	if(event.code == 'Enter'){
+		const count = +window.getSelection().extentNode.parentNode.parentNode.parentNode.dataset.count
+		const wipeCount = +window.getSelection().extentNode.parentNode.dataset.wipeCount
+		game.displayLyrics[count]['char'][wipeCount] = event.target.textContent
+
+
+		new Lyrics(game.displayLyrics)
+	
+		if(timer){
+			timer.updateLyrics(timer.count)
+		}
+
+	}
+
+
+})
+
+function lyricsSplit(text, position){
+	const firstPart = text.slice(0, position);
+	const secondPart = text.slice(position);
+
+	return [firstPart, secondPart];
+}
+
+function addSpace(text, position){
+	const firstPart = text.slice(0, position);
+	const secondPart = text.slice(position);
+
+	return `${firstPart} ${secondPart}`;
+}
+
+function deleteChar(text, position){
+	const firstPart = text.slice(0, position-1);
+	const secondPart = text.slice(position);
+
+	return `${firstPart}${secondPart}`;
+}
+
+document.getElementById("add-lyrics-box").addEventListener('keydown', event => {
+
+
+	if(event.key == 'Tab'){
+
+		if(event.shiftKey){
+
+			if(game.displayLyrics.length > 1 && game.displayLyrics[game.displayLyrics.length-1]['time'].length == 0){
+				const previousArray = game.displayLyrics[game.displayLyrics.length-2]
+	
+				if(previousArray){
+						previousArray['time'].push(timer.headTime)
+						previousArray['char'].push('')
+				}
+			}
+
+		}else{
+			let headLyrics = event.target.value.split(/[\n\s]/)[0]
+			let lyrics = event.target.value.split(/\n/)
+			const space = event.target.value[headLyrics.length]
+	
+			if(game.displayLyrics.length > 1 && game.displayLyrics[game.displayLyrics.length-1]['time'].length == 0){
+				const previousArray = game.displayLyrics[game.displayLyrics.length-2]
+	
+				if(previousArray){
+						previousArray['time'].push(timer.headTime)
+						previousArray['char'].push('')
+				}
+			}else if(game.displayLyrics.length == 0){
+				game.displayLyrics.push({"time": [],"char": [""]})
+			}
+	
+			if(space == '\n'){
+				game.displayLyrics[game.displayLyrics.length-1]['time'].push(timer.headTime)
+				game.displayLyrics[game.displayLyrics.length-1]['char'].push(headLyrics)
+				game.displayLyrics.push({"time": [],"char": [""]})
+				lyrics = lyrics.slice(1)
+			}else if(event.target.value[headLyrics.length] == ' '){
+				headLyrics = headLyrics + ' '
+				game.displayLyrics[game.displayLyrics.length-1]['time'].push(timer.headTime)
+				game.displayLyrics[game.displayLyrics.length-1]['char'].push(headLyrics)
+				lyrics[0] = lyrics[0].slice(headLyrics.length)
+			}
+	
+	
+			event.target.value = lyrics.join('\n')
+		}
+
+		new Lyrics(game.displayLyrics)
+	
+		if(timer){
+			timer.updateLyrics(timer.count)
+		}
+
+		event.preventDefault()
+	}
+
+})
+
+
+document.getElementById("add-lyrics-box").addEventListener('input', event => {
+
+	event.target.value = event.target.value.replace(/\n\n/g, "\n")
+
+})
+
+document.getElementById("seek-range").addEventListener('input', event => {
+	MediaControl.seek(event.target.value)
+})
+
+document.getElementById("player-pause").addEventListener('click', event => {
+	MediaControl.pause()
+})
+
+document.getElementById("player-play").addEventListener('click', event => {
+	MediaControl.play()
 })

@@ -12,6 +12,9 @@ class Timer {
 		this.wipeCount = 0
 		this.shadowElements
 		this.wipeElements
+		document.getElementById("lyrics").classList.add('d-block')
+		this.lyricsRenderReset()
+
 
 	}
 
@@ -55,14 +58,9 @@ class Timer {
 
 
 	update() {
-		if(game.isEdit){
-			editTimer.updateTime()
-		}
 
 		if (Math.abs(this.speedTime - this.updateClockCount) > 1) {
-			if(!game.isEdit){
 				this.updatePlayerClock(this.speedTime)
-			}
 
 			if (!this.isNextFadeIn && game.displayLyrics[this.count]){
 				const NEXT_LYRICS_TIME = (game.displayLyrics[this.count]['time'][0] / this.speed)
@@ -87,27 +85,25 @@ class Timer {
 				document.getElementById("next").classList.add("next-fade-in")
 				this.isNextFadeIn = true
 			}
-		}
-			
 
+		}
 
 		if(this.count >= 1 && game.displayLyrics[this.count-1]){
 			this.updateWipe()
 		}
-
-
 
 	}
 
 	updateWipe(){
 		let max = 0
 		let now = 0
-		if(!this.wipeElements[this.wipeCount]){return;}
 
 		if(this.headTime > game.displayLyrics[this.count-1]['time'][this.wipeCount]){
 			this.wipeElements[this.wipeCount].removeAttribute('style')
+			this.wipeElements[this.wipeCount].classList.remove('wipe-now')
 			this.wipeCount++
-			this.shadowElements[this.wipeCount].setAttribute('style',`color:#ffa500;`)
+			this.shadowElements[this.wipeCount].classList.add('wipe-pass')
+			this.wipeElements[this.wipeCount].classList.add('wipe-now')
 		}
 
 		const LineTimeArray = game.displayLyrics[this.count-1]['time']
@@ -141,41 +137,43 @@ class Timer {
 	}
 
 
+	lyricsRenderReset(){
+		const headElement = document.getElementsByClassName("head-lyrics")
+		const previousElements = document.getElementsByClassName("previous-lyrics")
+		const wipePassElements = document.getElementsByClassName("wipe-pass")
+		const wipeNowElement = document.getElementsByClassName("wipe-now")
+
+
+		for(let i=0;i<headElement.length;i++){
+			headElement[i].classList.remove("head-lyrics")
+		}
+
+		for(let i=0;i<wipePassElements.length;i++){
+			wipePassElements[i].classList.remove("wipe-pass")
+		}
+
+		for(let i=0;i<wipeNowElement.length;i++){
+			wipeNowElement[i].removeAttribute('style')
+			wipeNowElement[i].classList.remove("wipe-now")
+		}
+
+		for(let i=0;i<previousElements.length;i++){
+			previousElements[i].classList.remove("previous-lyrics")
+		}
+
+	}
+
+
 	updateLyrics(count) {
+		const NEXT_HEAD = document.getElementById(`lyrics-${count}`)
+		this.lyricsRenderReset()
+		
+		NEXT_HEAD.classList.add('head-lyrics')
 
-		for (let i = 1; i <= 3; i++) {
+		for(let i=1;i<=2;i++){
 
-			if (count - (i - 1) >= 0) {
-				const char = game.displayLyrics[count - (i - 1)]['char']
-
-				if(i == 1){
-					let charElements = ''
-
-					for(let i=0;i<char.length;i++){
-						charElements += `<span>${char[i]}</span>`
-					}
-
-					const layer1 = document.getElementById("lyrics-layer-1")
-					layer1.innerHTML = charElements
-					this.shadowElements = layer1.children
-
-					const layer2 = document.getElementById("lyrics-layer-2")
-					layer2.innerHTML = charElements
-					this.wipeElements = layer2.children
-
-					this.wipeCount = 0
-				}else{
-					document.getElementById("lyrics-" + String(i)).textContent = char.join('')
-				}
-
-			} else {
-
-				if(i == 1){
-					document.getElementById("lyrics-layer-1").textContent = ' '
-					document.getElementById("lyrics-layer-2").textContent = ' '
-				}else{
-					document.getElementById("lyrics-" + String(i)).textContent = ' '
-				}
+			if(count-i >= 0){
+				document.getElementById(`lyrics-${count-i}`).classList.add("previous-lyrics")
 			}
 
 		}
@@ -183,7 +181,11 @@ class Timer {
 		this.updateNextLyrics(count + 1)
 		this.correctLyrics = this.updateCorrectLyrics(count + 1)
 
+		this.shadowElements = NEXT_HEAD.getElementsByClassName("shadow-layer")[0].children
+		this.wipeElements = NEXT_HEAD.getElementsByClassName("wipe-layer")[0].children
+		this.wipeCount = 0
 	}
+	
 
 	updateCorrectLyrics(count) {
 		let correctLyrics = game.comparisonLyrics.slice(0, count)

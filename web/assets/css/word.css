@@ -52,20 +52,48 @@ body {
 #lyrics {
   position: absolute;
   bottom: 3%;
+  color: #fff;
+  display: none;
+
+}
+
+.shadow-layer {
+  position: absolute;
+  pointer-events: auto;
+}
+
+.wipe-layer {
+  -webkit-text-fill-color: transparent;
+  position: relative;
+  text-shadow: none;
+  display: inline;
+  pointer-events: none;
+}
+
+#lyrics [id*=lyrics-]:not(#lyrics-next) {
+  display: none;
+}
+
+#lyrics [id*=lyrics-]:not(#lyrics-next, .head-lyrics, .head-lyrics ~ div) {
   color: #ffa500;
 }
 
-#lyrics-1 {
-  color: #fff;
+.wipe-pass {
+  color: #ffa500;
+}
+
+.head-lyrics,
+.previous-lyrics {
+  display: block !important;
+}
+
+.edit-border {
+  border: solid 1px;
 }
 
 #lyrics-next {
   color: #aaa;
   font-size: 60%;
-}
-
-#next-label {
-  visibility: hidden;
 }
 
 #next {
@@ -150,17 +178,4 @@ body {
 #font-size-container .arrow-highlight:active {
   background: rgba(76, 108, 140, 0.6);
   outline: solid 1.1px #206ab6d1;
-
-}
-
-
-#lyrics-layer-1 {
-  position: absolute;
-}
-
-#lyrics-layer-2 {
-  -webkit-text-fill-color: transparent;
-  position: relative;
-  text-shadow: none;
-  display: inline;
 }
