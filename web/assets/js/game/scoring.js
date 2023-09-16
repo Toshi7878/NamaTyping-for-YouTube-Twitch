@@ -1,8 +1,10 @@
 class Scoring {
 	constructor() {
-		this.totalNotes = this.calcTotalNotes()
-		this.usersScore = this.parseResultData()
-		this.displayCount = this.usersScore.length
+
+			this.usersScore = chat && Object.keys(chat.users).length ? this.parseResultData() : [ [' ',0,' '] ]
+			this.totalNotes = game ? this.calcTotalNotes() : 0
+			this.displayCount = this.usersScore.length
+
 	}
 
 

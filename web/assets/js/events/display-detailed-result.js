@@ -87,30 +87,40 @@ document.getElementById("lyrics-result").addEventListener('click', event => {
 
 	$("#name-box").resizable({handles:'n,s,w,e'});
 	detailResult = new DetailResult()
+
 })
 
 
-class DetailResult {
+class DetailResult extends Scoring {
 
 	constructor(){
-		this.scoreData = chat && Object.keys(chat.users).length ? scoring.parseResultData() : [{'順位':'', '点数':'', '名前':''}]
-		this.totalNotes = scoring ? scoring.calcTotalNotes() : 0
+		super()
 		this.correctLyrics = timer ? timer.updateCorrectLyrics(game.comparisonLyrics.length) : []
+
 		this.displayRankTable()
+
 	}
 
+	//this.scoreData  ['名前', 'スコア', 'ID']
+	generateRankTable(){
+		let rankData = []
 
-	//scoring.scoredata  ['名前', 'スコア', 'ID']
+		for(let i=0;i<this.usersScore.length;i++){
+			const SCORE = Math.round((1000 / this.totalNotes) * this.usersScore[i][1])
+
+
+			rankData.push({'順位':(i+1), '点数':(isNaN(SCORE) ? 0:SCORE) , '名前':this.usersScore[i][0], '打数':`${String(this.usersScore[i][1])} / ${this.totalNotes}`})
+		}
+
+		return rankData
+	}
+
 	displayRankTable(){
 
-			let rankData = []
 
-			for(let i=0;i<this.scoreData.length;i++){
-				rankData.push({'順位':(i+1), '点数':Math.round((1000 / this.totalNotes) * this.scoreData[i][1]), '名前':this.scoreData[i][0], '打数':`${String(this.scoreData[i][1])} / ${this.totalNotes}`})
-			}
 
 			let table = new Tabulator("#rank-table", {
-				data:rankData,          
+				data: this.generateRankTable(),          
 				autoColumns: true, //自動で列の設定を最適化する
 				selectable : true,
 				rowClick:function(e, row){
@@ -124,11 +134,9 @@ class DetailResult {
 	}
 
 	
-
-
-	displayDetailResult(rank){
-		const userID = this.scoreData[rank-1][2]
-		const result = userID && chat.users[userID]['result'] ? chat.users[userID]['result'].slice(0, chat.users[userID]['result'].length) : [['','']]
+	generateDetailResult(rank){
+		const userID = this.usersScore[rank-1][2]
+		const result = chat && chat.users[userID]['result'] ? chat.users[userID]['result'].slice(0, chat.users[userID]['result'].length) : [['','']]
 		const resultData = []
 		let NoneComment = ''
 
@@ -171,9 +179,15 @@ class DetailResult {
 				resultData.push({'No':(i+1), '判定':result[i][1], 'コメント':result[i][0], '歌詞':result[i][3]})
 		 }
 
+
+		 return resultData;
+	}
+
+
+	displayDetailResult(rank){
 		
 		let table = new Tabulator("#detail-result-table", {
-			data:resultData,          
+			data: this.generateDetailResult(rank),          
 			autoColumns: true, //自動で列の設定を最適化する
 		});
 	}

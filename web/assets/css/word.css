@@ -87,8 +87,8 @@ body {
   display: block !important;
 }
 
-.edit-border {
-  border: solid 1px;
+.shadow-layer .edit-border {
+  outline: solid 1px;
 }
 
 #lyrics-next {
@@ -171,8 +171,6 @@ body {
 #font-size-container .arrow-highlight:hover {
   background: #2d719f3f;
   outline: solid 1.1px #9f9f9f;
-
-
 }
 
 #font-size-container .arrow-highlight:active {

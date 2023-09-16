@@ -25,7 +25,8 @@
 }
 
 #player-pause,
-#player-play {
+#player-play,
+#download {
 	zoom: 216%;
 	position: absolute;
 	left: 101%;
@@ -33,15 +34,26 @@
 	cursor: pointer;
 }
 
+#player-pause,
+#player-play {
+	left: 101%;
+}
 
-#seek-range-container [id*=player]:hover {
+#download {
+	left: 106%;
+	top: -24px;
+}
+
+#seek-range-container [id*=player]:hover,
+#download:hover {
 	background: #2d719f3f;
 	outline: solid 1.1px #9f9f9f;
 
 
 }
 
-#seek-range-container [id*=player]:active {
+#seek-range-container [id*=player]:active,
+#download:active {
 	background: rgba(76, 108, 140, 0.6);
 	outline: solid 1.1px #206ab6d1;
 }

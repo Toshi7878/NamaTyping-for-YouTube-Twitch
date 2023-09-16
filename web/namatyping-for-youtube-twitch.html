@@ -76,6 +76,9 @@
 				<span id="player-play">
 					<img src="assets\img\control.png">
 				</span>
+				<a id="download" download>
+					<img src="assets\img\document-copy.png">
+				</a>
 			</div>
 
 			<div id="add-lyrics-container" style="display:none;">
@@ -160,8 +163,12 @@
 			</div>
 
 			<div>
+				<label for="edit-button" class="label-btn" title="">
+					<img src="assets\img\script-text.png">
+					<span>譜面編集</span><input type="button" id="edit-button" style="display:none;">
+				</label>
+
 				<label for="create-button" class="label-btn" title="">
-					<!-- title="開始" -->
 					<img src="assets\img\script-text.png">
 					<span>譜面作成</span><input type="button" id="create-button" style="display:none;">
 				</label>
@@ -173,6 +180,16 @@
 		</div>
 
 	</section>
+	<script src="assets\js\game\parse-lyrics.js"></script>
+	<script src="assets\js\game\parse-json.js"></script>
+	<script src="assets\js\game\game-start.js"></script>
+	<script src="assets\js\game\set-lyrics.js"></script>
+	<script src="assets\js\game\reset.js"></script>
+	<script src="assets\js\game\scoring.js"></script>
+	<script src="assets\js\game\timer.js"></script>
+	<script src="assets\js\game\chat.js"></script>
+
+
 	<script src="assets\js\toggle-button.js"></script>
 	<script src="assets\js\events\skip.js"></script>
 	<script src="assets\js\events\live-menu.js"></script>
@@ -187,6 +204,7 @@
 	<script src="assets\js\events\arrow-display.js"></script>
 	<script src="assets\js\events\change-font-size.js"></script>
 	<script src="assets\js\events\display-detailed-result.js"></script>
+	<script src="assets\js\events\editer-events.js"></script>
 	<script src="assets\js\events\resize.js"></script>
 	<script src="assets\js\events\transparent-cover.js"></script>
 	<script src="assets\js\events\edit-button.js"></script>
@@ -202,14 +220,6 @@
 	<script src="assets\js\media\local-media.js"></script>
 
 
-	<script src="assets\js\game\parse-lyrics.js"></script>
-	<script src="assets\js\game\parse-json.js"></script>
-	<script src="assets\js\game\game-start.js"></script>
-	<script src="assets\js\game\set-lyrics.js"></script>
-	<script src="assets\js\game\reset.js"></script>
-	<script src="assets\js\game\scoring.js"></script>
-	<script src="assets\js\game\timer.js"></script>
-	<script src="assets\js\game\chat.js"></script>
 
 	<script src="assets\js\editor\edit-timer.js"></script>
 
