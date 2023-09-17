@@ -7,7 +7,7 @@ document.getElementById('file-input').addEventListener('change', event => {
 		reader.onload = result => {
 			// ファイル読み込み完了時にjsonファイルを正しい文字コードで取得する
 			const JSON_DATA = JSON.parse( parseLrc.parseTextEncord(result) )
-			const parseJson = new ParseJson(JSON_DATA)
+			parseJson = new ParseJson(JSON_DATA)
 		}
 
 	}

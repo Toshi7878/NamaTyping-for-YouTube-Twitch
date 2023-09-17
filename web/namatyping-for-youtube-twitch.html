@@ -68,6 +68,19 @@
 
 		<!-- <div id="height-dragger"></div> -->
 		<div id="word-area" class='text-shadow' style="bottom: 38.4px;">
+			<div id="seek-range-container" class="d-none">
+				<input id="seek-range" type="range" value="0">
+				<span id="player-pause" class="d-none">
+					<img src="assets\img\control-pause.png">
+				</span>
+				<span id="player-play">
+					<img src="assets\img\control.png">
+				</span>
+				<a id="download" download>
+					<img src="assets\img\document-copy.png">
+				</a>
+			</div>
+
 			<div id="add-lyrics-container" style="display:none;">
 				<textarea id="add-lyrics-box"></textarea>
 			</div>
@@ -92,20 +105,7 @@
 					<div></div>
 				</div>
 
-
-				<div id='lyrics'>
-					<div id='lyrics-3'>&#8203;</div>
-					<div id='lyrics-2'>&#8203;</div>
-					<div id="lyrics-1">
-						<div id="lyrics-layer-1">&#8203;</div>
-						<div id="lyrics-layer-2">&#8203;</div>
-					</div>
-					<div id='lyrics-next'>
-						<span id='next-label'>NEXT: </span>
-						<span id='skip'></span>
-						<span id='next'></span>
-					</div>
-				</div>
+				<div id='lyrics' class="game-mode"></div>
 			</div>
 
 
@@ -156,17 +156,26 @@
 					</div>
 					<div id="player-volume">
 						<img title="音量" src="assets\img\speaker-volume.png">
-						<input type="range" id="volume" min="0" max="100" value="50" title="50">
+						<input type="range" class="menu-range" id="volume" min="0" max="100" value="50" title="50">
+					</div>
+					<div id="player-speed">
+						<img title="速度" src="assets\img\metronome.png">
+						<input type="range" class="menu-range" id="speed" min="0.25" max="2" value="1" step="0.25">
+						<span id="speed-label">1.00</span>
 					</div>
 
 				</div>
 			</div>
 
 			<div>
-				<label for="create-button" class="label-btn" title="">
-					<!-- title="開始" -->
+				<label for="edit-button" class="label-btn d-none" title="譜面編集">
 					<img src="assets\img\script-text.png">
-					<span>譜面作成</span><input type="button" id="create-button" style="display:none;">
+					<span>譜面編集</span><input type="button" id="edit-button" style="display:none;">
+				</label>
+
+				<label for="create-button" class="label-btn" title="新規作成">
+					<img src="assets\img\script-text.png">
+					<span>新規作成</span><input type="button" id="create-button" style="display:none;">
 				</label>
 			</div>
 		</div>
@@ -176,6 +185,16 @@
 		</div>
 
 	</section>
+	<script src="assets\js\game\parse-lyrics.js"></script>
+	<script src="assets\js\game\parse-json.js"></script>
+	<script src="assets\js\game\game-start.js"></script>
+	<script src="assets\js\game\set-lyrics.js"></script>
+	<script src="assets\js\game\reset.js"></script>
+	<script src="assets\js\game\scoring.js"></script>
+	<script src="assets\js\game\timer.js"></script>
+	<script src="assets\js\game\chat.js"></script>
+
+
 	<script src="assets\js\toggle-button.js"></script>
 	<script src="assets\js\events\skip.js"></script>
 	<script src="assets\js\events\live-menu.js"></script>
@@ -190,9 +209,14 @@
 	<script src="assets\js\events\arrow-display.js"></script>
 	<script src="assets\js\events\change-font-size.js"></script>
 	<script src="assets\js\events\display-detailed-result.js"></script>
+	<script src="assets\js\events\editor-events.js"></script>
 	<script src="assets\js\events\resize.js"></script>
 	<script src="assets\js\events\transparent-cover.js"></script>
 	<script src="assets\js\events\edit-button.js"></script>
+	<script src="assets\js\events\media-control.js"></script>
+	<script src="assets\js\events\speed-range.js"></script>
+
+
 
 
 
@@ -203,15 +227,9 @@
 	<script src="assets\js\media\local-media.js"></script>
 
 
-	<script src="assets\js\game\parse-lyrics.js"></script>
-	<script src="assets\js\game\parse-json.js"></script>
-	<script src="assets\js\game\game-start.js"></script>
-	<script src="assets\js\game\reset.js"></script>
-	<script src="assets\js\game\scoring.js"></script>
-	<script src="assets\js\game\timer.js"></script>
-	<script src="assets\js\game\chat.js"></script>
 
 	<script src="assets\js\editor\edit-timer.js"></script>
+	<script src="assets\js\editor\edit-start.js"></script>
 
 
 	<script src="assets\js\vender\encoding.js"></script>

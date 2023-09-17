@@ -1,38 +1,43 @@
-input[type="range"] {
+.menu-range {
 	-webkit-appearance: none;
 	appearance: none;
 	outline: none;
 	background: transparent;
 	cursor: pointer;
 	width: 100%;
-  }
-   /* Track: Chrome, Safari, Opera, Edge Chromium */
-  input[type="range"]::-webkit-slider-runnable-track {
+}
+
+/* Track: Chrome, Safari, Opera, Edge Chromium */
+.menu-range::-webkit-slider-runnable-track {
 	background: #e7eaea;
-	border:solid 1.5px #d6d6d6;
+	border: solid 1.5px #d6d6d6;
 	height: 5px;
-  
-  }
-   
-  /* Thumb: Chrome, Safari, Opera, Edge Chromium */
-  input[type="range"]::-webkit-slider-thumb {
+
+}
+
+/* Thumb: Chrome, Safari, Opera, Edge Chromium */
+.menu-range::-webkit-slider-thumb {
 	-webkit-appearance: none;
 	appearance: none;
 	height: 22px;
 	width: 13.5px;
-	margin-top: -9px; /* 位置の調整が必要 */
-	background:#f0f0f0;
-	border:solid 1.5px #acacac;
-  
-  }
+	margin-top: -9px;
+	/* 位置の調整が必要 */
+	background: #f0f0f0;
+	border: solid 1.5px #acacac;
 
-  input[type="range"]::-webkit-slider-thumb:hover {
-	background:#dcecfc;
-	border:solid 1.5px #7eb4ea;
-  
-  }
-  
-  input[type="range"]{
-	width:300px;
-  }
-   
+}
+
+.menu-range::-webkit-slider-thumb:hover {
+	background: #dcecfc;
+	border: solid 1.5px #7eb4ea;
+
+}
+
+#volume {
+	width: 300px;
+}
+
+#speed {
+	width: 200px;
+}

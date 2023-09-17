@@ -25,10 +25,10 @@ class ParseLrc{
 		let comparisonLyrics = []
 
 		for (let i = 0; i < lyrics.length; i++) {
-			let timeArray = lyrics[i].match(/\[\d\d:\d\d:\d\d\]/g)
+			let timeArray = lyrics[i].match(/\[\d\d:\d\d.\d\d\]/g)
 
-			let charArray = this.formatLyricsForGame(lyrics[i].replace(/\[\d\d:\d\d:\d\d\]/g, '@@timestamp@@')).split('@@timestamp@@');
-			let lyricsArray = this.formatLyricsForGame(lyrics[i].replace(/\[\d\d:\d\d:\d\d\]/g, '')).split(' ').filter(x => x !== "");
+			let charArray = this.formatLyricsForGame(lyrics[i].replace(/\[\d\d:\d\d.\d\d\]/g, '@@timestamp@@')).split('@@timestamp@@');
+			let lyricsArray = this.formatLyricsForGame(lyrics[i].replace(/\[\d\d:\d\d.\d\d\]/g, '')).split(' ').filter(x => x !== "");
 
 			if(timeArray){
 

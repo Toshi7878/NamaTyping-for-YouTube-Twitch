@@ -1,14 +1,8 @@
 function resetLyricsArea() {
-	document.getElementById("lyrics-3").innerHTML = '&#8203;'
-	document.getElementById("lyrics-2").innerHTML = '&#8203;'
-	document.getElementById("lyrics-layer-1").innerHTML = '&#8203;'
-	document.getElementById("lyrics-layer-2").innerHTML = '&#8203;'
-	document.getElementById("next-label").style.visibility = 'hidden'
-	document.getElementById("next").innerHTML = '&#8203;'
-	document.getElementById("skip").textContent = ''
-
 
 	if (timer) {
+		document.getElementById("lyrics").classList.remove('d-block')
+		timer.lyricsRenderReset()
 		timer.clockSet(['00', '00'])
 	}
 }

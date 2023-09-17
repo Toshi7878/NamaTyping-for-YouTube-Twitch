@@ -15,6 +15,8 @@ class SoundCloud {
 		<iframe id="sc-widget" allow="autoplay" frameborder="no" src ="${URL + OPTION}"
 		style="bottom:${bottom.toString()}px;height:${(window.innerHeight - (top + bottom)).toString()}px;"></iframe>`)
 		document.getElementById("sc-widget").src = URL + OPTION
+
+		document.getElementById("player-speed").classList.add('d-none')
 	}
 
 

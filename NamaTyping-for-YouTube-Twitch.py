@@ -1,4 +1,5 @@
 import eel
+import atexit
 import pytchat
 import threading
 from module import twitch_chat_irc
@@ -109,12 +110,13 @@ class Chat:
 
 
 
+# Eelアプリケーションの終了時に実行する関数
+def on_exit():
+	print("Eelアプリケーションが終了しました。後始末を行います。")
+    # ここに後始末のコードを追加
 
 
-
-
-
-
+atexit.register(on_exit)  # 終了時の関数を登録
 
 
 eel.init("web")
