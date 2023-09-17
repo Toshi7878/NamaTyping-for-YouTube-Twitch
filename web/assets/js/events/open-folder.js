@@ -44,7 +44,8 @@ class LrcFolder {
 				const reader = new FileReader()
 				reader.readAsArrayBuffer(this.lrcFile)
 				// ファイル読み込み完了時にlrcファイルを正しい文字コードで取得する
-				reader.onload = event => {					
+				reader.onload = event => {
+					document.getElementById("edit-button").parentElement.classList.add('d-none')
 					const LRC_DATA = parseLrc.parseTextEncord(event)
 					const gameLyricsData = parseLrc.timeConvert( LRC_DATA.split('\r\n') )
 

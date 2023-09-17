@@ -28,7 +28,8 @@ class YouTube {
 	constructor(id) {
 		this.player
 		this.id = id
-
+		document.getElementById("player-speed").classList.remove('d-none')
+		
 		if (!youtube) {
 			//createElementでiframe_apiを読み込むとただちにonYouTubeIframeAPIReadyが実行される
 			const tag = document.createElement('script');
@@ -42,7 +43,9 @@ class YouTube {
 			*/
 		} else {
 			//iframe_api追加済みの場合はcueVideoIdで動画を切り替え
-			youtube.player.cueVideoById(id)
+			this.player = youtube.player
+
+			this.player.cueVideoById(id)
 			document.getElementById("player").style.display = 'block'
 		}
 	}

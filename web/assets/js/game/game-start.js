@@ -9,13 +9,13 @@ class Game {
 		this.isFinished = false;
 		this.isObserve = false
 		this.isEdit = setData['edit']
+
+		new Lyrics(setData['gameLyricsData'][0], setData['edit'])
+
 		deleteMedia()
-
-		if(!this.isEdit){
-			new Lyrics(setData['gameLyricsData'][0])
-		}
-
+		this.id = setData['movieURL']
 		this.setMedia(setData)
+
 
 	}
 

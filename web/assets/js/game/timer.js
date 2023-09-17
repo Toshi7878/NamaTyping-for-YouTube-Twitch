@@ -5,7 +5,9 @@ class Timer {
 		this.speedTime = 0
 		this.count = 0
 		this.updateClockCount = 0
-		this.speed = 1
+		this.speed = +document.getElementById("speed").value
+		MediaControl.speedChange(this.speed)
+
 		this.isNextFadeIn = true
 		this.correctLyrics = []
 

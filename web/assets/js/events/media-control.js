@@ -30,4 +30,15 @@ class MediaControl {
 		}
 	}
 
+	static speedChange(speed){
+		if (game.platform == 'LocalMedia') {
+			localMedia.player.playbackRate = speed
+		}else if(game.platform == 'YouTube'){
+			youtube.player.setPlaybackRate(speed)
+		}else if(game.platform == 'SoundCloud'){
+
+		}
+	}
+
 }
+

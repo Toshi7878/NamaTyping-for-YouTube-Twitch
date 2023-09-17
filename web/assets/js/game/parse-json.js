@@ -3,6 +3,7 @@ class ParseJson {
 	constructor(jsonData){
 		this.json = jsonData
 		this.manageMediaData()
+		document.getElementById("edit-button").parentElement.classList.remove('d-none')
 	}
 
 
@@ -28,3 +29,5 @@ class ParseJson {
 	}
 
 }
+
+let parseJson

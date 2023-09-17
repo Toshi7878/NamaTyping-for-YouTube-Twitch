@@ -5,16 +5,40 @@ document.getElementById("lyrics").addEventListener('keydown', event => {
 
 	if(event.key == 'Tab'){
 		const SELECT_POSITION = window.getSelection().extentOffset
+		const TEXT = window.getSelection().extentNode.textContent
+
 		const count = +window.getSelection().extentNode.parentNode.parentNode.parentNode.dataset.count
 		const wipeCount = +window.getSelection().extentNode.parentNode.dataset.wipeCount
+		const HEAD_TIME = timer.headTime
 
-		if(SELECT_POSITION){
-			const TEXT = window.getSelection().extentNode.textContent
+		if(SELECT_POSITION == TEXT.length){
+
+			if(game.displayLyrics[count+1] && (wipeCount+1) == game.displayLyrics[count]['time'].length){
+				const NEXT_WIPE_START = game.displayLyrics[count+1]['time'][0]
+
+				if(game.displayLyrics[count]['time'][wipeCount] == NEXT_WIPE_START){
+					game.displayLyrics[count+1]['time'][0] = HEAD_TIME
+				}
+			}
+
+			game.displayLyrics[count]['time'][wipeCount] = HEAD_TIME
+
+		}else if(SELECT_POSITION){
 			const SPLICE_TEXT = lyricsSplit(TEXT, SELECT_POSITION)
 			game.displayLyrics[count]['char'].splice(wipeCount, 1,SPLICE_TEXT[0], SPLICE_TEXT[1])
-			game.displayLyrics[count]['time'].splice(wipeCount, 0, timer.headTime)
+			game.displayLyrics[count]['time'].splice(wipeCount, 0, HEAD_TIME)
 		}else{
-			game.displayLyrics[count]['time'][wipeCount-1] = timer.headTime
+			if(game.displayLyrics[count-1] && wipeCount == 1){
+				const PREVIOUS_WIPE_TIME = game.displayLyrics[count-1]['time']
+				const PREVIOUS_WIPE_END = PREVIOUS_WIPE_TIME[PREVIOUS_WIPE_TIME.length-1]
+
+
+				if(game.displayLyrics[count]['time'][wipeCount-1] == PREVIOUS_WIPE_END){
+					game.displayLyrics[count-1]['time'][game.displayLyrics[count-1]['time'].length-1] = HEAD_TIME
+				}
+			}
+
+			game.displayLyrics[count]['time'][wipeCount-1] = HEAD_TIME
 		}
 
 
@@ -54,7 +78,7 @@ function lyricsSplit(text, position){
 
 document.getElementById("add-lyrics-box").addEventListener('input', event => {
 
-	event.target.value = event.target.value.replace(/\n\n/g, "\n")
+	event.target.value = event.target.value.replace(/\n\n/g, "\n").replace(/\s+\n$/g, "\n").replace(/^\s+/g, "")
 	setTimeout(() => event.target.scrollTop = 0)
 
 })
@@ -74,10 +98,10 @@ document.getElementById("player-play").addEventListener('click', event => {
 
 document.getElementById("download").addEventListener('click', event => {
 const data = {
-	"movieURL": editMenu.setData['movieURL'],
-    "platform": editMenu.setData['platform'],
-    "title": editMenu.setData['title'],
-    "artist": editMenu.setData['artist'],
+	"movieURL": editor.setData['movieURL'],
+    "platform": editor.setData['platform'],
+    "title": editor.setData['title'],
+    "artist": editor.setData['artist'],
     "creator": "",
     "tag": [],
 	"lrc":convartLRC(game.displayLyrics)
@@ -106,7 +130,7 @@ function convartLyricsLine(Line){
 	let lineResult = ''
 
 	for(let i=0;i<Line['time'].length;i++){
-		const min = (Line['time'][i] / 60).toFixed(0)
+		const min = Math.floor(Line['time'][i] / 60).toFixed(0)
 		const sec = (Line['time'][i] % 60).toFixed(2)
 		const TIME_DATA = {
 			'min':min.length == 1 ? `0${min}` : min,

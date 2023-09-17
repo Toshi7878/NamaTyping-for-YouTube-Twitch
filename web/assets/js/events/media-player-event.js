@@ -98,7 +98,9 @@ class PlayerEvent {
 			case "finish": //動画終了
 				console.log("動画終了")
 				timer.removeTimerEvent()
-				game.isFinished = true
+				if(!game.isEdit){
+					game.isFinished = true
+				}
 		
 				//videoタグのポスターを再表示
 				if (game.platform == 'LocalMedia') {
@@ -244,6 +246,7 @@ function toggleEditorBtn(state){
 
 		case "pause":
 		case "finish":
+		case "ready":
 			document.getElementById("player-play").classList.remove("d-none")
 			document.getElementById("player-pause").classList.add("d-none")
 		break;

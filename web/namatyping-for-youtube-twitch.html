@@ -105,7 +105,7 @@
 					<div></div>
 				</div>
 
-				<div id='lyrics'></div>
+				<div id='lyrics' class="game-mode"></div>
 			</div>
 
 
@@ -156,21 +156,26 @@
 					</div>
 					<div id="player-volume">
 						<img title="音量" src="assets\img\speaker-volume.png">
-						<input type="range" id="volume" min="0" max="100" value="50" title="50">
+						<input type="range" class="menu-range" id="volume" min="0" max="100" value="50" title="50">
+					</div>
+					<div id="player-speed">
+						<img title="速度" src="assets\img\metronome.png">
+						<input type="range" class="menu-range" id="speed" min="0.25" max="2" value="1" step="0.25">
+						<span id="speed-label">1.00</span>
 					</div>
 
 				</div>
 			</div>
 
 			<div>
-				<label for="edit-button" class="label-btn" title="">
+				<label for="edit-button" class="label-btn d-none" title="譜面編集">
 					<img src="assets\img\script-text.png">
 					<span>譜面編集</span><input type="button" id="edit-button" style="display:none;">
 				</label>
 
-				<label for="create-button" class="label-btn" title="">
+				<label for="create-button" class="label-btn" title="新規作成">
 					<img src="assets\img\script-text.png">
-					<span>譜面作成</span><input type="button" id="create-button" style="display:none;">
+					<span>新規作成</span><input type="button" id="create-button" style="display:none;">
 				</label>
 			</div>
 		</div>
@@ -209,6 +214,8 @@
 	<script src="assets\js\events\transparent-cover.js"></script>
 	<script src="assets\js\events\edit-button.js"></script>
 	<script src="assets\js\events\media-control.js"></script>
+	<script src="assets\js\events\speed-range.js"></script>
+
 
 
 
@@ -222,6 +229,7 @@
 
 
 	<script src="assets\js\editor\edit-timer.js"></script>
+	<script src="assets\js\editor\edit-start.js"></script>
 
 
 	<script src="assets\js\vender\encoding.js"></script>

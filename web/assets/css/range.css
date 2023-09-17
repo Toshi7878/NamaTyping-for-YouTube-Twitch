@@ -1,4 +1,4 @@
-#volume {
+.menu-range {
 	-webkit-appearance: none;
 	appearance: none;
 	outline: none;
@@ -8,7 +8,7 @@
 }
 
 /* Track: Chrome, Safari, Opera, Edge Chromium */
-#volume::-webkit-slider-runnable-track {
+.menu-range::-webkit-slider-runnable-track {
 	background: #e7eaea;
 	border: solid 1.5px #d6d6d6;
 	height: 5px;
@@ -16,7 +16,7 @@
 }
 
 /* Thumb: Chrome, Safari, Opera, Edge Chromium */
-#volume::-webkit-slider-thumb {
+.menu-range::-webkit-slider-thumb {
 	-webkit-appearance: none;
 	appearance: none;
 	height: 22px;
@@ -28,7 +28,7 @@
 
 }
 
-#volume::-webkit-slider-thumb:hover {
+.menu-range::-webkit-slider-thumb:hover {
 	background: #dcecfc;
 	border: solid 1.5px #7eb4ea;
 
@@ -36,4 +36,8 @@
 
 #volume {
 	width: 300px;
+}
+
+#speed {
+	width: 200px;
 }
