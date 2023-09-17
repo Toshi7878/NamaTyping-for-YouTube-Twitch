@@ -75,7 +75,7 @@ class PlayerEvent {
 			state = this.playerStateNames[event]
 		}
 
-		toggleEditerBtn(state)
+		toggleEditorBtn(state)
 
 
 		switch (state) {
@@ -234,7 +234,7 @@ function getLyricsCount(time) {
 }
 
 
-function toggleEditerBtn(state){
+function toggleEditorBtn(state){
 
 	switch(state){
 		case "play":
