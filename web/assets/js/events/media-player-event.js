@@ -131,10 +131,9 @@ class PlayerEvent {
 
 					if(game.platform == 'YouTube'){
 						youtube.player.seekTo(0)
-					}else{
-						this.onPlayerReady()
 					}
-
+					
+					this.onPlayerReady()
 				}
 
 				break;

@@ -21,9 +21,8 @@ function deleteMedia(editMode) {
 		video.remove()
 	}
 
-	if (youtube && youtube.player) {
-		youtube.player.stopVideo()
-		document.getElementById("player").style.display = 'none'
+	if (document.getElementById("player") != null) {
+		document.getElementById("player").remove()
 	}
 
 	if(document.getElementById("sc-widget") != null){

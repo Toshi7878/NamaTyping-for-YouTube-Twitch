@@ -22,7 +22,7 @@ class SettingMenu {
 
 		this.frame = jsFrame.create({
 			title: '設定',
-			left: 60, top: 60, width: 615, height: 132,
+			left: 60, top: 60, width: 615, height: 170,
 			movable: true,//マウスで移動可能
 			resizable: true,//マウスでリサイズ可能
 			appearanceName: 'redstone',//プリセット名は 'yosemite','redstone','popup'
@@ -33,7 +33,9 @@ class SettingMenu {
 				<div>
 					<label>一人プレイ用 ツールバーのフォントサイズ:<input type="number" id="lyrics-input-font-size" class="ms-2" value='29'>px</label>
 					<label class="ms-2"><input id="input-font-weight" type="checkbox" class="me-2">フォントを太く表示</label>
-			</div>
+				</div>
+				<label><input id="display-next-lyrics" type="checkbox" class="me-2" checked>3秒前に次の歌詞を表示</label>
+
 		</div>`
 		}).show();;
 		//ウィンドウを表示する
@@ -171,6 +173,23 @@ class Apply{
 	}
 
 
+	static displayNextLyrics(value){
+
+		if(document.getElementById("next-label") != null){
+
+			if(value){
+					document.getElementById("next-label").classList.remove('d-none')
+					document.getElementById("next").classList.remove('d-none')
+			}else{
+					document.getElementById("next-label").classList.add('d-none')
+					document.getElementById("next").classList.add('d-none')
+			}
+
+		}
+
+	}
+
+
 }
 
 class SettingEvents{
@@ -184,6 +203,7 @@ class SettingEvents{
 		document.getElementById("display-timer").addEventListener('input', this.displayTimer.bind(this))
 		document.getElementById("lyrics-input-font-size").addEventListener('change', this.changeInputHeight.bind(this))
 		document.getElementById("input-font-weight").addEventListener('change', this.inputFontWeight.bind(this))
+		document.getElementById("display-next-lyrics").addEventListener('change', this.displayNextLyrics.bind(this))
 	}
 
 	inputBlurRange(event){
@@ -206,6 +226,11 @@ class SettingEvents{
 		this.putIndexedDB(event.target.id, event.target.checked)
 	}
 
+	displayNextLyrics(event){
+		Apply.displayNextLyrics(event.target.checked)
+		this.putIndexedDB(event.target.id, event.target.checked)
+	}
+
 	putIndexedDB(id, value){
 		db.notes.put({id: event.target.id, data:value});
 	}
@@ -223,6 +248,7 @@ class SettingData {
 		this.displayTimer = await db.notes.get('display-timer');
 		this.inputFontHeight = await db.notes.get('lyrics-input-font-size');
 		this.inputFontWeight = await db.notes.get('input-font-weight');
+		this.displayNextLyrics = await db.notes.get('display-next-lyrics');
 	}
 
 
@@ -246,14 +272,33 @@ class SettingData {
 
 
 	buildSettingMenu(){
-		document.getElementById("word-area-blur-range").value = this.blurRange.data
-		document.getElementById("blur-range-label").textContent = Number(this.blurRange.data).toFixed(2)
-		document.getElementById("display-timer").checked = this.displayTimer.data
-		document.getElementById("lyrics-input-font-size").value = this.inputFontHeight.data
-		document.getElementById("input-font-weight").checked = this.inputFontWeight.data
+
+		if(this.blurRange){
+			document.getElementById("word-area-blur-range").value = this.blurRange.data
+			document.getElementById("blur-range-label").textContent = Number(this.blurRange.data).toFixed(2)
+		}
+
+		if(this.displayTimer){
+			document.getElementById("display-timer").checked = this.displayTimer.data
+		}
+
+		if(this.inputFontHeight){
+			document.getElementById("lyrics-input-font-size").value = this.inputFontHeight.data
+		}
+
+		if(this.displayTimer){
+			document.getElementById("input-font-weight").checked = this.displayTimer.data
+		}
+
+		if(this.displayNextLyrics){
+			document.getElementById("display-next-lyrics").checked = this.displayNextLyrics.data
+		}
+
 	}
 
 }
+
+let settingData
 
 
 (async () => {

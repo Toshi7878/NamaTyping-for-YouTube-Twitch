@@ -1,54 +1,46 @@
 
-function onYouTubeIframeAPIReady() {
-	playerEvent = new PlayerEvent(YouTubePlayerState)
-
-	youtube.player = new YT.Player('player', {
-
-		playerVars: {
-			controls: 0,
-			disablekb: 1,
-		},
-
-		videoId: youtube.id,
-
-		events: {
-			'onReady': playerEvent.onPlayerReady,
-			'onStateChange': playerEvent.onPlayerStateChange.bind(playerEvent)
-			//'onPlaybackQualityChange': youtube.onPlayerPlaybackQualityChange,
-			//'onPlaybackRateChange': youtube.onPlayerPlaybackRateChange,
-		}
-
-	});
-}
-
-
 
 class YouTube {
 
 	constructor(id) {
 		this.player
 		this.id = id
-		document.getElementById("player-speed").classList.remove('d-none')
 		
-		if (!youtube) {
-			//createElementでiframe_apiを読み込むとただちにonYouTubeIframeAPIReadyが実行される
-			const tag = document.createElement('script');
-			tag.src = "https://www.youtube.com/iframe_api";
-			var firstScriptTag = document.getElementsByTagName('script')[0];
-			firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+		const bottomMenu = document.getElementById("bottom-menu")
+		const bottom = (parseFloat(getComputedStyle(bottomMenu).bottom) + bottomMenu.clientHeight) * 0.8
+	
+		const topMenu = document.getElementById("top-menu")
+		const top = (parseFloat(getComputedStyle(topMenu).top) + topMenu.clientHeight) * 0.8
 
-			/*iframe_apiが読み込まれると以下の関数が実行
-				↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓ ↓
-				onYouTubeIframeAPIReady()
-			*/
-		} else {
-			//iframe_api追加済みの場合はcueVideoIdで動画を切り替え
-			this.player = youtube.player
 
-			this.player.cueVideoById(id)
-			document.getElementById("player").style.display = 'block'
-		}
+		document.getElementById("player-speed").classList.remove('d-none')
+		document.getElementById("video-box").insertAdjacentHTML('beforeend', `<div id="player" style="bottom:${bottom.toString()}px;height:${(window.innerHeight - (top + bottom)).toString()}px;"></div>`)
+		this.onYouTubeIframeAPIReady(id)
 	}
+
+
+	onYouTubeIframeAPIReady(id) {
+		playerEvent = new PlayerEvent(YouTubePlayerState)
+	
+		this.player = new YT.Player('player', {
+	
+			playerVars: {
+				controls: 0,
+				disablekb: 1,
+			},
+	
+			videoId: id,
+	
+			events: {
+				'onReady': playerEvent.onPlayerReady,
+				'onStateChange': playerEvent.onPlayerStateChange.bind(playerEvent)
+				//'onPlaybackQualityChange': youtube.onPlayerPlaybackQualityChange,
+				//'onPlaybackRateChange': youtube.onPlayerPlaybackRateChange,
+			}
+	
+		});
+	}
+	
 }
 
 let youtube

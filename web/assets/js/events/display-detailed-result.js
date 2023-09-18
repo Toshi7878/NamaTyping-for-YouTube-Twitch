@@ -163,7 +163,7 @@ class DetailResult extends Scoring {
 	
 	generateDetailResult(rank){
 		const userID = this.usersScore[rank-1][2]
-		const result = chat && chat.users[userID]['result'] ? chat.users[userID]['result'].slice(0, chat.users[userID]['result'].length) : [['','']]
+		const result = chat && chat.users[userID] ? chat.users[userID]['result'].slice(0, chat.users[userID]['result'].length) : [['','']]
 		const resultData = []
 		let NoneComment = ''
 

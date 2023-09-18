@@ -4,7 +4,7 @@ class Lyrics {
 	}
 
 
-	set(displayLyrics, isEdit){
+	async set(displayLyrics, isEdit){
 		let lyricsNode = ''
 
 		for (let i = 0; i < displayLyrics.length; i++) {
@@ -26,8 +26,16 @@ class Lyrics {
 
 				lyricsNode += Element
 			}
-			lyricsNode += `<div id='lyrics-next' ${isEdit ? `style="display:none;"`:""}><span id='next-label'>NEXT: </span><span id='skip'></span><span id='next'></span></div>`
+			lyricsNode += `<div id='lyrics-next' ${isEdit ? `style="display:none;"`:""}><span id='next-label'>NEXT: </span>&#8203;<span id='skip'></span><span id='next'></span></div>`
 			document.getElementById("lyrics").innerHTML = lyricsNode
+
+
+			const settingData = new SettingData()
+			await settingData.load()
+
+			if(settingData && settingData.displayNextLyrics){
+				Apply.displayNextLyrics(settingData.displayNextLyrics.data)
+			}
 
 			if(!isEdit){
 				Skip.addSkipEvent()

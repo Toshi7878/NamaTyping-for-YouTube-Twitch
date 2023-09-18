@@ -67,17 +67,18 @@ class Timer {
 			if (!this.isNextFadeIn && game.displayLyrics[this.count]){
 				const NEXT_LYRICS_TIME = (game.displayLyrics[this.count]['time'][0] / this.speed)
 				const SKIP_REMAIN_TIME = (this.count == 0 ? 8 : 20)
-				const WIPE_END = timer.count ? game.displayLyrics[timer.count-1]['time'].length == timer.wipeCount : true
+				const WIPE_END = timer.count == 0 || timer.count >= 0 && game.displayLyrics[timer.count-1]['time'].length == timer.wipeCount+1 ? true : false
 
+				console.log(`next ${NEXT_LYRICS_TIME - this.speedTime}`)
 				if(NEXT_LYRICS_TIME - this.speedTime > SKIP_REMAIN_TIME && WIPE_END){
-					document.getElementById("skip").textContent = `SKIP (${((NEXT_LYRICS_TIME - this.speedTime) - (SKIP_REMAIN_TIME-1)).toFixed()})`
+					document.getElementById("skip").textContent = `SKIP (${Math.floor((NEXT_LYRICS_TIME - this.speedTime) - (SKIP_REMAIN_TIME-1)).toFixed()})`
 				}else{
 					document.getElementById("skip").textContent = ``
 				}
 
 			}
 
-			this.updateClockCount = this.speedTime
+			this.updateClockCount = Math.floor(this.speedTime)
 		}
 
 		if (!this.isNextFadeIn && game.displayLyrics[this.count]){
@@ -222,7 +223,7 @@ class Timer {
 
 	updatePlayerClock(time) {
 		const CLOCK_TIME_MM = ("00" + parseInt(parseInt(time) / 60)).slice(-2)
-		const CLOCK_TIME_SS = ("00" + (parseInt(time) - CLOCK_TIME_MM * 60)).slice(-2)
+		const CLOCK_TIME_SS = ("00" + Math.floor(parseInt(time) - CLOCK_TIME_MM * 60)).slice(-2)
 
 		this.clockSet([CLOCK_TIME_MM, CLOCK_TIME_SS])
 	}
