@@ -20,19 +20,25 @@ lyricsInput.addEventListener('keydown', event => {
 })
 
 const lyricsInputToggleBtn = document.getElementById("solo-play")
-const lyricsInputToggle = localStorage.getItem('solo-play')
 const bottomMenu = document.getElementById("bottom-menu")
 
-	if(lyricsInputToggle == 'true'){
+async function loadSoloPlayOption(){
+	const TOGGLE_DATA = await db.notes.get('solo-play')
+		
+	if(TOGGLE_DATA && TOGGLE_DATA.data){
 		lyricsInputToggleBtn.parentElement.classList.add('checked-button')
 		lyricsInput.parentElement.style.display = 'block'
 		bottomMenu.style.bottom = String(lyricsInput.parentElement.clientHeight+10)+'px'
+		lyricsInputToggleBtn.checked = true
 	}
+
+}
+loadSoloPlayOption()
 
 
 lyricsInputToggleBtn.addEventListener('change', event => {
 
-	localStorage.setItem('solo-play',event.target.checked)
+	db.notes.put({id:'solo-play', data:event.target.checked});
 
 	if(event.target.checked){		
 		event.target.parentElement.classList.add('checked-button')

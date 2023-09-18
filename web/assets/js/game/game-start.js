@@ -1,5 +1,5 @@
-class Game {
-
+class Load {
+	
 	constructor(setData) {
 		this.platform = setData['platform']
 		this.displayLyrics = setData['gameLyricsData'][0]
@@ -12,15 +12,12 @@ class Game {
 
 		new Lyrics(setData['gameLyricsData'][0], setData['edit'])
 
-		deleteMedia()
-		this.id = setData['movieURL']
+		deleteMedia(setData['edit'])
 		this.setMedia(setData)
-
-
 	}
 
 	setMedia(setData){
-		
+
 		if(this.platform == 'YouTube'){
 			youtube = new YouTube(setData['movieURL'])
 		}else if(this.platform == 'SoundCloud'){
@@ -33,6 +30,10 @@ class Game {
 			playerEvent = new PlayerEvent(HTMLMediaPlayerState, this.platform)
 		}
 	}
+
+}
+
+class Game extends Load {
 
 
 	start() {
@@ -79,11 +80,12 @@ class Game {
 		let result = await eel.stopChatObserver()();
 		return result;
 	}
+
 	setMusicTitle(){
 		document.getElementById("music-title-container").classList.remove("title-fade-in")
 		document.getElementById("title").textContent = this.title
-
 	}
+
 }
 
 let game

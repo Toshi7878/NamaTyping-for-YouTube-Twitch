@@ -1,15 +1,16 @@
-document.addEventListener('keydown', async (event) => {
+window.addEventListener('keydown', async (event) => {
 
 	switch(event.code){
-		case Escape:
+		case 'Escape':
 			if(game){
-				const isPlay = MediaData.getIsPlay()
+				const isPlay = await MediaData.getIsPlay()
 
 				if(isPlay){
 					MediaControl.play()
 				}else{
 					MediaControl.pause()
 				}
+
 			}
 	}
 })

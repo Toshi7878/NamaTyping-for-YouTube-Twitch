@@ -1,94 +1,121 @@
-document.getElementById("lyrics-result").addEventListener('click', event => {
-	const jsFrame = new JSFrame();
-	const frame = jsFrame.create({
-		title: '採点結果',
-		left: 60, top: 60, width: 900, height: 470,
-		movable: true,//マウスで移動可能
-		resizable: true,//マウスでリサイズ可能
-		appearanceName: 'redstone',//プリセット名は 'yosemite','redstone','popup'
-		html: `<div id="result-table-container"><div id='name-box'>
-				<div id="rank-table"></div>
-			</div>
-			<div id='detail-box'>
-				<div id="detail-result-table"></div>
-			</div></div>`
-	});
-	//ウィンドウを表示する
-	frame.show();
+class DetailResultMenu {
+	constructor(){
+		this.display()
+	}
 
-	frame.on('minimizeButton', 'click', (_frame, evt) => {
+	static BtnEvent(){
 
-		frame.hideFrameComponent('minimizeButton');
-		frame.showFrameComponent('deminimizeButton');
+		document.getElementById("lyrics-result").addEventListener('click', event => {
 
-		const force = true;
+			const isOpened = detailResultMenu && detailResultMenu.frame.isOpen ? true : false
 
-		_frame.extra.__restore_info = {
-			org_left: _frame.getLeft(),
-			org_top: _frame.getTop(),
-			org_width: _frame.getWidth(),
-			org_height: _frame.getHeight()
-		};
+			if(!isOpened){
+				detailResultMenu = new DetailResultMenu()
+				detailResult = new DetailResult()
+			}else{
+				detailResultMenu.frame.requestFocus()
+			}
+		})
 
-		_frame.setSize(_frame.getWidth(), 30, force);
-		_frame.setResizable(false);
+	}
 
+	display(){
+		const jsFrame = new JSFrame();
 
-	});
-	frame.on('deminimizeButton', 'click', (_frame, evt) => {
+		this.frame = jsFrame.create({
+			title: '採点結果',
+			left: 60, top: 60, width: 900, height: 470,
+			movable: true,//マウスで移動可能
+			resizable: true,//マウスでリサイズ可能
+			appearanceName: 'redstone',//プリセット名は 'yosemite','redstone','popup'
+			html: `<div id="result-table-container"><div id='name-box'>
+			<div id="rank-table"></div>
+		</div>
+		<div id='detail-box'>
+			<div id="detail-result-table"></div>
+		</div></div>`
+		}).show();;
+		//ウィンドウを表示する
+		this.frame.isOpen = true
 
-		_frame.showFrameComponent('minimizeButton');
-		_frame.hideFrameComponent('deminimizeButton');
+		this.addFrameEvents();
+	}
 
-		const force = true;
-		_frame.setSize(_frame.extra.__restore_info.org_width, _frame.extra.__restore_info.org_height, force);
+	addFrameEvents(){
+		this.frame.on('minimizeButton', 'click', (_frame, evt) => {
 
-	});
+			this.frame.hideFrameComponent('minimizeButton');
+			this.frame.showFrameComponent('deminimizeButton');
+	
+			const force = true;
+	
+			_frame.extra.__restore_info = {
+				org_left: _frame.getLeft(),
+				org_top: _frame.getTop(),
+				org_width: _frame.getWidth(),
+				org_height: _frame.getHeight()
+			};
+	
+			_frame.setSize(_frame.getWidth(), 30, force);
+			_frame.setResizable(false);
+	
+	
+		});
+		this.frame.on('deminimizeButton', 'click', (_frame, evt) => {
+	
+			_frame.showFrameComponent('minimizeButton');
+			_frame.hideFrameComponent('deminimizeButton');
+	
+			const force = true;
+			_frame.setSize(_frame.extra.__restore_info.org_width, _frame.extra.__restore_info.org_height, force);
+	
+		});
+		this.frame.on('maximizeButton', 'click', (_frame, evt) => {
+	
+			_frame.extra.__restore_info = {
+				org_left: _frame.getLeft(),
+				org_top: _frame.getTop(),
+				org_width: _frame.getWidth(),
+				org_height: _frame.getHeight()
+			};
+	
+			this.frame.hideFrameComponent('maximizeButton');
+			this.frame.showFrameComponent('restoreButton');
+	
+			this.frame.setPosition(0, 0);
+			this.frame.setSize(window.innerWidth - 2, window.innerHeight - 2, true);
+	
+			this.frame.setMovable(false);
+			this.frame.setResizable(false);
+	
+	
+		});
+		this.frame.on('restoreButton', 'click', (_frame, evt) => {
+	
+			this.frame.setMovable(true);
+			this.frame.setResizable(true);
+	
+			_frame.setPosition(_frame.extra.__restore_info.org_left, _frame.extra.__restore_info.org_top);
+	
+			const force = true;
+			_frame.setSize(_frame.extra.__restore_info.org_width, _frame.extra.__restore_info.org_height, force);
+	
+			_frame.showFrameComponent('maximizeButton');
+			_frame.hideFrameComponent('restoreButton');
+	
+	
+		});
+		this.frame.on('closeButton', 'click', (_frame, evt) => {
+			_frame.closeFrame();
+			this.frame.isOpen = false
+		});
 
-	frame.on('maximizeButton', 'click', (_frame, evt) => {
+		$("#name-box").resizable({handles:'n,s,w,e'});
+	}
+}
 
-		_frame.extra.__restore_info = {
-			org_left: _frame.getLeft(),
-			org_top: _frame.getTop(),
-			org_width: _frame.getWidth(),
-			org_height: _frame.getHeight()
-		};
-
-		frame.hideFrameComponent('maximizeButton');
-		frame.showFrameComponent('restoreButton');
-
-		frame.setPosition(0, 0);
-		frame.setSize(window.innerWidth - 2, window.innerHeight - 2, true);
-
-		frame.setMovable(false);
-		frame.setResizable(false);
-
-
-	});
-
-	frame.on('restoreButton', 'click', (_frame, evt) => {
-
-		frame.setMovable(true);
-		frame.setResizable(true);
-
-		_frame.setPosition(_frame.extra.__restore_info.org_left, _frame.extra.__restore_info.org_top);
-
-		const force = true;
-		_frame.setSize(_frame.extra.__restore_info.org_width, _frame.extra.__restore_info.org_height, force);
-
-		_frame.showFrameComponent('maximizeButton');
-		_frame.hideFrameComponent('restoreButton');
-
-
-	});
-	frame.on('closeButton', 'click', (_frame, evt) => {
-		_frame.closeFrame();
-	});
-
-	$("#name-box").resizable({handles:'n,s,w,e'});
-	detailResult = new DetailResult()
-
-})
+DetailResultMenu.BtnEvent()
+let detailResultMenu
 
 
 class DetailResult extends Scoring {

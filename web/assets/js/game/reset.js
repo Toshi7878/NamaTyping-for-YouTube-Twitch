@@ -14,7 +14,7 @@ function deleteResult() {
 }
 
 
-function deleteMedia() {
+function deleteMedia(editMode) {
 	const video = document.getElementById("video")
 
 	if (video) {
@@ -29,8 +29,11 @@ function deleteMedia() {
 	if(document.getElementById("sc-widget") != null){
 		document.getElementById("sc-widget").remove()
 	}
+	
+	if(!editMode){
+		resetLyricsArea()
+	}
 
-	resetLyricsArea()
 	deleteResult()
 
 	if(timer){

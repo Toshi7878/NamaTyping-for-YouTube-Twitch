@@ -6,10 +6,17 @@ class EditMenu {
 
 	static editBtnEvent(){
 
-		document.getElementById("create-button").addEventListener('click', event => {
-			editMenu = new EditMenu()
-			editor = new NewCreate()
 
+		document.getElementById("create-button").addEventListener('click', event => {
+			const isOpened = editMenu && editMenu.frame.isOpen ? true : false
+
+			if(!isOpened){
+				editMenu = new EditMenu()
+				editor = new NewCreate()
+			}else{
+				editMenu.frame.requestFocus()
+			}
+			
 		})
 
 		document.getElementById("edit-button").addEventListener('click', event => {
@@ -58,7 +65,7 @@ class EditMenu {
 		</div>`
 		}).show();;
 		//ウィンドウを表示する
-
+		this.frame.isOpen = true
 		this.addFrameEvents();
 	}
 
@@ -128,6 +135,7 @@ class EditMenu {
 		});
 		this.frame.on('closeButton', 'click', (_frame, evt) => {
 			_frame.closeFrame();
+			this.frame.isOpen = false
 		});
 	
 	}

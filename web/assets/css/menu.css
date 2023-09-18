@@ -1,6 +1,7 @@
 .menu {
 	background: #eef5fd;
 	display: flex;
+	justify-content: space-between;
 	padding: 3px;
 	border-radius: 3px;
 	position: fixed;
@@ -21,7 +22,6 @@
 
 #bottom-menu {
 	bottom: 10px;
-	justify-content: space-between;
 }
 
 #user-input {

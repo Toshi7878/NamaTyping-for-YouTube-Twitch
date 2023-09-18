@@ -77,7 +77,7 @@ class PlayerEvent {
 		
 				if(!game.isFinished){
 					
-					if (!game.isStart) {
+					if (!game.isStart && !game.isEdit) {
 						game.start() //初めて再生されたらゲームスタート
 					} else {
 						timer.addTimerEvent()
@@ -107,14 +107,15 @@ class PlayerEvent {
 			case "pause": //一時停止
 				console.log("一時停止")
 				timer.removeTimerEvent()
+				setTimeout(unfocusMediaPlayer,100)
+
 				break;
 
 			case "seek": //再生時間移動
 				console.log("シーク")
-		
+				
 				if(game.isStart && !game.isFinished){
 					let time = await MediaData.getCurrentTime()
-		
 					getLyricsCount(time)
 				}
 
@@ -127,7 +128,7 @@ class PlayerEvent {
 
 
 				if (time == 0	&& !game.isFinished) {
-					
+
 					if(game.platform == 'YouTube'){
 						youtube.player.seekTo(0)
 					}else{
@@ -152,7 +153,7 @@ class TotalTime {
 	}
 
 	async calc() {
-		this.duration = MediaData.getDuration()
+		this.duration = await MediaData.getDuration()
 
 		if(!game.isEdit){
 			const TOTAL_TIME = this.duration / (timer ? timer.speed : 1);
@@ -220,4 +221,16 @@ function toggleEditorBtn(state){
 		break;
 	}
 
+}
+
+function unfocusMediaPlayer(){
+	const isInputFocus = document.activeElement.id == 'lyrics-input' ? true : false
+
+	if(document.activeElement.tagName == "IFRAME"){
+		document.activeElement.blur()
+
+		if(isInputFocus){
+			document.getElementById("lyrics-input").focus()
+		}
+	}
 }

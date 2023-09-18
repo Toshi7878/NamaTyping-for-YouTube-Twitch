@@ -14,6 +14,7 @@
 	<link rel="stylesheet" href="assets\css\vender\tabulator.min.css">
 	<link rel="stylesheet" href="assets\css\animation\fade-in.css">
 	<link rel="stylesheet" href="assets\css\detail-result-table.css">
+	<link rel="stylesheet" href="assets\css\setting.css">
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 	<script src="https://riversun.github.io/jsframe/jsframe.js"></script>
@@ -21,6 +22,7 @@
 	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="assets\js\vender\tabulator.min.js"></script>
 	<script src="https://w.soundcloud.com/player/api.js" type="text/javascript"></script>
+	<script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
 	<script type="text/javascript" src="/eel.js"></script>
 	<script src="https://code.createjs.com/1.0.0/easeljs.min.js"></script>
 </head>
@@ -30,33 +32,49 @@
 
 		<div id="top-menu" class="menu">
 
-			<div id="top-left-menu" class="dividing-line">
-				<input type="input" id="live-id" class="menu-text-box" placeholder="LiveID here" disabled>
-				<label class="platform-select">
-					<select id='live-platform' disabled>
-						<option>YouTube Live</option>
-						<option>Twitch</option>
-					</select>
-				</label>
+			<div>
+				<div id="top-left-menu" class="dividing-line">
+					<input type="input" id="live-id" class="menu-text-box" placeholder="LiveID here" disabled>
+					<label class="platform-select">
+						<select id='live-platform' disabled>
+							<option>YouTube Live</option>
+							<option>Twitch</option>
+						</select>
+					</label>
 
 
+				</div>
+				<div id="top-center-menu" class="dividing-line">
+					<label for="solo-play" class="label-btn" title="一人プレイ用ツールバーを表示">
+						<img src="assets\img\ui-status-bar-blue.png">
+						<input type="checkbox" id="solo-play" style="display:none;">
+					</label>
+				</div>
+				<div id="top-right-menu">
+					<label for="lyrics-result" class="label-btn" title="採点結果を表示">
+						<img src="assets\img\report--pencil.png">
+						<span>採点結果...</span><input type="button" id="lyrics-result" style="display:none;"></label>
+					</label>
+					<label for="option" class="label-btn" title="設定(未実装)">
+						<img src="assets\img\gear.png">
+						<span>設定...</span><input type="button" id="option" style="display:none;"></label>
+					</label>
+				</div>
+
 			</div>
-			<div id="top-center-menu" class="dividing-line">
-				<label for="solo-play" class="label-btn" title="一人プレイ用ツールバーを表示">
-					<img src="assets\img\ui-status-bar-blue.png">
-					<input type="checkbox" id="solo-play" style="display:none;">
+
+			<div>
+				<label for="edit-button" class="label-btn d-none" title="譜面編集">
+					<img src="assets\img\script-text.png">
+					<span>譜面編集</span><input type="button" id="edit-button" style="display:none;">
+				</label>
+
+				<label for="create-button" class="label-btn" title="新規作成">
+					<img src="assets\img\script-text.png">
+					<span>新規作成</span><input type="button" id="create-button" style="display:none;">
 				</label>
 			</div>
-			<div id="top-right-menu">
-				<label for="lyrics-result" class="label-btn" title="採点結果を表示">
-					<img src="assets\img\report--pencil.png">
-					<span>採点結果...</span><input type="button" id="lyrics-result" style="display:none;"></label>
-				</label>
-				<label for="option" class="label-btn" title="設定(未実装)">
-					<img src="assets\img\gear.png">
-					<span>設定...</span><input type="button" id="option" style="display:none;"></label>
-				</label>
-			</div>
+
 
 		</div>
 
@@ -167,17 +185,6 @@
 				</div>
 			</div>
 
-			<div>
-				<label for="edit-button" class="label-btn d-none" title="譜面編集">
-					<img src="assets\img\script-text.png">
-					<span>譜面編集</span><input type="button" id="edit-button" style="display:none;">
-				</label>
-
-				<label for="create-button" class="label-btn" title="新規作成">
-					<img src="assets\img\script-text.png">
-					<span>新規作成</span><input type="button" id="create-button" style="display:none;">
-				</label>
-			</div>
 		</div>
 
 		<div id="user-input" class="menu" style="display:none;">
@@ -185,6 +192,8 @@
 		</div>
 
 	</section>
+	<script src="assets\js\indexeddb\indexed-db.js"></script>
+
 	<script src="assets\js\game\parse-lyrics.js"></script>
 	<script src="assets\js\game\parse-json.js"></script>
 	<script src="assets\js\game\game-start.js"></script>
@@ -193,7 +202,6 @@
 	<script src="assets\js\game\scoring.js"></script>
 	<script src="assets\js\game\timer.js"></script>
 	<script src="assets\js\game\chat.js"></script>
-
 
 	<script src="assets\js\toggle-button.js"></script>
 	<script src="assets\js\events\skip.js"></script>
@@ -216,23 +224,14 @@
 	<script src="assets\js\events\media-control.js"></script>
 	<script src="assets\js\events\speed-range.js"></script>
 	<script src="assets\js\events\key-event.js"></script>
-
-
-
-
-
-
+	<script src="assets\js\events\setting.js"></script>
 
 	<script src="assets\js\media\youtube.js"></script>
 	<script src="assets\js\media\sound-cloud.js"></script>
 	<script src="assets\js\media\local-media.js"></script>
 
-
-
 	<script src="assets\js\editor\edit-timer.js"></script>
 	<script src="assets\js\editor\edit-start.js"></script>
-
-
 
 	<script src="assets\js\vender\encoding.js"></script>
 </body>

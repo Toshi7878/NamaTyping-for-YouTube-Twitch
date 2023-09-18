@@ -1,12 +1,24 @@
-let volume = localStorage.getItem('volume') ? +localStorage.getItem('volume') : 50
 
-document.getElementById('volume').value = volume
-document.getElementById('volume').title = volume
+let volume
 
-document.getElementById('volume').addEventListener('input', event => {
-	localStorage.setItem('volume', event.target.value)
-	volume = event.target.value
+async function loadVolume(){
+	const LOAD_VOLUME_DATA = await db.notes.get('volume')
+	volume = LOAD_VOLUME_DATA ? LOAD_VOLUME_DATA.data : 50
+
+	document.getElementById('volume').value = volume
 	document.getElementById('volume').title = volume
 
-	MediaControl.volumeChange(volume)
+}
+
+loadVolume()
+
+document.getElementById('volume').addEventListener('input', event => {
+	volume = event.target.value
+	db.notes.put({id: 'volume', data:+volume});
+
+	document.getElementById('volume').title = volume
+
+	if(game){
+		MediaControl.volumeChange(volume)
+	}
 })

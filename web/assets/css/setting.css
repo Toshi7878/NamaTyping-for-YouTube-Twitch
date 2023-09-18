@@ -1,0 +1,13 @@
+#word-area-blur-range {
+	width: 200px;
+}
+
+#option-container {
+	display: flex;
+	flex-direction: column;
+}
+
+#lyrics-input-font-size {
+	height: 26px;
+	width: 60px;
+}

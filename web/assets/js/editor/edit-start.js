@@ -151,9 +151,10 @@ class NewCreate extends Editor {
 			const ARTIST = document.getElementById("edit-artist").value
 			this.setData = {'platform':this.platform, 'movieURL':ID, 'title':TITLE, 'artist':ARTIST,'gameLyricsData':[[],[]], 'edit':true}
 			timer = new EditTimer()
-			game = new Game(this.setData)
+			game = new Load(this.setData)
 
 			this.editLayout()
+			editMenu.frame.isOpen = false
 			editMenu.frame.closeFrame();
 	}
 
@@ -174,7 +175,7 @@ class JsonEditor extends Editor {
 		const ARTIST = parseJson.json['artist']
 		this.setData = {'platform':parseJson.json['platform'], 'movieURL':ID, 'title':TITLE, 'artist':ARTIST,'gameLyricsData':[game.displayLyrics,[]], 'edit':true}
 		timer = new EditTimer()
-		game = new Game(this.setData)
+		game = new Load(this.setData)
 
 		this.editLayout()
 	}

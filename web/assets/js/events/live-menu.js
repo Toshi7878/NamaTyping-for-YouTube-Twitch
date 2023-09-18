@@ -4,30 +4,33 @@
 class Live {
 
 	constructor() {
-		this.liveIdSetLocalStorage()
-		this.StreamPlatformSetLocalStorage()
+		this.liveIdLoadData()
+		this.streamPlatformLoadData()
 	}
 
-	liveIdSetLocalStorage(){
-		const liveIDBox = document.getElementById("live-id")
-		const ID = localStorage.getItem('live-id')
+	async liveIdLoadData(){
+		const LIVE_ID_BOX = document.getElementById("live-id")
+		const ID = await await db.notes.get('live-id')
 
 		if (location.host == 'localhost:8080' && ID) {
-			liveIDBox.value = ID
+			liveIDBox.value = ID.data
 		}
 
-		liveIDBox.addEventListener('input', e => {
-			localStorage.setItem('live-id', e.target.value)
+		LIVE_ID_BOX.addEventListener('input', e => {
+			db.notes.put({id: 'live-id', data:e.target.value});
 		})
 	}
 
-	StreamPlatformSetLocalStorage(){
-		const platformBox = document.getElementById("live-platform")
-		const selectedPlatform = localStorage.getItem('live-platform')
-		platformBox.selectedIndex = selectedPlatform
+	async streamPlatformLoadData(){
+		const PLATFORM = document.getElementById("live-platform")
+		const SELECT_PLATFORM = await db.notes.get('live-platform')
+		
+		if(SELECT_PLATFORM){
+			PLATFORM.selectedIndex = SELECT_PLATFORM.data
+		}
 
-		platformBox.addEventListener('change', e => {
-			localStorage.setItem('live-platform', e.target.selectedIndex)
+		PLATFORM.addEventListener('change', e => {
+			db.notes.put({id: 'live-platform', data:e.target.selectedIndex});
 		})
 	}
 }
