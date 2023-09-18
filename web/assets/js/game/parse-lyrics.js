@@ -1,4 +1,4 @@
-const regexList = ['[^ぁ-ん', 'ァ-ン', '一-龥', 'a-z', 'A-Z', '\\d', ' ', "々%&@&=+ー～'-]"];//\.
+const regexList = ['[^ぁ-んゔ', 'ァ-ンヴ', '一-龥', 'a-z', 'A-Z', '\\d', ' ', "々%&@&=+ー～~'-]"];//\.
 const regex = regexList.join('');
 
 class ParseLrc{
@@ -72,7 +72,7 @@ class ParseLrc{
 		text = text.normalize('NFKC').toLowerCase(); // 全角英数字を半角に変換
 		text = text.replace(new RegExp(regex, 'g'), ""); //regexListに含まれていない文字を削除
 		// text = text.replace(/([a-z])(\.)/g, "$1");　//ピリオド
-		text = text.replace(/([a-z])(-)/g, "$1"); //ハイフン
+		// text = text.replace(/([a-z])(-)/g, "$1"); //ハイフン
 		
 		return text;
 	}

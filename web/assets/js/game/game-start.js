@@ -20,6 +20,7 @@ class Game {
 	}
 
 	setMedia(setData){
+		
 		if(this.platform == 'YouTube'){
 			youtube = new YouTube(setData['movieURL'])
 		}else if(this.platform == 'SoundCloud'){

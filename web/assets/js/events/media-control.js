@@ -40,5 +40,71 @@ class MediaControl {
 		}
 	}
 
+	static volumeChange(volume){
+		if (game.platform == 'LocalMedia') {
+			localMedia.player.volume = (volume / 100) * 0.5
+		}else if(game.platform == 'YouTube'){
+			youtube.player.setVolume(volume)
+		}else if(game.platform == 'SoundCloud'){
+			soundCloud.player.setVolume(volume)
+		}
+	}
+
 }
 
+
+class MediaData {
+
+	static async getIsPlay(){
+
+		if (game.platform == 'LocalMedia') {
+
+			if(!localMedia.player.paused){
+				return false;
+			}else{
+				return true;
+			}
+	
+		}else if(game.platform == 'YouTube'){
+	
+			if(youtube.player.getPlayerState() == 1){
+				return false;
+			}else{
+				return true;
+			}
+
+		}else if(game.platform == 'SoundCloud'){
+			const isPaused = await new Promise((resolve) => { soundCloud.player.isPaused(isPaused => resolve(isPaused)); });
+
+			if(!isPaused){
+				return false;
+			}else{
+				return true;
+			}
+
+		}
+
+	}
+
+	static async getCurrentTime(){
+		if (game.platform == 'LocalMedia') {
+			return localMedia.player.currentTime;
+		}else if(game.platform == 'YouTube'){
+			return youtube.player.getCurrentTime();
+		}else if(game.platform == 'SoundCloud'){
+			return await new Promise(resolve => { soundCloud.player.getPosition(currentTime => resolve(currentTime / 1000)); });
+		}
+	}
+
+	static async getDuration(){
+		if (game.platform == 'LocalMedia') {
+			return localMedia.player.duration;
+		}else if(game.platform == 'YouTube'){
+			return youtube.player.getDuration();
+		}else if(game.platform == 'SoundCloud'){
+			return await new Promise(resolve => { soundCloud.player.getDuration(duration => resolve(duration / 1000)); });
+		}
+	}
+
+
+}

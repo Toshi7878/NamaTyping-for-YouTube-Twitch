@@ -85,12 +85,11 @@ let chat
 
 function formatComment(text){
 	//残す文字を正規表現で下の配列に記入
-	const regexList = ['[^ぁ-ん', 'ァ-ン', '一-龥', 'a-z', 'A-Z', '\\d', "々%&@&=+ー～'\.-]"];
-	const regex = regexList.join('');
-
 	text = text.normalize('NFKC').toLowerCase();
+
+	//parse-lyrics.jsのregexを使用
 	text = text.replace(new RegExp(regex, 'g'), "");
-	text = text.replace(/([a-z])(\.)/g, "$1");
-	text = text.replace(/([a-z])(-)/g, "$1");
+	// text = text.replace(/([a-z])(\.)/g, "$1");
+	// text = text.replace(/([a-z])(-)/g, "$1");
 	return text;
 }

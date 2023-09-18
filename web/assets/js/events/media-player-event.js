@@ -51,13 +51,7 @@ class PlayerEvent {
 		console.log("未スタート")
 		adjustMedia()
 
-		if (game.platform == 'LocalMedia') {
-			localMedia.player.volume = (volume / 100) * 0.5
-		}else if(game.platform == 'YouTube'){
-			youtube.player.setVolume(volume)
-		}else if(game.platform == 'SoundCloud'){
-			soundCloud.player.setVolume(volume)
-		}
+		MediaControl.volumeChange(volume)
 
 		disableScoreButton()
 		totalTime = new TotalTime()
@@ -77,7 +71,6 @@ class PlayerEvent {
 
 		toggleEditorBtn(state)
 
-
 		switch (state) {
 			case "play": //再生
 				console.log("再生")
@@ -86,7 +79,6 @@ class PlayerEvent {
 					
 					if (!game.isStart) {
 						game.start() //初めて再生されたらゲームスタート
-		
 					} else {
 						timer.addTimerEvent()
 					}
@@ -98,6 +90,7 @@ class PlayerEvent {
 			case "finish": //動画終了
 				console.log("動画終了")
 				timer.removeTimerEvent()
+
 				if(!game.isEdit){
 					game.isFinished = true
 				}
@@ -108,6 +101,7 @@ class PlayerEvent {
 				}else if(game.platform == 'YouTube'){
 					youtube.player.stopVideo()
 				}
+
 				break;
 
 			case "pause": //一時停止
@@ -119,36 +113,21 @@ class PlayerEvent {
 				console.log("シーク")
 		
 				if(game.isStart && !game.isFinished){
-					let time
-					
-					if (game.platform == 'LocalMedia') {
-						time = localMedia.player.currentTime;
-					}else if(game.platform == 'YouTube'){
-						time = youtube.player.getCurrentTime();
-					}else if(game.platform == 'SoundCloud'){
-						time = await new Promise((resolve) => {
-							soundCloud.player.getPosition((currentTime) => resolve(currentTime / 1000));
-						});
-					}
+					let time = await MediaData.getCurrentTime()
 		
-					if(time => 0){
-						getLyricsCount(time)
-					}
+					getLyricsCount(time)
 				}
 
 				break;
 
 			case "ready": //	未スタート、他の動画に切り替えた時など
 
-				let startTime
-				if (game.platform == 'LocalMedia') {
-					startTime = localMedia.player.currentTime;
-				}else if(game.platform == 'YouTube'){
-					startTime = youtube.player.getCurrentTime();
-				}
+			let time = await MediaData.getCurrentTime()
 
 
-				if (startTime === 0	&& !game.isFinished) {
+
+				if (time == 0	&& !game.isFinished) {
+					
 					if(game.platform == 'YouTube'){
 						youtube.player.seekTo(0)
 					}else{
@@ -173,19 +152,8 @@ class TotalTime {
 	}
 
 	async calc() {
-		if (game.platform == 'LocalMedia') {
-			this.duration = localMedia.player.duration
-		}else if(game.platform == 'YouTube'){
-			this.duration = youtube.player.getDuration()
-		}else if(game.platform == 'SoundCloud'){
-			this.duration = await new Promise((resolve) => {
+		this.duration = MediaData.getDuration()
 
-				soundCloud.player.getDuration((duration) => {
-						resolve(duration / 1000);
-				});
-
-			});
-		}
 		if(!game.isEdit){
 			const TOTAL_TIME = this.duration / (timer ? timer.speed : 1);
 			const TOTAL_TIME_MM = ("00" + parseInt(parseInt(TOTAL_TIME) / 60)).slice(-2)

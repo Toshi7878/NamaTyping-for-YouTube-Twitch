@@ -3,6 +3,7 @@ const lyricsInput = document.getElementById('lyrics-input')
 
 lyricsInput.addEventListener('keydown', event => {
 
+	//変換確定時に発火しないようkeyCodeを使用
 	if (event.keyCode === 13 && chat) {
 
 

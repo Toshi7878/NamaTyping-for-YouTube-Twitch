@@ -30,7 +30,7 @@ class Timer {
 		createjs.Ticker.removeAllEventListeners('tick');
 	}
 
-	async getCurrentTime(){
+	getCurrentTime(){
 
 		if (game.platform == 'LocalMedia') {
 			this.headTime = localMedia.player.currentTime;
@@ -207,6 +207,7 @@ class Timer {
 
 			this.displayMusicTitle()
 		}
+		
 		document.getElementById("skip").textContent = ''
 		document.getElementById("next").classList.remove("next-fade-in")
 

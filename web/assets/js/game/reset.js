@@ -37,8 +37,6 @@ function deleteMedia() {
 		timer.removeTimerEvent()
 	}
 
-	const LiveID = document.getElementById("live-id").value
-
 	if (game && game.isObserve) {
 		//Python側でライブチャットの監視を停止
 		game.stopChatObserver()
