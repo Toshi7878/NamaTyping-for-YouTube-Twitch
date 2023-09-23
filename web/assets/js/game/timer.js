@@ -193,7 +193,7 @@ class Timer {
 	updateCorrectLyrics(count) {
 		let correctLyrics = game.comparisonLyrics.slice(0, count)
 
-		return correctLyrics.flat(Infinity);
+		return correctLyrics.flat(1);
 	}
 
 	updateNextLyrics(count) {

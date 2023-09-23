@@ -14,23 +14,24 @@ class LrcFolder {
 			this.mediaFile
 			this.lrcFile
 			this.imgFile = ''
+			this.replFile
 
 		}
 	
-		open(event) {
+		async open(event) {
 			const files = Object.values(event.target.files);
-			const lrcExtension = ['.lrc']
 	
 			for (let i = 0; i < files.length; i++) {
-				const fileExtension = files[i].name.slice(-4)
 				const fileType = files[i].type
 	
 				if (fileType.includes('audio') || fileType.includes('video')) {
 					this.mediaFile = URL.createObjectURL(files[i])
 				} else if (fileType.includes('image')) {
 					this.imgFile = URL.createObjectURL(files[i])
-				} else if (lrcExtension.includes(fileExtension)) {
+				} else if (files[i].name.endsWith('.lrc')) {
 					this.lrcFile = files[i]
+				} else if(files[i].name.endsWith('.repl.txt')){
+					this.replFile = files[i]
 				}
 			}
 	
@@ -41,17 +42,35 @@ class LrcFolder {
 				localMedia = null
 				alert('動画・音楽ファイルが見つかりませんでした')
 			} else {
-				const reader = new FileReader()
-				reader.readAsArrayBuffer(this.lrcFile)
-				// ファイル読み込み完了時にlrcファイルを正しい文字コードで取得する
-				reader.onload = event => {
-					document.getElementById("edit-button").parentElement.classList.add('d-none')
-					const LRC_DATA = parseLrc.parseTextEncord(event)
-					const gameLyricsData = parseLrc.timeConvert( LRC_DATA.split('\r\n') )
+				let replData = []
 
-					const setData = {'platform':'LocalMedia', 'title':this.lrcFile.name.slice(0,-4), 'gameLyricsData':gameLyricsData}
-					game = new Game(setData)
+				if(this.replFile){
+					const replReader = new FileReader()
+					replReader.readAsArrayBuffer(this.replFile)
+
+					// Wrap the file reading in an async function
+					replData = await new Promise(resolve => {replReader.onload = event => resolve(parseLrc.parseTextEncord(event))} );
+					replData = replData.split('\r\n').filter(x => x !== "")
+
+					for(let i=0;i<replData.length;i++){
+						replData[i] = replData[i].split(',')
+					}
 				}
+
+				const lrcReader = new FileReader()
+				lrcReader.readAsArrayBuffer(this.lrcFile)
+				// ファイル読み込み完了時にlrcファイルを正しい文字コードで取得する
+				const LRC_DATA = await new Promise(resolve => {lrcReader.onload = event => resolve(parseLrc.parseTextEncord(event))} )
+
+				repl = new Repl(replData)
+
+				document.getElementById("edit-button").parentElement.classList.add('d-none')
+				let gameLyricsData = parseLrc.timeConvert( LRC_DATA.split('\r\n') )
+
+				gameLyricsData[1] = repl.marge(gameLyricsData[1])
+				const setData = {'platform':'LocalMedia', 'title':this.lrcFile.name.slice(0,-4), 'gameLyricsData':gameLyricsData}
+				game = new Game(setData)
+
 			}
 		}
 	

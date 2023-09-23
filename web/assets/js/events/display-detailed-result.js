@@ -136,7 +136,7 @@ class DetailResult extends Scoring {
 			const SCORE = Math.round((1000 / this.totalNotes) * this.usersScore[i][1])
 
 
-			rankData.push({'順位':(i+1), '点数':(isNaN(SCORE) ? 0:SCORE) , '名前':this.usersScore[i][0], '打数':`${String(this.usersScore[i][1])} / ${this.totalNotes}`})
+			rankData.push({'順位':(i+1), '点数':(isNaN(SCORE) ? 0:SCORE) , '名前':this.usersScore[i][0], '打数':`${Math.round(this.usersScore[i][1])} / ${this.totalNotes}`})
 		}
 
 		return rankData
@@ -203,7 +203,7 @@ class DetailResult extends Scoring {
 
 
 		 for(let i=0;i<result.length;i++){
-				resultData.push({'No':(i+1), '判定':result[i][1], 'コメント':result[i][0], '歌詞':result[i][3]})
+				resultData.push({'No':(i+1), '判定':result[i][1], 'コメント':result[i][0], '歌詞':parseLrc.joinLyrics(result[i][3])})
 		 }
 
 

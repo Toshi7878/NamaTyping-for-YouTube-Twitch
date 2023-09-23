@@ -160,6 +160,19 @@ class ParseLrc{
 		return lyric;
 	}
 
+
+	joinLyrics(lyrics){
+		if(!Array.isArray(lyrics)){return;}
+		
+		let str = ''
+
+		for(let i=0;i<lyrics.length;i++){
+			str += lyrics[i][0]
+		}
+
+		return str;
+	}
+
 }
 
 let parseLrc = new ParseLrc()
