@@ -14,6 +14,7 @@ class Load {
 
 		deleteMedia(setData['edit'])
 		this.setMedia(setData)
+
 	}
 
 	setMedia(setData){
@@ -40,39 +41,27 @@ class Game extends Load {
 		this.isStart = true;
 		deleteResult()
 
-
-		if(this.isEdit){
-			timer = new EditTimer()
-		}else{
-			timer = new Timer()
-			timer.updateNextLyrics(0)
-		}
-
-
+		timer = new Timer()
+		timer.updateNextLyrics(0)
 		timer.addTimerEvent() //歌詞更新タイマーイベントを追加
 
+		disableStartButton()
 
-		if(!this.isEdit){
-			disableStartButton()
-			this.setMusicTitle()
-			const LiveID = document.getElementById("live-id").value
-			const LivePlatform = document.getElementById("live-platform").selectedOptions[0].textContent
-	
-			if (location.host == 'localhost:8080' && LiveID) {
-				//Python側でライブチャットの監視を開始
-				this.isObserve = this.startLiveChatObserver(LiveID, LivePlatform)
-			}
-	
-			chat = new Chat()
-			scoring = new Scoring()
+		this.setMusicTitle()
+		const LiveID = document.getElementById("live-id").value
+		const LivePlatform = document.getElementById("live-platform").selectedOptions[0].textContent
+
+		if (location.host == 'localhost:8080' && LiveID) {
+			//Python側でライブチャットの監視を開始
+			this.isObserve = this.startLiveChatObserver(LiveID, LivePlatform)
 		}
 
+		chat = new Chat()
+		scoring = new Scoring()
 	}
 
-	
-
-	async startLiveChatObserver(id, platform) {
-		let result = await eel.startChatObserver(id, platform)();
+	async startLiveChatObserver(id, livePlatform) {
+		let result = await eel.startChatObserver(id, livePlatform)();
 		return result;
 	}
 

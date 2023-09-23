@@ -90,9 +90,10 @@ class PlayerEvent {
 			case "finish": //動画終了
 				console.log("動画終了")
 				timer.removeTimerEvent()
-
+				
 				if(!game.isEdit){
 					game.isFinished = true
+					timer.updatePlayerClock(totalTime.duration)
 				}
 		
 				//videoタグのポスターを再表示
@@ -132,7 +133,7 @@ class PlayerEvent {
 					if(game.platform == 'YouTube'){
 						youtube.player.seekTo(0)
 					}
-					
+
 					this.onPlayerReady()
 				}
 

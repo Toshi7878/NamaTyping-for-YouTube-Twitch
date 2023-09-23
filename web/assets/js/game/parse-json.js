@@ -18,9 +18,14 @@ class ParseJson {
 			gameLyricsData = parseLrc.timeConvert(this.json['lrc'].split('\r\n'))
 			platform = this.json['platform']
 		}else if(this.json['map']){
-			typingtube = new TypingTube()
-			gameLyricsData = typingtube.parseLyricsData(this.json['map'])
+			gameLyricsData = parseLrc.parseTypingTubeData(this.json['map'])
 			platform = "YouTube"
+		}
+
+		if(this.json['repl']){
+
+		}else{
+			repl = new Repl(gameLyricsData[1].join(''))
 		}
 
 		const setData = {'movieURL':movieURL, 'platform':platform, 'title':title, 'gameLyricsData':gameLyricsData}

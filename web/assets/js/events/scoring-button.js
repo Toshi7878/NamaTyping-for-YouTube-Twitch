@@ -4,12 +4,10 @@ scoreButton.addEventListener('click', event => {
 
 	if (chat) {
 		seekEnd()
-
-
 		scoring = new Scoring()
-
 		setTimeout(scoring.displayResult.bind(scoring), 1000)
 	}
+	
 })
 
 
