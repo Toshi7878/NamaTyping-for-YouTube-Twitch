@@ -7,7 +7,7 @@ class ParseJson {
 	}
 
 
-	manageMediaData(){
+	async manageMediaData(){
 		const title = `${this.json['title']}${this.json['artist'] ? ' / ' + this.json['artist'] : ''}`
 		const movieURL = this.json['movieURL']
 		let gameLyricsData
@@ -25,7 +25,9 @@ class ParseJson {
 		if(this.json['repl']){
 
 		}else{
-			repl = new Repl(gameLyricsData[1].join(''))
+			repl = new Repl()
+			await repl.getReplData(gameLyricsData[1].flat().join(''))
+			gameLyricsData[1] = repl.marge(gameLyricsData[1])
 		}
 
 		const setData = {'movieURL':movieURL, 'platform':platform, 'title':title, 'gameLyricsData':gameLyricsData}

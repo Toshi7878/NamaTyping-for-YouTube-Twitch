@@ -23,6 +23,7 @@ class Chat {
 		chat.users[chatData.id] = {
 			'name': chatData.name,
 			'typeCount': 0,
+			'score': 0,		
 			'lyricsIndex': 0,
 			'testCommentData':[],
 			'result': []
@@ -46,40 +47,98 @@ class Chat {
 		for (let i = userLyricsIndex; i < timer.correctLyrics.length; i++) {
 
 			const correctLyrics = timer.correctLyrics[i]
+
 			if(userComment){
+				let correct = this.judgeComment(correctLyrics, userComment)
 
-				if (userComment.indexOf(correctLyrics) >= 0) {
 
-					if(userComment.indexOf(correctLyrics) > 0){
+				if (correct['lyrics']) {
+			
+					if(userComment.indexOf(correct['lyrics']) > 0){
 						let missComment = ''
-						if (correctLyrics) {
-							missComment = userComment.slice(0, userComment.indexOf(correctLyrics))
+			
+						if (correct['lyrics']) {
+							missComment = userComment.slice(0, userComment.indexOf(correct['lyrics']))
 						}
+			
 						this.users[userId]['result'].push([missComment, 'None']);
 					}
-	
-					userComment = userComment.slice(correctLyrics.length + userComment.indexOf(correctLyrics));
-					this.users[userId]['typeCount'] += correctLyrics.length;
+			
+					userComment = userComment.slice(correct['lyrics'].length + userComment.indexOf(correct['lyrics']));
+					this.users[userId]['typeCount'] += parseLrc.joinLyrics(correctLyrics).length / (correct['judge'] == 'Good' ? 1.5 : 1);
 					this.users[userId]['lyricsIndex'] = i+1
-					this.users[userId]['result'].push([correctLyrics, 'Great',i]);
-	
-				}else{
-					//this.users[userId]['result'].push([correctLyrics, 'Skip']);
+					this.users[userId]['result'].push([correct['lyrics'], correct['judge'],i,(correct['judge'] == 'Good' ? correctLyrics : '')]);
+			
 				}
 				
 			}
 
-
 		}
-
 
 		if(userComment){
 			this.users[userId]['result'].push([userComment, 'None']);
 		}
+
+
+
 		console.log(this.users[userId]['result'])
 	}
 
+	judgeComment(correctLyrics, comment){
+			let judge = 'Great'
+			let correcting = ''
+
+			for(let i=0; i<correctLyrics.length; i++){
+
+				for(let m=0; m<correctLyrics[i].length; m++){
+					let search = comment.search(correctLyrics[i][m])
+				
+					if(m == 0){
+
+						if(i == 0 && search > 0){
+							comment = comment.slice(search)
+							search = 0
+						}
+							 
+						if(search == 0){
+							correcting += correctLyrics[i][m]
+							comment = comment.slice(correctLyrics[i][m].length)
+							break;
+						}
+
+					}
+
+					if(m == correctLyrics[i].length-1){
+						search = repl.kanaToHira(comment).search(repl.kanaToHira(correctLyrics[i][m]))
+
+						if(i == 0 && search > 0){
+							comment = comment.slice(search)
+							search = 0
+						}
+
+						if(search == 0){
+							correcting += comment.slice(0, correctLyrics[i][m].length)
+							comment = comment.slice(correctLyrics[i][m].length)
+							judge = 'Good'
+							break;
+						}else{
+							return {'lyrics':'', 'judge':'None'}
+						}
+					}
+
+				}
+			}
+
+			return {'lyrics':correcting, 'judge':judge}
+
+
+	}
+
 }
+
+
+
+
 let chat
 
 

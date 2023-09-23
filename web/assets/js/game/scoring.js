@@ -10,9 +10,14 @@ class Scoring {
 
 	calcTotalNotes(){
 		let totalNotes = 0
+		const lyricsArray = game.comparisonLyrics.flat()
 
-		for(let i=0;i<game.comparisonLyrics.length;i++){
-			totalNotes += game.comparisonLyrics[i].join('').length
+		for(let i=0;i<lyricsArray.length;i++){
+			let count = 0
+			for(let j=0;j<lyricsArray[i].length;j++){
+				count += lyricsArray[i][j][0].length
+			}
+			totalNotes += count
 		}
 		return totalNotes
 	}
