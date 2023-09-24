@@ -25,7 +25,6 @@ class Chat {
 			'typeCount': 0,
 			'score': 0,		
 			'lyricsIndex': 0,
-			'testCommentData':[],
 			'result': []
 		}
 	}
@@ -40,7 +39,6 @@ class Chat {
 		}
 
 		let userComment = formatComment(chatData.comment);
-		this.users[userId]['testCommentData'].push(userComment);
 
 		const userLyricsIndex = this.users[userId]['lyricsIndex']
 
@@ -67,7 +65,7 @@ class Chat {
 					userComment = userComment.slice(correct['lyrics'].length + userComment.indexOf(correct['lyrics']));
 					this.users[userId]['typeCount'] += parseLrc.joinLyrics(correctLyrics).length / (correct['judge'] == 'Good' ? 1.5 : 1);
 					this.users[userId]['lyricsIndex'] = i+1
-					this.users[userId]['result'].push([correct['lyrics'], correct['judge'],i,(correct['judge'] == 'Good' ? correctLyrics : '')]);
+					this.users[userId]['result'].push([correct['lyrics'], correct['judge'],i,(correct['judge'] == 'Good' ? parseLrc.joinLyrics(correctLyrics) : '')]);
 			
 				}
 				

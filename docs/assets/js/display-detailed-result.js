@@ -3,22 +3,6 @@ class DetailResultMenu {
 		this.display()
 	}
 
-	static BtnEvent(){
-
-		document.getElementById("lyrics-result").addEventListener('click', event => {
-
-			const isOpened = detailResultMenu && detailResultMenu.frame.isOpen ? true : false
-
-			if(!isOpened){
-				detailResultMenu = new DetailResultMenu()
-				detailResult = new DetailResult()
-			}else{
-				detailResultMenu.frame.requestFocus()
-			}
-		})
-
-	}
-
 	display(){
 		const jsFrame = new JSFrame();
 
@@ -114,14 +98,14 @@ class DetailResultMenu {
 	}
 }
 
-DetailResultMenu.BtnEvent()
 let detailResultMenu
 
 
 class DetailResult extends Scoring {
 
-	constructor(){
-		super()
+	constructor(index){
+		super(index)
+
 		this.displayRankTable()
 	}
 
@@ -157,7 +141,8 @@ class DetailResult extends Scoring {
 	
 	generateDetailResult(rank){
 		const userID = this.usersScore[rank-1][2]
-		const result = chat && chat.users[userID] ? chat.users[userID]['result'].slice(0, chat.users[userID]['result'].length) : [['','']]
+		const USER_RESULT = this.usersResult[userID].mapValue.fields
+		const result = this.parseResultObject(Object.values(USER_RESULT.result.mapValue.fields))
 		const resultData = []
 		let NoneComment = ''
 
@@ -212,7 +197,6 @@ class DetailResult extends Scoring {
 			autoColumns: true, //自動で列の設定を最適化する
 		});
 	}
-
 
 }
 

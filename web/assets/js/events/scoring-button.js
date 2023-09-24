@@ -6,6 +6,8 @@ scoreButton.addEventListener('click', event => {
 		seekEnd()
 		scoring = new Scoring()
 		setTimeout(scoring.displayResult.bind(scoring), 1000)
+		scoring.sendFireStore(Object.assign({}, JSON.parse(JSON.stringify(chat.users))))
+
 	}
 	
 })

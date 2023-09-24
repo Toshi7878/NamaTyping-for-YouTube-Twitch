@@ -1,0 +1,8 @@
+#main-table tr {
+	height: 62px;
+	vertical-align: middle;
+}
+
+#main-table [id*=result-]:hover {
+	background: #aaa;
+}

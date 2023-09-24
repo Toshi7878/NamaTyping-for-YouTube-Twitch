@@ -58,6 +58,7 @@ class Game extends Load {
 
 		chat = new Chat()
 		scoring = new Scoring()
+		this.gameID = new Date().getTime().toString(16)
 	}
 
 	async startLiveChatObserver(id, livePlatform) {

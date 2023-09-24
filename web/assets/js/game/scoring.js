@@ -2,25 +2,32 @@ class Scoring {
 	constructor() {
 
 			this.usersScore = chat && Object.keys(chat.users).length ? this.parseResultData() : [ [' ',0,' '] ]
-			this.totalNotes = game ? this.calcTotalNotes() : 0
+			this.correctLyrics = timer ? this.generateJoinLyrics( timer.updateCorrectLyrics(game.comparisonLyrics.length) ) : []
+			this.totalNotes = timer ? this.calcTotalNotes(this.correctLyrics) : 0
 			this.displayCount = this.usersScore.length
 
 	}
 
+	
+	generateJoinLyrics(lyricsArray){
+		let result = []
+		for(let i=0;i<lyricsArray.length;i++){
+			result.push(parseLrc.joinLyrics(lyricsArray[i]))
+		}
 
-	calcTotalNotes(){
+		return result;
+	}
+
+
+	calcTotalNotes(lyricsArray){
 		let totalNotes = 0
-		const lyricsArray = game.comparisonLyrics.flat()
 
 		for(let i=0;i<lyricsArray.length;i++){
-			let count = 0
-			for(let j=0;j<lyricsArray[i].length;j++){
-				count += lyricsArray[i][j][0].length
-			}
-			totalNotes += count
+			totalNotes += lyricsArray[i].length
 		}
 		return totalNotes
 	}
+
 
 
 	parseResultData(){
@@ -59,6 +66,38 @@ class Scoring {
 			setTimeout(this.displayResult.bind(this), 1000)
 		}
 	}
+
+	async sendFireStore(detailData){
+		const usersID = Object.keys(detailData)
+	
+		for(let i=0;i<usersID.length;i++){
+			detailData[usersID[i]].result = formatNestedArray(detailData[usersID[i]].result)
+		}
+	
+		try {
+		  // 省略 
+		  // (Cloud Firestoreのインスタンスを初期化してdbにセット)
+	  
+		  const ref = firestore.collection('liveid').doc(game.gameID)
+		  await ref.set({
+			title: game.title,
+			detailData: detailData,
+			lyricsData: this.correctLyrics
+		  })
+		} catch (err) {
+		  console.log(`Error: ${JSON.stringify(err)}`)
+		}
+	}
+	
+
 }
 
 let scoring
+
+function formatNestedArray(arr) {
+	let obj = {};
+	for(let i = 0; i < arr.length; i++) {
+	  obj[i] = arr[i];
+	}
+	return obj;
+  }
