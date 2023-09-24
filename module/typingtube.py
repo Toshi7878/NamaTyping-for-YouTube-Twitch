@@ -1,3 +1,12 @@
+import sys
+import os
+
+# pyinstallerのnoconsoleオプション使用時は
+# 標準出力が存在せずwriteできないため、devnullにリダイレクトしておく
+if hasattr(sys.stdout, 'write') == False: sys.stdout = open(os.devnull, 'w')
+if hasattr(sys.stderr, 'write') == False: sys.stderr = open(os.devnull, 'w')
+
+
 import json
 from selenium import webdriver
 from selenium.webdriver.common.by import By

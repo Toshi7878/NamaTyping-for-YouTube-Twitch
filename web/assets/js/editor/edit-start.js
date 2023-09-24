@@ -149,9 +149,12 @@ class NewCreate extends Editor {
 			const ID = document.getElementById("edit-id").value
 			const TITLE = document.getElementById("edit-title").value
 			const ARTIST = document.getElementById("edit-artist").value
+
+			if(!this.platform){
+				this.platform = isNaN(+ID) ? 'YouTube' : 'SoundCloud' 
+			}
 			this.setData = {'platform':this.platform, 'movieURL':ID, 'title':TITLE, 'artist':ARTIST,'gameLyricsData':[[],[]], 'edit':true}
-			timer = new EditTimer()
-			game = new Load(this.setData)
+			game = new Edit(this.setData)
 
 			this.editLayout()
 			editMenu.frame.isOpen = false
@@ -173,9 +176,14 @@ class JsonEditor extends Editor {
 		const ID = parseJson.json['movieURL']
 		const TITLE = parseJson.json['title']
 		const ARTIST = parseJson.json['artist']
-		this.setData = {'platform':parseJson.json['platform'], 'movieURL':ID, 'title':TITLE, 'artist':ARTIST,'gameLyricsData':[game.displayLyrics,[]], 'edit':true}
-		timer = new EditTimer()
-		game = new Load(this.setData)
+		let platform = parseJson.json['platform']
+
+		if(!platform){
+			platform = isNaN(+ID) ? 'YouTube' : 'SoundCloud' 
+		}
+		
+		this.setData = {'platform':platform, 'movieURL':ID, 'title':TITLE, 'artist':ARTIST,'gameLyricsData':[game.displayLyrics,[]], 'edit':true}
+		game = new Edit(this.setData)
 
 		this.editLayout()
 	}

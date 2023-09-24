@@ -79,3 +79,17 @@ class Game extends Load {
 }
 
 let game
+
+class Edit extends Load {
+
+	constructor(setData) {
+		super(setData)
+		document.getElementById("lyrics").classList.add('d-block')
+	}
+
+	
+	start() {
+		this.isStart = true;
+		timer = new EditTimer()
+	}
+}

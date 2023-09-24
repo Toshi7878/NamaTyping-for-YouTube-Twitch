@@ -77,7 +77,7 @@ class PlayerEvent {
 		
 				if(!game.isFinished){
 					
-					if (!game.isStart && !game.isEdit) {
+					if (!game.isStart) {
 						game.start() //初めて再生されたらゲームスタート
 					} else {
 						timer.addTimerEvent()

@@ -45,7 +45,7 @@ document.getElementById("lyrics").addEventListener('keydown', event => {
 		new Lyrics(game.displayLyrics, 'EditMode')
 	
 		if(timer){
-			timer.updateLyrics(timer.count)
+			timer.updateLyrics(timer.count-1)
 		}
 
 		event.preventDefault()
@@ -111,7 +111,7 @@ const blob = new Blob([JSON.stringify(data, null, '  ')], {type: 'application\/j
 const url = URL.createObjectURL(blob);
 
 const ELEMENT = event.target.parentNode
-ELEMENT.download = `${data['title']} - ${data['artist']}`
+ELEMENT.download = `${data['title']}${data['artist'] ? ` - ${data['artist']}` : ''}`
 ELEMENT.href = url
 
 })

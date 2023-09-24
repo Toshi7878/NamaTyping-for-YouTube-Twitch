@@ -26,7 +26,8 @@
 
 #player-pause,
 #player-play,
-#download {
+#download,
+#player-tutorial {
 	zoom: 216%;
 	position: absolute;
 	left: 101%;
@@ -37,6 +38,13 @@
 #player-pause,
 #player-play {
 	left: 101%;
+}
+
+#player-tutorial {
+	left: 112%;
+	top: -17px;
+	zoom: 137%;
+	color: #ffffffe6;
 }
 
 #download {

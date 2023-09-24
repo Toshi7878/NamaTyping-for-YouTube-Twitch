@@ -34,34 +34,31 @@ class EditMenu {
 			movable: true,//マウスで移動可能
 			resizable: true,//マウスでリサイズ可能
 			appearanceName: 'redstone',//プリセット名は 'yosemite','redstone','popup'
-			html: `<div id="edit-container" class="container mt-4">
+			html: `<div id="edit-container" class="container mt-4 fs-6">
 			<div class="row">
-				<div class="col-md-3">
-					<label for="edit-url">URL</label>
-					<input id="edit-url" class="form-control" type="text">
+				<div class="">
+					<label for="edit-url">URL (YouTube or SoundCloud)</label>
+					<div class="mb-5 d-flex flex-row justify-content-between"><input id="edit-url" class="form-control" type="text" style="
+    width: 67%;
+"><input type="button" id="get-create-param-btn" class="ms-3 btn btn-primary" value="URLを入力してデータ取得" disabled></div>
 				</div>
-				<div class="col-md-3">
+				<div class="mb-2">
 					<label for="edit-id" value="">ID</label>
-					<input id="edit-id" class="form-control" type="text" value="1445182399">
+					<input id="edit-id" class="form-control" type="text" value="">
 				</div>
-				<div class="col-md-3">
+				<div class="mb-2">
 					<label for="edit-title">タイトル</label>
-					<input id="edit-title" value="プラネテス (cover)" class="form-control" type="text">
+					<input id="edit-title" value="" class="form-control" type="text">
 				</div>
-				<div class="col-md-3">
+				<div class="mb-2">
 					<label for="edit-artist">アーティスト</label>
-					<input id="edit-artist" value="gang bab" class="form-control" type="text">
+					<input id="edit-artist" value="" class="form-control" type="text">
 				</div>
 			</div>
 		
-			<div class="row mt-3">
-				<div class="col-md-6">
-					<input type="button" id="get-create-param-btn" class="btn btn-primary" value="URLを入力してデータ取得">
+			<div>
+					<input type="button" id="create-start-btn" class="btn btn-success w-100 mt-4" value="作成開始" disabled>
 				</div>
-				<div class="col-md-6">
-					<input type="button" id="create-start-btn" class="btn btn-secondary" value="作成開始">
-				</div>
-			</div>
 		</div>`
 		}).show();;
 		//ウィンドウを表示する
@@ -137,6 +134,22 @@ class EditMenu {
 			_frame.closeFrame();
 			this.frame.isOpen = false
 		});
+
+		document.getElementById("edit-id").addEventListener('input', event => {
+			if(event.target.value){
+				document.getElementById("create-start-btn").removeAttribute('disabled')
+			}else{
+				document.getElementById("create-start-btn").disabled = true
+			}
+		})
+
+		document.getElementById("edit-url").addEventListener('input', event => {
+			if(event.target.value){
+				document.getElementById("get-create-param-btn").removeAttribute('disabled')
+			}else{
+				document.getElementById("get-create-param-btn").disabled = true
+			}
+		})
 	
 	}
 }
