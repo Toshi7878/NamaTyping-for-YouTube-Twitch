@@ -22,7 +22,7 @@ class SettingMenu {
 
 		this.frame = jsFrame.create({
 			title: '設定',
-			left: 60, top: 60, width: 615, height: 170,
+			left: 60, top: 60, width: 615, height: 220,
 			movable: true,//マウスで移動可能
 			resizable: true,//マウスでリサイズ可能
 			appearanceName: 'redstone',//プリセット名は 'yosemite','redstone','popup'
@@ -35,6 +35,8 @@ class SettingMenu {
 					<label class="ms-2"><input id="input-font-weight" type="checkbox" class="me-2">フォントを太く表示</label>
 				</div>
 				<label><input id="display-next-lyrics" type="checkbox" class="me-2" checked>3秒前に次の歌詞を表示</label>
+				<label><input type='button' class='mt-2' id='delete-result-history' value='リザルト履歴ページをリセット'></label>
+
 
 		</div>`
 		}).show();;
@@ -204,6 +206,8 @@ class SettingEvents{
 		document.getElementById("lyrics-input-font-size").addEventListener('change', this.changeInputHeight.bind(this))
 		document.getElementById("input-font-weight").addEventListener('change', this.inputFontWeight.bind(this))
 		document.getElementById("display-next-lyrics").addEventListener('change', this.displayNextLyrics.bind(this))
+		document.getElementById("delete-result-history").addEventListener('click', this.deleteResultData.bind(this))
+
 	}
 
 	inputBlurRange(event){
@@ -233,6 +237,16 @@ class SettingEvents{
 
 	putIndexedDB(id, value){
 		db.notes.put({id: event.target.id, data:value});
+	}
+
+	deleteResultData(){
+		const LIVE_ID = document.getElementById("live-id").value
+
+		if(!LIVE_ID || !confirm(`配信ID ${LIVE_ID} のリザルト履歴をリセットしますか？`)){return;}
+		const colRef = firestore.collection(LIVE_ID);
+		DeleteCollection.deleteCollection(firestore, colRef, 500);
+		firestore.collection("timeStamp").doc(LIVE_ID).delete()
+		alert('リザルト履歴をリセットしました。')
 	}
 }
 
