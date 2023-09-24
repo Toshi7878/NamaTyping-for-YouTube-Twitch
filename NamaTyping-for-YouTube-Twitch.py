@@ -1,5 +1,12 @@
+import sys
+import os
+
+# pyinstallerのnoconsoleオプション使用時は
+# 標準出力が存在せずwriteできないため、devnullにリダイレクトしておく
+if hasattr(sys.stdout, 'write') == False: sys.stdout = open(os.devnull, 'w')
+if hasattr(sys.stderr, 'write') == False: sys.stderr = open(os.devnull, 'w')
+
 import eel
-import atexit
 import pytchat
 import threading
 from module import twitch_chat_irc
@@ -67,14 +74,14 @@ class Chat:
 
 	#YouTubeチャットを監視
 	def youtubeObserver(self):
-		print('start YouTube Observer')
+		#print('start YouTube Observer')
 
 		while self.livechat.is_alive():
 
 
 			for c in self.livechat.get().sync_items():
 
-					print(f'{c.author.name} : {c.message}')
+					#print(f'{c.author.name} : {c.message}')
 
 					data = {
 						'name': c.author.name,
@@ -87,7 +94,7 @@ class Chat:
 
 			if self.isClickScoringBtn == True: #採点ボタンが押されたらwhileループを停止
 				self.isClickScoringBtn = False
-				print('stop YouTube Observer')
+				#print('stop YouTube Observer')
 				break
 
 
@@ -98,7 +105,7 @@ class Chat:
 
 
 	def twitchSendCommentData(self, message): 
-		print(f'{message["display-name"]} : {message["message"]}') 
+		#print(f'{message["display-name"]} : {message["message"]}') 
 
 		data = {
 			'name': message['display-name'],
@@ -107,16 +114,6 @@ class Chat:
 		}
 
 		eel.commentCheck(data)
-
-
-
-# Eelアプリケーションの終了時に実行する関数
-def on_exit():
-	print("Eelアプリケーションが終了しました。後始末を行います。")
-    # ここに後始末のコードを追加
-
-
-atexit.register(on_exit)  # 終了時の関数を登録
 
 
 eel.init("web")
