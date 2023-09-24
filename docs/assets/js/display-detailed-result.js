@@ -94,7 +94,7 @@ class DetailResultMenu {
 			this.frame.isOpen = false
 		});
 
-		$("#name-box").resizable({handles:'n,s,w,e'});
+		$("#name-box").resizable({handles:'e'});
 	}
 }
 

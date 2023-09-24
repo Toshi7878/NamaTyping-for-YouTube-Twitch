@@ -23,7 +23,7 @@ class DetailResultMenu {
 		const jsFrame = new JSFrame();
 
 		this.frame = jsFrame.create({
-			title: '<div></div>採点結果',
+			title: '採点結果',
 			left: 60, top: 60, width: 900, height: 470,
 			movable: true,//マウスで移動可能
 			resizable: true,//マウスでリサイズ可能
@@ -110,7 +110,7 @@ class DetailResultMenu {
 			this.frame.isOpen = false
 		});
 
-		$("#name-box").resizable({handles:'n,s,w,e'});
+		$("#name-box").resizable({handles:'e'});
 	}
 }
 
