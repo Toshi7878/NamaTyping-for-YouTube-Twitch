@@ -27,10 +27,10 @@ class Live {
 		RESULT_URL_BTN.addEventListener('click', e => {
 			if (navigator.clipboard) {
 
-				return navigator.clipboard.writeText(`https://toshi7878.github.io/NamaTyping-for-YouTube-Twitch/?${LIVE_ID_BOX.value}`).then(() => {
+				return navigator.clipboard.writeText(`https://namatyping-for-youtube-twitch.onrender.com?${LIVE_ID_BOX.value}`).then(() => {
 					alert('クリップボードにリザルト履歴URLをコピーしました。')
 				})
-				
+
 			  }
 			})
 			
