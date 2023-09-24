@@ -67,7 +67,7 @@ class Scoring {
 		}
 	}
 
-	async sendFireStore(detailData){
+	async sendFireStore(liveId, detailData){
 		const usersID = Object.keys(detailData)
 	
 		for(let i=0;i<usersID.length;i++){
@@ -75,19 +75,35 @@ class Scoring {
 		}
 	
 		try {
-		  // 省略 
-		  // (Cloud Firestoreのインスタンスを初期化してdbにセット)
-	  
-		  const ref = firestore.collection('liveid').doc(game.gameID)
-		  await ref.set({
+		  const dataRef = firestore.collection(liveId).doc(game.startTimeStamp.toString(16))
+		  const timeRef = firestore.collection('timeStamp').doc(liveId)
+		  const timestamp = await this.getLocationDate()
+
+		  await dataRef.set({
 			title: game.title,
 			detailData: detailData,
-			lyricsData: this.correctLyrics
+			lyricsData: this.correctLyrics,
+			startTimeStamp:game.startTimeStamp
 		  })
+
+		  await timeRef.set({
+			timeStamp: timestamp
+		  })
+
+
 		} catch (err) {
 		  console.log(`Error: ${JSON.stringify(err)}`)
 		}
 	}
+
+	async getLocationDate(){
+		const resp = await fetch(window.location.href)
+
+		//サーバー時刻のタイムスタンプ
+		const locationDateTimeStamp = await new Date(resp.headers.get("date")).getTime()
+		
+		return locationDateTimeStamp;
+    }
 	
 
 }

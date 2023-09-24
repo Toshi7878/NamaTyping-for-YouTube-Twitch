@@ -53,7 +53,7 @@ class PlayerEvent {
 
 		MediaControl.volumeChange(volume)
 
-		disableScoreButton()
+		ToggleBtn.disableScoreButton()
 		totalTime = new TotalTime()
 	}
 

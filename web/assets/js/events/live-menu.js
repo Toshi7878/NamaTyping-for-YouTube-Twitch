@@ -10,15 +10,30 @@ class Live {
 
 	async liveIdLoadData(){
 		const LIVE_ID_BOX = document.getElementById("live-id")
+		const RESULT_URL_BTN = document.getElementById("result-url-copy")
+
 		const ID = await await db.notes.get('live-id')
 
 		if (location.host == 'localhost:8080' && ID) {
-			liveIDBox.value = ID.data
+			LIVE_ID_BOX.value = ID.data
+			ToggleBtn.resultHistoryButton(LIVE_ID_BOX.value)
 		}
 
 		LIVE_ID_BOX.addEventListener('input', e => {
 			db.notes.put({id: 'live-id', data:e.target.value});
+			ToggleBtn.resultHistoryButton(e.target.value)
 		})
+
+		RESULT_URL_BTN.addEventListener('click', e => {
+			if (navigator.clipboard) {
+
+				return navigator.clipboard.writeText(`https://toshi7878.github.io/NamaTyping-for-YouTube-Twitch/?${LIVE_ID_BOX.value}`).then(() => {
+					alert('クリップボードにリザルト履歴URLをコピーしました。')
+				})
+				
+			  }
+			})
+			
 	}
 
 	async streamPlatformLoadData(){

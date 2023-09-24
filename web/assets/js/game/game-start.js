@@ -45,7 +45,7 @@ class Game extends Load {
 		timer.updateNextLyrics(0)
 		timer.addTimerEvent() //歌詞更新タイマーイベントを追加
 
-		disableStartButton()
+		ToggleBtn.disableStartButton()
 
 		this.setMusicTitle()
 		const LiveID = document.getElementById("live-id").value
@@ -58,7 +58,7 @@ class Game extends Load {
 
 		chat = new Chat()
 		scoring = new Scoring()
-		this.gameID = new Date().getTime().toString(16)
+		this.startTimeStamp = new Date().getTime()
 	}
 
 	async startLiveChatObserver(id, livePlatform) {
