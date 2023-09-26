@@ -22,7 +22,7 @@ class SettingMenu {
 
 		this.frame = jsFrame.create({
 			title: '設定',
-			left: 60, top: 60, width: 615, height: 220,
+			left: 60, top: 60, width: 615, height: 300,
 			movable: true,//マウスで移動可能
 			resizable: true,//マウスでリサイズ可能
 			appearanceName: 'redstone',//プリセット名は 'yosemite','redstone','popup'
@@ -35,6 +35,7 @@ class SettingMenu {
 					<label class="ms-2"><input id="input-font-weight" type="checkbox" class="me-2">フォントを太く表示</label>
 				</div>
 				<label><input id="display-next-lyrics" type="checkbox" class="me-2" checked>3秒前に次の歌詞を表示</label>
+				<label><input id="display-discord-rpc" type="checkbox" class="me-2" checked>Discordのアクティビティに表示する</label>
 				<label><input type='button' class='mt-2' id='delete-result-history' value='リザルト履歴ページをリセット'></label>
 
 
@@ -192,6 +193,22 @@ class Apply{
 	}
 
 
+	static displayDiscordRpc(value){
+
+		if(value){
+			alert('Discord RPCが有効になりました。本ソフトの次回起動時に表示されます。')
+		}else{
+
+			if (location.host == 'localhost:8080') {
+				Discord.closeRPC()
+			}
+
+		}
+
+	}
+
+
+
 }
 
 class SettingEvents{
@@ -207,6 +224,8 @@ class SettingEvents{
 		document.getElementById("input-font-weight").addEventListener('change', this.inputFontWeight.bind(this))
 		document.getElementById("display-next-lyrics").addEventListener('change', this.displayNextLyrics.bind(this))
 		document.getElementById("delete-result-history").addEventListener('click', this.deleteResultData.bind(this))
+		document.getElementById("display-discord-rpc").addEventListener('change', this.displayDiscordRpc.bind(this))
+
 
 	}
 
@@ -248,6 +267,13 @@ class SettingEvents{
 		firestore.collection("timeStamp").doc(LIVE_ID).delete()
 		alert('リザルト履歴をリセットしました。')
 	}
+
+	displayDiscordRpc(event){
+		Apply.displayDiscordRpc(event.target.checked)
+		this.putIndexedDB(event.target.id, event.target.checked)
+	}
+
+	
 }
 
 
@@ -263,6 +289,8 @@ class SettingData {
 		this.inputFontHeight = await db.notes.get('lyrics-input-font-size');
 		this.inputFontWeight = await db.notes.get('input-font-weight');
 		this.displayNextLyrics = await db.notes.get('display-next-lyrics');
+		this.displayDiscordRpc = await db.notes.get('display-discord-rpc');
+
 	}
 
 
@@ -306,6 +334,10 @@ class SettingData {
 
 		if(this.displayNextLyrics){
 			document.getElementById("display-next-lyrics").checked = this.displayNextLyrics.data
+		}
+
+		if(this.displayDiscordRpc){
+			document.getElementById("display-discord-rpc").checked = this.displayDiscordRpc.data
 		}
 
 	}

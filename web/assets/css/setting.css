@@ -15,3 +15,7 @@
 #delete-result-history {
 	font-size: 0.8rem;
 }
+
+div#option-container>* {
+	margin: 5px 0;
+}

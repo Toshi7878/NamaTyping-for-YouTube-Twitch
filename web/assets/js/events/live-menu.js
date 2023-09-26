@@ -12,7 +12,7 @@ class Live {
 		const LIVE_ID_BOX = document.getElementById("live-id")
 		const RESULT_URL_BTN = document.getElementById("result-url-copy")
 
-		const ID = await await db.notes.get('live-id')
+		const ID = await db.notes.get('live-id')
 
 		if (location.host == 'localhost:8080' && ID) {
 			LIVE_ID_BOX.value = ID.data

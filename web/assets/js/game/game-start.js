@@ -14,7 +14,6 @@ class Load {
 
 		deleteMedia(setData['edit'])
 		this.setMedia(setData)
-
 	}
 
 	setMedia(setData){
