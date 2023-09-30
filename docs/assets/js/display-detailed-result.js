@@ -204,14 +204,7 @@ class DetailResult extends Scoring {
 				{title:"No",field:"no"},
 				{title:"判定",field:"judge"},
 				{title:"コメント",field:"comment"},
-				{title:"歌詞",field:"lyrics",formatter:(cell, formatterParams) => {
-					let value = cell._cell.row.data.judge;
-					 if(value == 'Good'){
-						 return "<span style='opacity: 0.6;'>" + value + "</span>";
-					 }else{
-						 return value;
-					 }
-				 }}
+				{title:"歌詞",field:"lyrics"}
 			],
 			data:this.generateDetailResult(rank)
 		});
