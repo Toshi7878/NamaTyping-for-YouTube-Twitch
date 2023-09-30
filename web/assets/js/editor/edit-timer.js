@@ -80,10 +80,12 @@ class EditTimer extends Timer{
 		const wipeNowElement = document.getElementsByClassName("wipe-now")
 
 
-		for(let i=0;i<headElement.length;i++){
-			headElement[i].classList.remove("head-lyrics")
+		if(this.count > 0){
+			for(let i=0;i<headElement.length;i++){
+				headElement[i].classList.remove("head-lyrics")
+			}
 		}
-		
+
 		for(let i=0;i<wipePassElements.length;i++){
 			wipePassElements[i].classList.remove("wipe-pass")
 		}

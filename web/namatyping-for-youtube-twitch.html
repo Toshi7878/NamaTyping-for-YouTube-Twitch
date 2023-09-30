@@ -126,21 +126,26 @@
 		<div id="word-area" class='text-shadow' style="bottom: 38.4px;">
 			<div id="seek-range-container" class="d-none">
 				<input id="seek-range" type="range" value="0">
-				<span id="player-pause" class="d-none">
-					<img src="assets\img\control-pause.png">
-				</span>
-				<span id="player-play">
-					<img src="assets\img\control.png">
-				</span>
-				<a id="download" title="保存する" download>
-					<img src="assets\img\document-copy.png">
-				</a>
-				<span id="player-tutorial">
-					<i class="fa-regular fa-keyboard"></i>
-				</span>
-				<span id="player-editor-menu">
-					<i class="fa-regular fa-square-caret-down"></i>
-				</span>
+				<div class="d-flex">
+					<div>
+						<span id="player-pause" class="d-none">
+							<img src="assets\img\control-pause.png">
+						</span>
+						<span id="player-play">
+							<img src="assets\img\control.png">
+						</span>
+					</div>
+					<a id="download" title="保存する" download>
+						<img src="assets\img\document-copy.png">
+					</a>
+					<span id="player-tutorial" title="操作方法">
+						<i class="fa-regular fa-keyboard"></i>
+					</span>
+					<span id="player-editor-menu" title="エディターメニュー">
+						<i class="fa-regular fa-square-caret-down"></i>
+					</span>
+				</div>
+
 			</div>
 
 			<div id="add-lyrics-container" style="display:none;">
@@ -281,6 +286,8 @@
 	<script src="assets\js\editor\edit-timer.js"></script>
 	<script src="assets\js\editor\edit-start.js"></script>
 	<script src="assets\js\editor\tutorial.js"></script>
+	<script src="assets\js\editor\editor-menu.js"></script>
+
 
 
 	<script src="assets\js\vender\encoding.js"></script>

@@ -17,63 +17,43 @@
 	position: absolute;
 	display: flex;
 	align-items: center;
-	top: 20px;
+	top: 7px;
 }
 
 #seek-range-container input {
 	width: 100%;
 }
 
-#player-pause,
-#player-play,
-#download,
-#player-tutorial {
-	zoom: 216%;
-	position: absolute;
-	left: 101%;
-	top: -24px;
-	cursor: pointer;
+
+#player-pause img,
+#player-play img,
+#download img {
+	width: 35px;
+	position: relative;
+	top: -5px;
 }
 
+#player-tutorial,
+#download,
+#player-editor-menu,
 #player-pause,
 #player-play {
-	left: 101%;
-}
-
-#player-tutorial {
-	left: 112%;
-	top: -17px;
-	zoom: 137%;
 	color: #ffffffe6;
+	width: 50px;
+	text-align: center;
+	cursor: pointer;
+
 }
 
-#download {
-	left: 106%;
-	top: -24px;
-}
 
 #seek-range-container [id*=player]:hover,
 #download:hover {
 	background: #2d719f3f;
 	outline: solid 1.1px #9f9f9f;
-
-
 }
 
 #seek-range-container [id*=player]:active,
 #download:active {
 	background: rgba(76, 108, 140, 0.6);
 	outline: solid 1.1px #206ab6d1;
-}
-
-#player-editor-menu {
-	position: absolute;
-}
-
-#player-editor-menu {
-	left: 120%;
-	top: -13px;
-	color: #ffffffe6;
-	width: 40px;
-	text-align: center;
 }

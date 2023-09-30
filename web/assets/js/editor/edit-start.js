@@ -157,8 +157,8 @@ class NewCreate extends Editor {
 			game = new Edit(this.setData)
 
 			this.editLayout()
-			editMenu.frame.isOpen = false
-			editMenu.frame.closeFrame();
+			createMenu.frame.isOpen = false
+			createMenu.frame.closeFrame();
 	}
 
 }

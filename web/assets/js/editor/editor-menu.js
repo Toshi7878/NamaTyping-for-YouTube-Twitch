@@ -1,68 +1,39 @@
-
-class CreateMenu {
+class EditorMenu {
 	constructor(){
-		this.menu()
+		this.display()
 	}
 
 	static BtnEvent(){
 
+		document.getElementById("player-editor-menu").addEventListener('click', event => {
 
-		document.getElementById("create-button").addEventListener('click', event => {
-			const isOpened = createMenu && createMenu.frame.isOpen ? true : false
+			const isOpened = editorMenu && editorMenu.frame.isOpen ? true : false
 
 			if(!isOpened){
-				createMenu = new CreateMenu()
-				editor = new NewCreate()
+				editorMenu = new EditorMenu()
 			}else{
-				createMenu.frame.requestFocus()
+				editorMenu.frame.requestFocus()
 			}
-			
-		})
-
-		document.getElementById("edit-button").addEventListener('click', event => {
-			editor = new JsonEditor()
 		})
 
 	}
 
-	menu(){
+	display(){
 		const jsFrame = new JSFrame();
 
 		this.frame = jsFrame.create({
-			title: 'lrc新規作成ウィンドウ',
+			title: 'エディターメニュー',
 			left: 60, top: 60, width: 900, height: 470,
 			movable: true,//マウスで移動可能
 			resizable: true,//マウスでリサイズ可能
 			appearanceName: 'redstone',//プリセット名は 'yosemite','redstone','popup'
-			html: `<div id="edit-container" class="container mt-4 fs-6">
-			<div class="row">
-				<div class="">
-					<label for="edit-url">URL (YouTube or SoundCloud)</label>
-					<div class="mb-5 d-flex flex-row justify-content-between"><input id="edit-url" class="form-control" type="text" style="
-    width: 67%;
-"><input type="button" id="get-create-param-btn" class="ms-3 btn btn-primary" value="URLを入力してデータ取得" disabled></div>
-				</div>
-				<div class="mb-2">
-					<label for="edit-id" value="">ID</label>
-					<input id="edit-id" class="form-control" type="text" value="">
-				</div>
-				<div class="mb-2">
-					<label for="edit-title">タイトル</label>
-					<input id="edit-title" value="" class="form-control" type="text">
-				</div>
-				<div class="mb-2">
-					<label for="edit-artist">アーティスト</label>
-					<input id="edit-artist" value="" class="form-control" type="text">
-				</div>
-			</div>
-		
-			<div>
-					<input type="button" id="create-start-btn" class="btn btn-success w-100 mt-4" value="作成開始" disabled>
-				</div>
-		</div>`
+			html: `<div id="editor-menu-container" class="fs-6 m-3">
+			<label class="w-25">全体タイム調整<input type="number" id='adjust-time' step='0.1' class="form-control-sm w-50"></label><input type="button" id='adjust-btn' class="btn btn-success" value="実行">
+			</div>`
 		}).show();;
 		//ウィンドウを表示する
 		this.frame.isOpen = true
+
 		this.addFrameEvents();
 	}
 
@@ -135,24 +106,34 @@ class CreateMenu {
 			this.frame.isOpen = false
 		});
 
-		document.getElementById("edit-id").addEventListener('input', event => {
-			if(event.target.value){
-				document.getElementById("create-start-btn").removeAttribute('disabled')
-			}else{
-				document.getElementById("create-start-btn").disabled = true
-			}
-		})
+		const editorMenuEvents = new EditorMenuEvents()
 
-		document.getElementById("edit-url").addEventListener('input', event => {
-			if(event.target.value){
-				document.getElementById("get-create-param-btn").removeAttribute('disabled')
-			}else{
-				document.getElementById("get-create-param-btn").disabled = true
+	}
+}
+EditorMenu.BtnEvent()
+let editorMenu
+
+class EditorMenuEvents {
+
+	constructor(){
+		document.getElementById("adjust-btn").addEventListener('click', this.adjustTime)
+	}
+
+	adjustTime(){
+		const AJUDST_TIME = document.getElementById("adjust-time").value
+		let lyrics = game.displayLyrics
+
+		for(let i=0;i<lyrics.length;i++){
+			let times = lyrics[i]['time']
+
+			for(let t=0;t<times.length;t++){
+				times[t] += Number(AJUDST_TIME)
 			}
-		})
-	
+			
+		}
+
+		new Lyrics(game.displayLyrics, 'EditMode')
+		
 	}
 }
 
-CreateMenu.BtnEvent()
-let createMenu

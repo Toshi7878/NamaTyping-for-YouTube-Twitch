@@ -95,7 +95,12 @@ body {
 }
 
 .shadow-layer .edit-border {
-  outline: solid 1px;
+  outline: solid 1px #ffa500ba;
+}
+
+.edit-border:focus {
+  outline: solid 1px #66e1ff5c;
+  background: #0dcaf033;
 }
 
 #lyrics-next {

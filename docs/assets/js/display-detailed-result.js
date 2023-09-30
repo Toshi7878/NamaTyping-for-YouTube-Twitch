@@ -189,8 +189,8 @@ class DetailResult extends Scoring {
 
 
 		 for(let i=0;i<result.length;i++){
-				resultData.push({'No':(i+1), '判定':result[i][1], 'コメント':result[i][0], '歌詞':result[i][3]})
-		 }
+			resultData.push({'no':(i+1), 'judge':result[i][1], 'comment':result[i][0], 'lyrics':result[i][3]})
+		}
 
 
 		 return resultData;
@@ -200,8 +200,20 @@ class DetailResult extends Scoring {
 	displayDetailResult(rank){
 		
 		let table = new Tabulator("#detail-result-table", {
-			data: this.generateDetailResult(rank),          
-			autoColumns: true, //自動で列の設定を最適化する
+			columns:[
+				{title:"No",field:"no"},
+				{title:"判定",field:"judge",formatter:(cell, formatterParams) => {
+					let value = cell.getValue();
+					 if(value == 'Great' || value == 'Good'){
+						 return "<span style='font-weight:bold;'>" + value + "</span>";
+					 }else{
+						 return value;
+					 }
+				 }},
+				{title:"コメント",field:"comment"},
+				{title:"歌詞",field:"lyrics"}
+			],
+			data:this.generateDetailResult(rank)
 		});
 	}
 
