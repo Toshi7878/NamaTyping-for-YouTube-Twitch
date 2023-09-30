@@ -171,13 +171,15 @@ class DetailResult extends Scoring {
 			if(result[i][1] == 'None' && result[i][2] == null){
 				NoneComment += result.slice(i,i+1)[0][0]
 				result.splice(i,1);
+				i--
+				continue;
 			}
 
 			if(!result[i] && NoneComment){
 
 				result.push([NoneComment,'None', result.length, ''])
 
-			}else if(result[i][2] != null && result[i][2] !== i){
+			}else if(result[i][2] !== i){
 
 				if(!NoneComment){
 					result.splice(i, 0,['','Skip',i,this.correctLyrics[i]])
@@ -186,6 +188,8 @@ class DetailResult extends Scoring {
 					NoneComment = ''
 				}
 
+			}else if(result[i][1] == 'Great' || result[i][1] == 'Good'){
+				NoneComment = ''
 			}
 
 		}
