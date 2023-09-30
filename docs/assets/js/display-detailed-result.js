@@ -202,16 +202,16 @@ class DetailResult extends Scoring {
 		let table = new Tabulator("#detail-result-table", {
 			columns:[
 				{title:"No",field:"no"},
-				{title:"判定",field:"judge",formatter:(cell, formatterParams) => {
-					let value = cell.getValue();
-					 if(value == 'Great' || value == 'Good'){
-						 return "<span style='font-weight:bold;'>" + value + "</span>";
+				{title:"判定",field:"judge"},
+				{title:"コメント",field:"comment"},
+				{title:"歌詞",field:"lyrics",formatter:(cell, formatterParams) => {
+					let value = cell._cell.row.data.judge;
+					 if(value == 'Good'){
+						 return "<span style='opacity: 0.6;'>" + value + "</span>";
 					 }else{
 						 return value;
 					 }
-				 }},
-				{title:"コメント",field:"comment"},
-				{title:"歌詞",field:"lyrics"}
+				 }}
 			],
 			data:this.generateDetailResult(rank)
 		});
