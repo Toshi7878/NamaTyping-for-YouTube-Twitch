@@ -10,7 +10,7 @@ class MargeRepl {
 				if(/[一-龥]/.test(comparisonLyrics[i])){
 
 					for(let m=0;m<replSort.length;m++){
-						comparisonLyrics[i][j] = comparisonLyrics[i][j].replace(RegExp(replSort[m][0],"g"),"\t"+m+"\t")
+						comparisonLyrics[i][j] = comparisonLyrics[i][j].replace(RegExp(replSort[m][0],"g"),"\t@@"+m+"@@\t")
 					}
 
 				}
@@ -26,8 +26,8 @@ class MargeRepl {
 
 				for(let m=0;m<line.length;m++){
 
-					if(replSort[line[m]]){
-						line[m] = replSort[line[m]]
+					if(line[m].slice(0,2) == '@@' && line[m].slice(-2) == '@@' && replSort[parseFloat(line[m].slice(2))]){
+						line[m] = replSort[parseFloat(line[m].slice(2))]
 					}else{
 						line[m] = [line[m]]
 					}

@@ -65,3 +65,15 @@
 	background: rgba(76, 108, 140, 0.6);
 	outline: solid 1.1px #206ab6d1;
 }
+
+#player-editor-menu {
+	position: absolute;
+}
+
+#player-editor-menu {
+	left: 120%;
+	top: -13px;
+	color: #ffffffe6;
+	width: 40px;
+	text-align: center;
+}

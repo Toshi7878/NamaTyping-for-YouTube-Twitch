@@ -61,12 +61,18 @@ class Chat {
 			
 						this.users[userId]['result'].push([missComment, 'None']);
 					}
+
+					const JOIN_LYRICS = parseLrc.joinLyrics(correctLyrics)
 			
 					userComment = userComment.slice(correct['lyrics'].length + userComment.indexOf(correct['lyrics']));
-					this.users[userId]['typeCount'] += parseLrc.joinLyrics(correctLyrics).length / (correct['judge'] == 'Good' ? 1.5 : 1);
+					this.users[userId]['typeCount'] += JOIN_LYRICS.length / (correct['judge'] == 'Good' ? 1.5 : 1);
 					this.users[userId]['lyricsIndex'] = i+1
-					this.users[userId]['result'].push([correct['lyrics'], correct['judge'],i,(correct['judge'] == 'Good' ? parseLrc.joinLyrics(correctLyrics) : '')]);
-			
+					this.users[userId]['result'].push([correct['lyrics'], correct['judge'],i,(correct['judge'] == 'Good' ? JOIN_LYRICS : '')]);
+	
+					if(notifyOption.notifyScoring){
+						Notify.add(`${i}: ${correct['judge']}! ${this.users[userId]['name']} ${correct['lyrics']}`)
+					}
+					
 				}
 				
 			}

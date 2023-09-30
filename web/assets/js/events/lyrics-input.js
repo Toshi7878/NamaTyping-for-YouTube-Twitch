@@ -38,20 +38,23 @@ loadSoloPlayOption()
 
 lyricsInputToggleBtn.addEventListener('change', event => {
 
-	db.notes.put({id:'solo-play', data:event.target.checked});
-
-	if(event.target.checked){		
-		event.target.parentElement.classList.add('checked-button')
-		lyricsInput.parentElement.style.display = 'block'
-		bottomMenu.style.bottom = String(lyricsInput.parentElement.clientHeight+10)+'px'
-
-	}else{
-		event.target.parentElement.classList.remove('checked-button')
-		lyricsInput.parentElement.style.display = 'none'
-		bottomMenu.style.bottom = '15px'
-	}
-
+	toggleCheckbox(event.target)
 	adjustWordArea()
 	adjustMedia()
 
 })
+
+function toggleCheckbox(element){
+		db.notes.put({id:element.id, data:element.checked});
+	
+		if(element.checked){		
+			element.parentElement.classList.add('checked-button')
+			lyricsInput.parentElement.style.display = 'block'
+			bottomMenu.style.bottom = String(lyricsInput.parentElement.clientHeight+10)+'px'
+	
+		}else{
+			element.parentElement.classList.remove('checked-button')
+			lyricsInput.parentElement.style.display = 'none'
+			bottomMenu.style.bottom = '15px'
+		}
+}

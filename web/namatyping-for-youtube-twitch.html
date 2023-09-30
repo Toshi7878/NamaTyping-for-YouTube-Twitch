@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="assets\css\range.css">
 	<link rel="stylesheet" href="assets\css\select-box.css">
 	<link rel="stylesheet" href="assets\css\editor.css">
+	<link rel="stylesheet" href="assets\css\notify.css">
 	<link rel="stylesheet" href="assets\css\vender\tabulator.min.css">
 	<link rel="stylesheet" href="assets\css\animation\fade-in.css">
 	<link rel="stylesheet" href="assets\css\detail-result-table.css">
@@ -87,6 +88,38 @@
 
 		<div id="video-box">
 			<div id="transparent-cover"></div>
+			<div id="notify-container" class="text-shadow">
+				<div id="notify">
+				</div>
+				<div id="notify-options" class="d-none">
+
+					<div id="notify-display-option">
+						<label for="notify-delete" class="notify-label p-1" title="クリア">
+							<img src="assets\img\cross-script.png">
+							<input type="button" id="notify-delete" style="display:none;">
+						</label>
+						<label for="notify-username" class="notify-label p-1" title="ユーザー名">
+							<img src="assets\img\address-book.png">
+							<input type="checkbox" id="notify-username" style="display:none;">
+						</label>
+						<label for="notify-scoring" class="notify-label p-1" title="採点メッセージ">
+							<img src="assets\img\report--pencil.png">
+							<input type="checkbox" id="notify-scoring" style=" display:none;">
+						</label>
+						<label for="notify-comment" class="notify-label p-1" title="コメント">
+							<img src="assets\img\balloon.png">
+							<input type="checkbox" id="notify-comment" style="display:none;">
+						</label>
+					</div>
+
+					<div id="notify-font-size" class="mt-4">
+						<label class="arrow-highlight mb-2 p-1 notify-label"><img src="assets\img\control-090.png" id="notify-font-size-up"></label>
+						<label class="arrow-highlight mb-2 p-1 notify-label"><img src="assets\img\control-270.png" id="notify-font-size-down"></label>
+					</div>
+
+				</div>
+			</div>
+
 		</div>
 
 
@@ -104,6 +137,9 @@
 				</a>
 				<span id="player-tutorial">
 					<i class="fa-regular fa-keyboard"></i>
+				</span>
+				<span id="player-editor-menu">
+					<i class="fa-regular fa-square-caret-down"></i>
 				</span>
 			</div>
 
@@ -141,8 +177,8 @@
 			</div>
 
 			<div id="font-size-container">
-				<img src="assets\img\control-090.png" id="font-size-arrow-top" class='arrow-highlight'>
-				<img src="assets\img\control-270.png" id="font-size-arrow-down" class='arrow-highlight'>
+				<img src="assets\img\control-090.png" id="font-size-arrow-top" class='arrow-highlight mb-2 p-1'>
+				<img src="assets\img\control-270.png" id="font-size-arrow-down" class='arrow-highlight p-1'>
 			</div>
 
 		</div>
@@ -211,9 +247,12 @@
 	<script src="assets\js\game\scoring.js"></script>
 	<script src="assets\js\game\timer.js"></script>
 	<script src="assets\js\game\chat.js"></script>
+	<script src="assets\js\game\notify.js"></script>
+
 
 	<script src="assets\js\toggle-button.js"></script>
 	<script src="assets\js\events\skip.js"></script>
+	<script src="assets\js\events\notify-option.js"></script>
 	<script src="assets\js\events\live-menu.js"></script>
 	<script src="assets\js\events\open-json.js"></script>
 	<script src="assets\js\events\open-folder.js"></script>

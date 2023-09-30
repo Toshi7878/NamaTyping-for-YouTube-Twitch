@@ -56,7 +56,6 @@ class Game extends Load {
 		}
 
 		chat = new Chat()
-		scoring = new Scoring()
 		this.startTimeStamp = new Date().getTime()
 	}
 

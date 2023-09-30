@@ -144,12 +144,15 @@ class DetailResult extends Scoring {
 				data: this.generateRankTable(),          
 				autoColumns: true, //自動で列の設定を最適化する
 				selectable : true,
+				selectable:1,
+				selectableRollingSelection : true ,
 				rowClick:function(e, row){
 					const DATA = row._row.data['順位']
 					console.log(row._row.data)
 					detailResult.displayDetailResult(DATA)
 					},
 			});
+			table.selectRow(table.getRows()[0])
 			this.displayDetailResult(1)
 
 	}

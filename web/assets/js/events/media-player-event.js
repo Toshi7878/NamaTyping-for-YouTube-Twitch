@@ -59,6 +59,7 @@ class PlayerEvent {
 		if (location.host == 'localhost:8080') {
 			Discord.updateRPC(game.platform, game.title)
 		}
+		
 	}
 
 	//動画 音楽プレイヤーの状態が変更された

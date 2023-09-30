@@ -43,7 +43,7 @@ def displayDiscordRPC(title='選曲中', platform='', url=''):
 
 
 	if url != '':
-		activity["buttons"] = [{"label" : f"{platform}で聞く", "url" : url}]
+		activity["buttons"] = [{"label" : f"{platform}で聴く", "url" : url}]
 	
 	rpc_obj.set_activity(activity)
 

@@ -1,0 +1,90 @@
+#notify-container {
+	position: fixed;
+	left: 0px;
+	top: 40px;
+	height: 42%;
+	cursor: pointer;
+	width: 100%;
+	user-select: none;
+}
+
+#notify {
+	color: white;
+	font-size: 28px;
+	font-weight: bold;
+	overflow-y: scroll;
+	text-indent: 1rem;
+	user-select: none;
+	height: -webkit-fill-available;
+}
+
+/* Webkitブラウザ（ChromeやSafari）に対するスクロールバー非表示 */
+#notify::-webkit-scrollbar {
+	width: 0;
+	height: 0;
+}
+
+/* Webkitブラウザ（ChromeやSafari）に対するスクロールバー非表示（ホバー時） */
+#notify:hover::-webkit-scrollbar {
+	width: auto;
+	height: auto;
+}
+
+#notify-options {
+	position: absolute;
+	bottom: 15px;
+	cursor: pointer;
+	left: 95%;
+	display: flex;
+	flex-direction: column;
+}
+
+#notify-font-size {
+	display: flex;
+	flex-direction: column;
+	width: 5vh;
+}
+
+
+#notify-display-option label {
+	margin-bottom: 3px;
+}
+
+#notify-options img {
+	margin-bottom: 1px;
+	width: 40px;
+}
+
+#notify-display-option {
+	width: 5vh;
+}
+
+.checked-button:hover,
+.label-btn:active {
+	background: #b2d8fe;
+	outline: solid #68a8e9;
+}
+
+#notify-options .checked-button {
+	background: #71b8ff8c;
+	outline: solid 1.5px #c7c7c759;
+}
+
+#notify-display-option label:hover,
+.arrow-highlight:hover {
+	background: #a7d0f685;
+	outline: solid 1.5px #c7c7c759;
+}
+
+#notify-display-option label:active,
+.arrow-highlight:active,
+#notify-options .checked-button:hover {
+	background: #71b8ff8c;
+	outline: solid 1.5px #206ab6d1;
+}
+
+.notify-label {
+	padding: 3px;
+	display: flex;
+	align-items: center;
+}

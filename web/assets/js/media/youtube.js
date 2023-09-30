@@ -25,6 +25,7 @@ class YouTube {
 		this.player = new YT.Player('player', {
 	
 			playerVars: {
+				param:"namaTyping",
 				controls: 0,
 				disablekb: 1,
 			},
@@ -39,6 +40,7 @@ class YouTube {
 			}
 	
 		});
+
 	}
 	
 }
