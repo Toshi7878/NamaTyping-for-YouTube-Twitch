@@ -22,7 +22,7 @@ class SettingMenu {
 
 		this.frame = jsFrame.create({
 			title: '設定',
-			left: 60, top: 60, width: 615, height: 300,
+			left: 60, top: 60, width: 615, height: 350,
 			movable: true,//マウスで移動可能
 			resizable: true,//マウスでリサイズ可能
 			appearanceName: 'redstone',//プリセット名は 'yosemite','redstone','popup'
@@ -35,6 +35,7 @@ class SettingMenu {
 					<label class="ms-2"><input id="input-font-weight" type="checkbox" class="me-2">フォントを太く表示</label>
 				</div>
 				<label><input id="display-next-lyrics" type="checkbox" class="me-2" checked>3秒前に次の歌詞を表示</label>
+				<label><input id="word-area-auto-adjust-height" type="checkbox" class="me-2" checked>歌詞エリアの高さ自動調整</label>
 				<label><input id="display-discord-rpc" type="checkbox" class="me-2" checked>Discordのアクティビティに表示する</label>
 				<label><input type='button' class='mt-2' id='delete-result-history' value='リザルト履歴ページをリセット'></label>
 
@@ -44,7 +45,7 @@ class SettingMenu {
 		//ウィンドウを表示する
 		this.frame.isOpen = true
 
-		const settingData = new SettingData()
+		settingData = new SettingData()
 		await settingData.load()
 		settingData.buildSettingMenu()
 
@@ -207,9 +208,24 @@ class Apply{
 
 	}
 
+	static wordAreaAutoAdjustHeight(value){
+		
+		//IndexedDBにデータが無い場合は初期化
+		if(!settingData.wordAreaAutoAdjustHeight){
+			settingData.wordAreaAutoAdjustHeight = {}
+		}
+
+		if(value){
+			settingData.wordAreaAutoAdjustHeight.data = true
+		}else{
+			settingData.wordAreaAutoAdjustHeight.data = false
+		}
+	}
+
 
 
 }
+
 
 class SettingEvents{
 
@@ -225,8 +241,7 @@ class SettingEvents{
 		document.getElementById("display-next-lyrics").addEventListener('change', this.displayNextLyrics.bind(this))
 		document.getElementById("delete-result-history").addEventListener('click', this.deleteResultData.bind(this))
 		document.getElementById("display-discord-rpc").addEventListener('change', this.displayDiscordRpc.bind(this))
-
-
+		document.getElementById("word-area-auto-adjust-height").addEventListener('change', this.wordAreaAutoAdjustHeight.bind(this))
 	}
 
 	inputBlurRange(event){
@@ -254,10 +269,6 @@ class SettingEvents{
 		this.putIndexedDB(event.target.id, event.target.checked)
 	}
 
-	putIndexedDB(id, value){
-		db.notes.put({id: event.target.id, data:value});
-	}
-
 	deleteResultData(){
 		const LIVE_ID = document.getElementById("live-id").value
 
@@ -273,7 +284,14 @@ class SettingEvents{
 		this.putIndexedDB(event.target.id, event.target.checked)
 	}
 
-	
+	wordAreaAutoAdjustHeight(event){
+		Apply.wordAreaAutoAdjustHeight(event.target.checked)
+		this.putIndexedDB(event.target.id, event.target.checked)
+	}
+
+	putIndexedDB(id, value){
+		db.notes.put({id: event.target.id, data:value});
+	}
 }
 
 
@@ -290,7 +308,7 @@ class SettingData {
 		this.inputFontWeight = await db.notes.get('input-font-weight');
 		this.displayNextLyrics = await db.notes.get('display-next-lyrics');
 		this.displayDiscordRpc = await db.notes.get('display-discord-rpc');
-
+		this.wordAreaAutoAdjustHeight = await db.notes.get('word-area-auto-adjust-height');
 	}
 
 
@@ -307,8 +325,13 @@ class SettingData {
 			Apply.changeInputHeight(this.inputFontHeight.data)
 		}
 
+
 		if(this.inputFontWeight){
 			Apply.inputFontWeight(this.inputFontWeight.data)
+		}
+
+		if(this.wordAreaAutoAdjustHeight){
+			Apply.wordAreaAutoAdjustHeight(this.wordAreaAutoAdjustHeight.data)
 		}
 	}
 
@@ -340,6 +363,10 @@ class SettingData {
 			document.getElementById("display-discord-rpc").checked = this.displayDiscordRpc.data
 		}
 
+		if(this.wordAreaAutoAdjustHeight){
+			document.getElementById("word-area-auto-adjust-height").checked = this.wordAreaAutoAdjustHeight.data
+		}
+
 	}
 
 }
@@ -348,7 +375,7 @@ let settingData
 
 
 (async () => {
-	const settingData = new SettingData()
+	settingData = new SettingData()
 	await settingData.load()
 	settingData.allApply()
 })()

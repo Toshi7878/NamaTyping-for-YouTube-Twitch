@@ -187,6 +187,7 @@ class Timer {
 		this.shadowElements = NEXT_HEAD.getElementsByClassName("shadow-layer")[0].children
 		this.wipeElements = NEXT_HEAD.getElementsByClassName("wipe-layer")[0].children
 		this.wipeCount = 0
+		this.checkAdjustWordArea()
 	}
 	
 
@@ -234,6 +235,25 @@ class Timer {
 
 		for (let i = 0; i < timeElements.length; i++) {
 			timeElements[i].textContent = `${time[0]}:${time[1]}`
+		}
+
+	}
+
+
+	checkAdjustWordArea(){
+		if(settingData.wordAreaAutoAdjustHeight && settingData.wordAreaAutoAdjustHeight.data == false){return;}
+
+		const LYRICS_TOP_POSITION = document.getElementById("lyrics").getBoundingClientRect().top
+		const WORD_AREA = document.getElementById("word-area")
+		const WORD_AREA_TOP_POSITION = WORD_AREA.getBoundingClientRect().top
+		const DEFAULT_HEIGHT = 365
+
+		if(LYRICS_TOP_POSITION < WORD_AREA_TOP_POSITION || WORD_AREA.clientHeight > DEFAULT_HEIGHT && LYRICS_TOP_POSITION  - WORD_AREA_TOP_POSITION > 70){
+			const ADJUST_HEIGHT = WORD_AREA_TOP_POSITION - LYRICS_TOP_POSITION + WORD_AREA.clientHeight + 40
+			const MIN_HEIGHT = ADJUST_HEIGHT > DEFAULT_HEIGHT && LYRICS_TOP_POSITION ? ADJUST_HEIGHT : DEFAULT_HEIGHT
+			WORD_AREA.style.height = `${MIN_HEIGHT}px`
+			adjustWordArea()
+			resizeEvent(null, MIN_HEIGHT)
 		}
 
 	}

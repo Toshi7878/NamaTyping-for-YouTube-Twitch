@@ -12,7 +12,7 @@ class Lyrics {
 				const char = displayLyrics[i]['char']
 				const times = displayLyrics[i]['time']
 
-				let lyricsElement = `<div data-count="${i}" id="lyrics-${i}" class="${isEdit ? `previous-lyrics`:""} ${i == 0 ? 'head-lyrics':''}">`
+				let lyricsElement = `<div data-count="${i}" id="lyrics-${i}" class="${char.length > 3 ? `text-keep-all`:""} ${isEdit ? `previous-lyrics`:""} ${i == 0 ? 'head-lyrics':''}">`
 				let shadowElement = `<div class="shadow-layer">`
 				let wipeElement = `<div class="wipe-layer">`
 				let charElements = ''

@@ -6,7 +6,7 @@ body {
   background: rgba(0, 0, 0, 0.6);
   position: fixed;
   width: 100%;
-  height: 43%;
+  height: 365px;
   right: 0%;
   font-weight: bold;
   font-size: xx-large;
@@ -181,4 +181,8 @@ body {
 
 #font-size-arrow-down {
   width: 40px;
+}
+
+.text-keep-all {
+  word-break: keep-all;
 }

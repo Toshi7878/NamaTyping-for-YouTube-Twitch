@@ -3,9 +3,6 @@ window.addEventListener('resize', e => {
 	adjustMedia()
 })
 
-const resizeObserver = new ResizeObserver(adjustWordArea);
-resizeObserver.observe(document.getElementById("word-area"));
-
 
 function adjustWordArea(event) {
 	if(!game || !game.isEdit){
@@ -47,10 +44,13 @@ function adjustMedia() {
 
 adjustWordArea()
 adjustMedia()
-$("#word-area").resizable({handles:'n'});
-$("#word-area").on( "resize", function( event, ui ) {
-	console.log(event)
-	console.log(ui)
+$("#word-area").resizable({
+	handles: 'n',
+	resize: resizeEvent,
+	stop: resizeStop
+  })
+
+  function resizeEvent(event, ui) {
 	const bottomMenu = document.getElementById("bottom-menu")
 	const bottom = (parseFloat(getComputedStyle(bottomMenu).bottom) + bottomMenu.clientHeight) * 0.8
 
@@ -60,6 +60,12 @@ $("#word-area").on( "resize", function( event, ui ) {
 	const notify = document.getElementById('notify-container');
 	const notify_options = document.getElementById("notify-options")
 
-	notify.style.height = `${(window.innerHeight - (top + bottom) - ui.size.height-20).toString()}px`
+	const HEIGHT = typeof ui == 'number' ? ui : ui.size.height
+
+	notify.style.height = `${(window.innerHeight - (top + bottom) - HEIGHT-20).toString()}px`
 	notify.scrollTop = notify.scrollHeight - notify.clientHeight;
-} );
+}
+
+function resizeStop(){
+	adjustWordArea()
+}
