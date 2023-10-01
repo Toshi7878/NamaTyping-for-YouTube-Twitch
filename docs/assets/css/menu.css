@@ -109,3 +109,8 @@
 	outline: solid #e4e7eb !important;
 	border: none !important;
 }
+
+#report-issue {
+	text-decoration: auto;
+	color: rgb(33, 37, 41);
+}

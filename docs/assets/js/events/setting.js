@@ -351,8 +351,8 @@ class SettingData {
 			document.getElementById("lyrics-input-font-size").value = this.inputFontHeight.data
 		}
 
-		if(this.displayTimer){
-			document.getElementById("input-font-weight").checked = this.displayTimer.data
+		if(this.inputFontWeight){
+			document.getElementById("input-font-weight").checked = this.inputFontWeight.data
 		}
 
 		if(this.displayNextLyrics){

@@ -29,7 +29,7 @@ class CreateMenu {
 		const jsFrame = new JSFrame();
 
 		this.frame = jsFrame.create({
-			title: 'lrc新規作成ウィンドウ',
+			title: 'json新規作成ウィンドウ',
 			left: 60, top: 60, width: 900, height: 470,
 			movable: true,//マウスで移動可能
 			resizable: true,//マウスでリサイズ可能

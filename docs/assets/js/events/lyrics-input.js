@@ -19,6 +19,10 @@ lyricsInput.addEventListener('keydown', event => {
 
 })
 
+lyricsInput.addEventListener('focus', event => {
+	event.target.removeAttribute('placeholder')
+})
+
 const lyricsInputToggleBtn = document.getElementById("solo-play")
 const bottomMenu = document.getElementById("bottom-menu")
 
