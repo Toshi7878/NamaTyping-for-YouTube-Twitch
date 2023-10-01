@@ -246,7 +246,7 @@ class Timer {
 		const LYRICS_TOP_POSITION = document.getElementById("lyrics").getBoundingClientRect().top
 		const WORD_AREA = document.getElementById("word-area")
 		const WORD_AREA_TOP_POSITION = WORD_AREA.getBoundingClientRect().top
-		const DEFAULT_HEIGHT = 354
+		const DEFAULT_HEIGHT = document.documentElement.clientHeight*0.43
 
 		if(LYRICS_TOP_POSITION < WORD_AREA_TOP_POSITION || WORD_AREA.clientHeight > DEFAULT_HEIGHT && LYRICS_TOP_POSITION  - WORD_AREA_TOP_POSITION > 70){
 			const ADJUST_HEIGHT = WORD_AREA_TOP_POSITION - LYRICS_TOP_POSITION + WORD_AREA.clientHeight + 40

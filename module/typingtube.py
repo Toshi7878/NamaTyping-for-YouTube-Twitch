@@ -42,7 +42,7 @@ class TypingTube:
 		self.option = Options()
 		self.option.add_argument("--headless")
 		self.option.add_experimental_option('excludeSwitches', ['enable-logging'])
-		self.chrome = webdriver.Chrome(executable_path=r".\\driver\\chromedriver.exe", options=self.option)
+		self.chrome = webdriver.Chrome(options=self.option)
 		self.chrome.get(f'https://typing-tube.net/movie/show/{str(self.id)}')  # 譜面ページを開く
 		self.getMap()
 		self.chrome.quit()
