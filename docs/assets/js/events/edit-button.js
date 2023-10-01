@@ -38,9 +38,8 @@ class CreateMenu {
 			<div class="row">
 				<div class="">
 					<label for="edit-url">URL (YouTube or SoundCloud)</label>
-					<div class="mb-5 d-flex flex-row justify-content-between"><input id="edit-url" class="form-control" type="text" style="
-    width: 67%;
-"><input type="button" id="get-create-param-btn" class="ms-3 btn btn-primary" value="URLを入力してデータ取得" disabled></div>
+					<div class="mb-5 d-flex flex-row justify-content-between"><input id="edit-url" class="form-control" type="text" style="width: 67%;" disabled>
+					<input type="button" id="get-create-param-btn" class="ms-3 btn btn-primary" value="URLを入力してデータ取得" disabled></div>
 				</div>
 				<div class="mb-2">
 					<label for="edit-id" value="">ID</label>
@@ -63,6 +62,9 @@ class CreateMenu {
 		}).show();;
 		//ウィンドウを表示する
 		this.frame.isOpen = true
+		if (location.host == 'localhost:8080') {
+			document.getElementById("edit-url").removeAttribute('disabled')
+		}
 		this.addFrameEvents();
 	}
 
