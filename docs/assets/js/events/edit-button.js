@@ -1,5 +1,8 @@
 
 class CreateMenu {
+	static URL_PLACEHOLDER = "動画・楽曲URLを指定するとID・タイトル・アーティスト(チャンネル名)を取得します"
+	static ID_PLACEHOLDER = "YouTube[URLのwatch?v=の後に続く11文字] / SoundCloud[Share→Embed→Code内の/tracks/の後に続く数字]"
+	
 	constructor(){
 		this.menu()
 	}
@@ -38,12 +41,12 @@ class CreateMenu {
 			<div class="row">
 				<div class="">
 					<label for="edit-url">URL (YouTube or SoundCloud)</label>
-					<div class="mb-5 d-flex flex-row justify-content-between"><input id="edit-url" class="form-control" type="text" style="width: 67%;" disabled>
+					<div class="mb-5 d-flex flex-row justify-content-between"><input id="edit-url" placeholder="${CreateMenu.URL_PLACEHOLDER}" class="form-control" type="text" style="width: 67%;" disabled>
 					<input type="button" id="get-create-param-btn" class="ms-3 btn btn-primary" value="URLを入力してデータ取得" disabled></div>
 				</div>
 				<div class="mb-2">
-					<label for="edit-id" value="">ID</label>
-					<input id="edit-id" class="form-control" type="text" value="">
+					<label for="edit-id" value="">ID (必須)</label>
+					<input id="edit-id" placeholder="${CreateMenu.ID_PLACEHOLDER}" class="form-control" type="text" value="">
 				</div>
 				<div class="mb-2">
 					<label for="edit-title">タイトル</label>
@@ -59,11 +62,15 @@ class CreateMenu {
 					<input type="button" id="create-start-btn" class="btn btn-success w-100 mt-4" value="作成開始" disabled>
 				</div>
 		</div>`
-		}).show();;
+		})
 		//ウィンドウを表示する
+		this.frame.setPosition(window.innerWidth, 0, 'RIGHT_TOP');
+		this.frame.show();
 		this.frame.isOpen = true
 		if (location.host == 'localhost:8080') {
 			document.getElementById("edit-url").removeAttribute('disabled')
+		}else{
+			document.getElementById("edit-url").placeholder = 'Web版はURLからデータを取得できません。'
 		}
 		this.addFrameEvents();
 	}

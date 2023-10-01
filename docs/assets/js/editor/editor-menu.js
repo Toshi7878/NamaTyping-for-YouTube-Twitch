@@ -23,15 +23,32 @@ class EditorMenu {
 
 		this.frame = jsFrame.create({
 			title: 'エディターメニュー',
-			left: 60, top: 60, width: 900, height: 470,
+			width: 500, height: 320,
 			movable: true,//マウスで移動可能
 			resizable: true,//マウスでリサイズ可能
 			appearanceName: 'redstone',//プリセット名は 'yosemite','redstone','popup'
-			html: `<div id="editor-menu-container" class="fs-6 m-3">
-			<label class="w-25">全体タイム調整<input type="number" id='adjust-time' step='0.1' class="form-control-sm w-50"></label><input type="button" id='adjust-btn' class="btn btn-success" value="実行">
+			html: 
+			`<div id="editor-menu-container" class="container mt-4 fs-6">
+				<div class="row">
+					<div class="col-md-5">
+						<label>全体タイム調整</label>
+						<div class="mb-5"><input type="number" id="adjust-time" step="0.1" class="form-control-sm col-5" value="0">
+						<input type="button" id="adjust-btn" class="btn btn-success btn-sm" value="実行"></div>
+					</div>
+					<div class="mb-2">
+						<label>タイトル</label>
+						<input id="edit-change-title" value="${editor.setData.title}" class="form-control" type="text">
+					</div>
+					<div class="mb-2">
+						<label>アーティスト</label>
+						<input id="edit-change-artist" value="${editor.setData.artist}" class="form-control" type="text">
+					</div>
+				</div>
 			</div>`
-		}).show();;
+		});
 		//ウィンドウを表示する
+		this.frame.setPosition(window.innerWidth-90, 0, 'RIGHT_TOP');
+		this.frame.show();
 		this.frame.isOpen = true
 
 		this.addFrameEvents();
@@ -117,6 +134,8 @@ class EditorMenuEvents {
 
 	constructor(){
 		document.getElementById("adjust-btn").addEventListener('click', this.adjustTime)
+		document.getElementById("edit-change-title").addEventListener('change', this.changeTitle)
+		document.getElementById("edit-change-artist").addEventListener('change', this.changeArtist)
 	}
 
 	adjustTime(){
@@ -132,8 +151,20 @@ class EditorMenuEvents {
 			
 		}
 
-		new Lyrics(game.displayLyrics, 'EditMode')
-		
+		new Lyrics(game.displayLyrics, 'EditMode')	
+
+		const jsFrame = new JSFrame();
+		jsFrame.showToast({
+			html: `<span style="color:white;">実行完了(歌い出しTIME: ${game.displayLyrics[0]['time'][0]})</span>`
+		});
+	}
+
+	changeTitle(event){
+		editor.setData.title = event.target.value
+	}
+
+	changeArtist(event){
+		editor.setData.artist = event.target.value
 	}
 }
 
