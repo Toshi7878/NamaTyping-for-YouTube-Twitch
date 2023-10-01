@@ -151,4 +151,4 @@ class Chat:
 
 eel.init("docs")
 
-eel.start("namatyping-for-youtube-twitch.html", size=(1280, 720), port=8080)
+eel.start("index.html", size=(1280, 720), port=8080)
