@@ -74,7 +74,7 @@
 
 			</div>
 
-			<div>
+			<div class="d-none">
 				<label for="edit-button" class="label-btn d-none" title="譜面編集">
 					<img src="assets\img\script-text.png">
 					<span>譜面編集(β)</span><input type="button" id="edit-button" style="display:none;">
@@ -151,8 +151,8 @@
 
 			</div>
 
-			<div id="add-lyrics-container" style="display:none;">
-				<textarea id="add-lyrics-box"></textarea>
+			<div id="add-lyrics-container" style="display:none;" class="ms-3">
+				<textarea id="add-lyrics-box" placeholder="ここに成形した歌詞を入力しTABキーを押すと空白/改行区切りでタイムタグを付けることができます。"></textarea>
 			</div>
 
 
@@ -194,8 +194,8 @@
 		<div id="bottom-menu" class="menu">
 			<div>
 				<div id="bottom-left-menu" class="dividing-line">
-					<input type="input" id="typing-tube-id" class="menu-text-box" placeholder="ID here" style="display:none;">
-					<label for="file-input" class="label-btn" title="開く">
+					<input type="input" id="typing-tube-id" class="menu-text-box d-none" placeholder="ID here">
+					<label for="file-input" class="label-btn d-none" title="開く">
 						<!-- title="開く" -->
 						<img src="assets\img\folder-open-document-music.png">
 						<span>JSONを開く</span><input type="file" id="file-input" style="display:none;" accept=".json">

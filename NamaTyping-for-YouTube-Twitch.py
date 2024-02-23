@@ -20,12 +20,13 @@ from module.getCreateData import GetCreateData
 
 
 client_id = '1155873158155472906'  # あなたのクライアントIDを記入
-rpc_obj = rpc.DiscordIpcClient.for_platform(client_id)  
+# rpc_obj = rpc.DiscordIpcClient.for_platform(client_id)  
 start_time = mktime(time.localtime())
 
 @eel.expose
 def hideDiscordRPC():
-	rpc_obj._close()
+	return;
+	# rpc_obj._close()
 
 @eel.expose
 def displayDiscordRPC(title='選曲中', platform='', url=''):
@@ -45,7 +46,7 @@ def displayDiscordRPC(title='選曲中', platform='', url=''):
 	if url != '':
 		activity["buttons"] = [{"label" : f"{platform}で聴く", "url" : url}]
 	
-	rpc_obj.set_activity(activity)
+	# rpc_obj.set_activity(activity)
 
 @eel.expose
 def sendURLtoGetParamData(url):
@@ -151,4 +152,4 @@ class Chat:
 
 eel.init("docs")
 
-eel.start("index.html", size=(1280, 720), port=8080)
+eel.start("index.html", size=(1750, 1087), port=8080)

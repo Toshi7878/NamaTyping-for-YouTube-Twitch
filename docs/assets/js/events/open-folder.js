@@ -2,11 +2,102 @@ document.getElementById('folder-input').addEventListener('change', event => {
 
 	if (event.target.files.length) {
 		lrcFolder = new LrcFolder()
-		lrcFolder.open(event)
+		lrcFolder.open(event.target.files)
 	}
 
 })
 
+
+
+class DropEvent {
+
+	constructor(){
+		document.getElementById("notify").addEventListener('dragover', this.dragOver);
+	  	document.getElementById("notify").addEventListener('dragleave', this.dragLeave);
+		document.getElementById("notify").addEventListener("drop", this.drop.bind(this), false);
+		document.getElementById("word-area").addEventListener('dragover', this.dragOver);
+		document.getElementById("word-area").addEventListener('dragleave', this.dragLeave);
+		document.getElementById("word-area").addEventListener("drop", this.drop.bind(this), false);
+	}
+
+	dragOver(event){
+		event.target.style.borderColor = 'blue';
+		event.preventDefault();
+	}
+
+	dragLeave(event){
+		event.target.style.borderColor = '';
+	}
+
+	async drop(event) {
+		event.preventDefault();
+		const items = event.dataTransfer.items;
+		const results = [];
+		const promise = [];
+		for (const item of items) {
+			const entry = item.webkitGetAsEntry();
+			promise.push(this.scanFiles(entry, results));
+		}
+		await Promise.all(promise);
+	
+		if (results.length) {
+			lrcFolder = new LrcFolder()
+			lrcFolder.open(results, 'isDrop')
+		}
+	
+	}
+
+	async scanFiles(entry, tmpObject) {
+		switch (true) {
+			case (entry.isDirectory) :
+				const entryReader = entry.createReader();
+				const entries = await new Promise(resolve => {
+					entryReader.readEntries(entries => resolve(entries));
+				});
+				await Promise.all(entries.map(entry => this.scanFiles(entry, tmpObject)), this);
+				break;
+			case (entry.isFile) :
+				tmpObject.push(entry);
+				break;
+		}
+	}
+
+}
+
+new DropEvent()
+
+const VIDEO = [
+    'webm',
+    'mp4',
+    'ogg',
+    'ogv',
+    'avi',
+    'mov',
+    'flv',
+    'mkv',
+    // 他にも可能性がある拡張子を追加する
+];
+
+const AUDIO = [
+    'mp3',
+    'ogg',
+    'wav',
+    'flac',
+    'aac',
+    'm4a',
+    // 他にも可能性がある拡張子を追加する
+];
+
+const IMAGE = [
+    'jpeg',
+    'jpg',
+    'png',
+    'gif',
+    'bmp',
+    'webp',
+    'svg',
+    // 他にも可能性がある拡張子を追加する
+];
 class LrcFolder {
 
 
@@ -18,20 +109,36 @@ class LrcFolder {
 
 		}
 	
-		async open(event) {
-			const files = Object.values(event.target.files);
+		async open(folder, isDrop) {
+			const files = Object.values(folder);
 	
 			for (let i = 0; i < files.length; i++) {
-				const fileType = files[i].type
-	
-				if (fileType.includes('audio') || fileType.includes('video')) {
-					this.mediaFile = URL.createObjectURL(files[i])
-				} else if (fileType.includes('image')) {
-					this.imgFile = URL.createObjectURL(files[i])
+				const fileName = files[i].name.toLowerCase();
+
+				if (VIDEO.some(extension => fileName.endsWith(`.${extension}`)) || AUDIO.some(extension => fileName.endsWith(`.${extension}`))) {
+					if(isDrop){
+						this.mediaFile = await new Promise((resolve) => { files[i].file(file => {  resolve(URL.createObjectURL(file))}) });
+					}else{
+						this.mediaFile = URL.createObjectURL(files[i])
+					}
+				} else if (IMAGE.some(extension => fileName.endsWith(`.${extension}`))) {
+					if(isDrop){
+						this.imgFile = await new Promise((resolve) => { files[i].file(file => { resolve(URL.createObjectURL(file))}) });
+					}else{
+						this.imgFile = URL.createObjectURL(files[i])
+					}
 				} else if (files[i].name.endsWith('.lrc')) {
-					this.lrcFile = files[i]
+					if(isDrop){
+						this.lrcFile =  await new Promise((resolve) => { files[i].file(file => {resolve(file)}) });
+					}else{
+						this.lrcFile = files[i]
+					}
 				} else if(files[i].name.endsWith('.repl.txt')){
-					this.replFile = files[i]
+					if(isDrop){
+						this.replFile = await new Promise((resolve) => { files[i].file(file => {resolve(file)}) });
+					}else{
+						this.replFile = files[i]
+					}
 				}
 			}
 	

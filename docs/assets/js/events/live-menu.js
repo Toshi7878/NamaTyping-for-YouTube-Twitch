@@ -12,15 +12,12 @@ class Live {
 		const LIVE_ID_BOX = document.getElementById("live-id")
 		const RESULT_URL_BTN = document.getElementById("result-url-copy")
 
-		const ID = await db.notes.get('live-id')
-
-		if (location.host == 'localhost:8080' && ID) {
-			LIVE_ID_BOX.value = ID.data
+		if (location.host == 'localhost:8080') {
+			//LIVE_ID_BOX.value = ID.data
 			ToggleBtn.resultHistoryButton(LIVE_ID_BOX.value)
 		}
 
 		LIVE_ID_BOX.addEventListener('input', e => {
-			db.notes.put({id: 'live-id', data:e.target.value});
 			ToggleBtn.resultHistoryButton(e.target.value)
 		})
 

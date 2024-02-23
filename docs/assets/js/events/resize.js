@@ -1,6 +1,7 @@
 window.addEventListener('resize', e => {
 	adjustWordArea()
 	adjustMedia()
+	resizeEvent(null, document.getElementById("word-area").clientHeight)
 })
 
 
@@ -58,7 +59,6 @@ $("#word-area").resizable({
 	const top = (parseFloat(getComputedStyle(topMenu).top) + topMenu.clientHeight) * 0.8
 
 	const notify = document.getElementById('notify-container');
-	const notify_options = document.getElementById("notify-options")
 
 	const HEIGHT = typeof ui == 'number' ? ui : ui.size.height
 
