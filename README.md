@@ -1,3 +1,3 @@
 # NamaTyping-for-YouTube-Twitch
 
-<a href="https://dl.dropboxusercontent.com/scl/fi/jz6xq9r3le5ad77n2y0fo/NamaTyping-for-YouTube-Twitch.zip?rlkey=wuvky4to9vmbqh8o16tmvylj2&dl=0">本体はこちらからダウンロード</a>
+<a href="https://github.com/Toshi7878/NamaTyping-for-YouTube-Twitch/raw/main/NamaTyping-for-YouTube-Twitch.zip">本体はこちらからダウンロード</a>
