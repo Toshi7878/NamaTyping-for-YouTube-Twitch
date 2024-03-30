@@ -97,6 +97,7 @@ class Chat {
 				for(let m=0; m<correctLyrics[i].length; m++){
 					let search = comment.search(correctLyrics[i][m])
 				
+					//great判定
 					if(m == 0){
 
 						if(i == 0 && search > 0){
@@ -112,6 +113,7 @@ class Chat {
 
 					}
 
+					//ハズレかrepl判定
 					if(m == correctLyrics[i].length-1){
 						search = repl.kanaToHira(comment).search(repl.kanaToHira(correctLyrics[i][m]))
 
@@ -125,6 +127,9 @@ class Chat {
 							comment = comment.slice(correctLyrics[i][m].length)
 							judge = 'Good'
 							break;
+						}else if(correcting){
+							comment = comment.replace(/\S+\s/,'')
+							return this.judgeComment(correctLyrics, comment)
 						}else{
 							return {'lyrics':'', 'judge':'None'}
 						}
