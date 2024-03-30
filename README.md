@@ -5,7 +5,7 @@
 ">ニコ生タイピング</a>をオマージュして作成されたタイピングゲームです。<br>
 YouTube | Twitchのチャットで歌詞タイピングができます。
 
-# ダウンロード
+# ダウンロード(ver1.0)
 https://github.com/Toshi7878/NamaTyping-for-YouTube-Twitch/raw/main/NamaTyping-for-YouTube-Twitch%20v1.0.zip
 
 # 仕様
