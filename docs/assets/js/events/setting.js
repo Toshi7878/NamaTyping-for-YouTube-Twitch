@@ -131,9 +131,9 @@ SettingMenu.BtnEvent()
 let settingMenu
 
 class Apply{
+
 	static inputEmulateName(value){
 
-		
 		//IndexedDBにデータが無い場合は初期化
 		if(!settingData.emulateName){
 			settingData.emulateName = {data:'名無し'}
@@ -301,7 +301,7 @@ class SettingData {
 	}
 
 	async load(){
-		this.emulateName = await db.notes.get('emulate_name');
+		this.emulateName = await db.notes.get('emulate_name') || {data:'名無し'};
 		this.blurRange = await db.notes.get('word-area-blur-range');
 		this.displayTimer = await db.notes.get('display-timer');
 		this.inputFontHeight = await db.notes.get('lyrics-input-font-size');
@@ -312,7 +312,9 @@ class SettingData {
 
 
 	allApply(){
-		Apply.inputEmulateName(this.emulateName.data)
+		if(this.emulateName){
+			Apply.inputEmulateName(this.emulateName.data)
+		}
 
 		if(this.blurRange){
 			Apply.inputBlurRange(this.blurRange.data)
