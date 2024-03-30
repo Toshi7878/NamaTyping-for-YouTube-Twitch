@@ -7,46 +7,13 @@ if hasattr(sys.stdout, 'write') == False: sys.stdout = open(os.devnull, 'w')
 if hasattr(sys.stderr, 'write') == False: sys.stderr = open(os.devnull, 'w')
 
 import eel
-import time
-from time import mktime
 import pytchat
 import threading
-from module import rpc
+import configparser
 from module import twitch_chat_irc
 from module.typingtube import TypingTube
 from module.getCreateData import GetCreateData
 
-
-
-
-client_id = '1155873158155472906'  # あなたのクライアントIDを記入
-# rpc_obj = rpc.DiscordIpcClient.for_platform(client_id)  
-start_time = mktime(time.localtime())
-
-@eel.expose
-def hideDiscordRPC():
-	return;
-	# rpc_obj._close()
-
-@eel.expose
-def displayDiscordRPC(title='選曲中', platform='', url=''):
-	activity = {
-			"details": title,
-			"timestamps": {
-                "start": start_time
-            },
-			"assets" : {
-				"large_image" : "nama_key" # さっきコピーしたものを貼り付け
-			}
-	}
-	if title != '選曲中':
-		activity["state"] = 'Playing'
-
-
-	if url != '':
-		activity["buttons"] = [{"label" : f"{platform}で聴く", "url" : url}]
-	
-	# rpc_obj.set_activity(activity)
 
 @eel.expose
 def sendURLtoGetParamData(url):
@@ -150,6 +117,16 @@ class Chat:
 		eel.commentCheck(data)
 
 
+
+
 eel.init("docs")
 
-eel.start("index.html", size=(1750, 1087), port=8080)
+# config.iniファイルを読み込む
+config = configparser.ConfigParser()
+config.read('.\\config.ini', encoding='utf-8')
+
+# window_widthとwindow_heightを取得する
+window_width = config.getint('DEFAULT', 'window_width')
+window_height = config.getint('DEFAULT', 'window_height')
+
+eel.start("index.html", size=(window_width, window_height), port=8080)
