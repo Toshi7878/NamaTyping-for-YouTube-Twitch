@@ -3,3 +3,6 @@ lrc
 json
 .vscode
 情報
+dist
+build
+*.spec
