@@ -3,7 +3,7 @@
 
 <a href="https://github.com/jz5/namatyping
 ">ニコ生タイピング</a>をオマージュして作成したタイピングゲームです。
-YouTube|Twitchのチャットで歌詞タイピングが可能です。
+YouTube | Twitchのチャットで歌詞タイピングが可能です。
 
 # ダウンロード
 https://github.com/Toshi7878/NamaTyping-for-YouTube-Twitch/raw/main/NamaTyping-for-YouTube-Twitch.zip
