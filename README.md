@@ -2,8 +2,8 @@
 # NamaTyping-for-YouTube-Twitch
 
 <a href="https://github.com/jz5/namatyping
-">ニコ生タイピング</a>をオマージュして作成したタイピングゲームです。
-YouTube | Twitchのチャットで歌詞タイピングが可能です。
+">ニコ生タイピング</a>をオマージュして作成されたタイピングゲームです。
+YouTube | Twitchのチャットで歌詞タイピングができます。
 
 # ダウンロード
 https://github.com/Toshi7878/NamaTyping-for-YouTube-Twitch/raw/main/NamaTyping-for-YouTube-Twitch.zip
