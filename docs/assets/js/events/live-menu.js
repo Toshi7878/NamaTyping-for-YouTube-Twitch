@@ -13,7 +13,6 @@ class Live {
 		const RESULT_URL_BTN = document.getElementById("result-url-copy")
 
 		if (location.host == 'localhost:8080') {
-			//LIVE_ID_BOX.value = ID.data
 			ToggleBtn.resultHistoryButton(LIVE_ID_BOX.value)
 		}
 
@@ -23,9 +22,19 @@ class Live {
 
 		RESULT_URL_BTN.addEventListener('click', e => {
 			if (navigator.clipboard) {
-
-				return navigator.clipboard.writeText(`https://namatyping-result.onrender.com/?${LIVE_ID_BOX.value}`).then(() => {
-					alert('クリップボードにリザルト履歴URLをコピーしました。')
+				const LIVE_ID = extractYouTubeVideoId(LIVE_ID_BOX.value)
+				return navigator.clipboard.writeText(`https://namatyping-result.onrender.com/?${LIVE_ID}`).then(() => {
+					const jsFrame = new JSFrame();
+					jsFrame.showToast({
+						width:500,
+						align:'top',
+						style: {
+							borderRadius: '2px',
+							backgroundColor: '#198754b8',
+		
+						},
+						html: `<span style="color:white;font-weight;bold;">クリップボードにリザルト履歴URLをコピーしました。</span>`
+					});
 				})
 
 			  }
@@ -54,4 +63,16 @@ if (location.host == 'localhost:8080') {
 	document.getElementById("live-platform").removeAttribute('disabled')
 }
 
+function extractYouTubeVideoId(url) {
+	const regex = /[?&]v=([^?&]+)/;
+	const match = url.match(regex);
+
+	// Check if a match is found
+	if (match && match[1]) {
+		return match[1];
+	} else if(url.length == 11){
+		// No match found or invalid URL
+		return url;
+	}
+}
 

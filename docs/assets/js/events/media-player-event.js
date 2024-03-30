@@ -56,10 +56,6 @@ class PlayerEvent {
 		ToggleBtn.disableScoreButton()
 		totalTime = new TotalTime()
 
-		if (location.host == 'localhost:8080') {
-			Discord.updateRPC(game.platform, game.title)
-		}
-		
 	}
 
 	//動画 音楽プレイヤーの状態が変更された

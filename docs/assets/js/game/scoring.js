@@ -52,7 +52,7 @@ class Scoring {
 		
 		const rank = this.displayCount
 		const score = Math.round((1000 / this.totalNotes) * (this.usersScore[this.displayCount-1] ? this.usersScore[this.displayCount-1][1] : 0))
-		const name = this.usersScore[this.displayCount-1] ? this.usersScore[this.displayCount-1][0] : '名無し'
+		const name = this.usersScore[this.displayCount-1] ? this.usersScore[this.displayCount-1][0] : settingData.emulateName.data
 		document.getElementById("result").insertAdjacentHTML('afterbegin',
 			`<div class='user-result'>
 		<span class='rank'>${rank}位</span> 

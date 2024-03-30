@@ -8,7 +8,7 @@ lyricsInput.addEventListener('keydown', event => {
 
 
 		const chatData = {
-				'name': '名無し',
+				'name': settingData.emulateName.data,
 				'id':'solo',
 				'comment': event.target.value
 		}

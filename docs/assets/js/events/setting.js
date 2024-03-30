@@ -28,6 +28,7 @@ class SettingMenu {
 			appearanceName: 'redstone',//プリセット名は 'yosemite','redstone','popup'
 			html:
 			`<div id="option-container" class="ms-2 fs-6 lh-lg font-monospace">
+				<label>名前(コメントエミュレート時)<input value="名無し" id="emulate_name"></label>
 				<label>歌詞・ランキング背景の不透明度:<input id='word-area-blur-range' type="range" class="menu-range mx-2" max="1" step="0.01" value="0.6"><span id='blur-range-label'>0.60</span></label>
 				<label><input id="display-timer" type="checkbox" class="me-2" checked>再生時間を、歌詞表示領域にも表示する</label>
 				<div>
@@ -36,7 +37,6 @@ class SettingMenu {
 				</div>
 				<label><input id="display-next-lyrics" type="checkbox" class="me-2" checked>3秒前に次の歌詞を表示</label>
 				<label><input id="word-area-auto-adjust-height" type="checkbox" class="me-2" checked>歌詞エリアの高さ自動調整</label>
-				<label><input id="display-discord-rpc" type="checkbox" class="me-2" checked>Discordのアクティビティに表示する</label>
 				<label><input type='button' class='mt-2' id='delete-result-history' value='リザルト履歴ページをリセット'></label>
 
 
@@ -131,6 +131,19 @@ SettingMenu.BtnEvent()
 let settingMenu
 
 class Apply{
+	static inputEmulateName(value){
+
+		
+		//IndexedDBにデータが無い場合は初期化
+		if(!settingData.emulateName){
+			settingData.emulateName = {data:'名無し'}
+		}
+
+		if(value){
+			settingData.emulateName.data = value
+		}
+	}
+
 	static inputBlurRange(value){
 		document.getElementById("word-area").style.background = `rgba(0, 0, 0, ${value})`
 
@@ -194,20 +207,6 @@ class Apply{
 	}
 
 
-	static displayDiscordRpc(value){
-
-		if(value){
-			alert('Discord RPCが有効になりました。本ソフトの次回起動時に表示されます。')
-		}else{
-
-			if (location.host == 'localhost:8080') {
-				Discord.closeRPC()
-			}
-
-		}
-
-	}
-
 	static wordAreaAutoAdjustHeight(value){
 		
 		//IndexedDBにデータが無い場合は初期化
@@ -234,14 +233,19 @@ class SettingEvents{
 	}
 
 	addEvents(){
+		document.getElementById("emulate_name").addEventListener('input', this.inputEmulateName.bind(this))
 		document.getElementById("word-area-blur-range").addEventListener('input', this.inputBlurRange.bind(this))
 		document.getElementById("display-timer").addEventListener('input', this.displayTimer.bind(this))
 		document.getElementById("lyrics-input-font-size").addEventListener('change', this.changeInputHeight.bind(this))
 		document.getElementById("input-font-weight").addEventListener('change', this.inputFontWeight.bind(this))
 		document.getElementById("display-next-lyrics").addEventListener('change', this.displayNextLyrics.bind(this))
 		document.getElementById("delete-result-history").addEventListener('click', this.deleteResultData.bind(this))
-		document.getElementById("display-discord-rpc").addEventListener('change', this.displayDiscordRpc.bind(this))
 		document.getElementById("word-area-auto-adjust-height").addEventListener('change', this.wordAreaAutoAdjustHeight.bind(this))
+	}
+
+	inputEmulateName(event){
+		Apply.inputEmulateName(event.target.value, event)
+		this.putIndexedDB(event.target.id, event.target.value)
 	}
 
 	inputBlurRange(event){
@@ -279,11 +283,6 @@ class SettingEvents{
 		alert('リザルト履歴をリセットしました。')
 	}
 
-	displayDiscordRpc(event){
-		Apply.displayDiscordRpc(event.target.checked)
-		this.putIndexedDB(event.target.id, event.target.checked)
-	}
-
 	wordAreaAutoAdjustHeight(event){
 		Apply.wordAreaAutoAdjustHeight(event.target.checked)
 		this.putIndexedDB(event.target.id, event.target.checked)
@@ -302,17 +301,21 @@ class SettingData {
 	}
 
 	async load(){
+		this.emulateName = await db.notes.get('emulate_name');
 		this.blurRange = await db.notes.get('word-area-blur-range');
 		this.displayTimer = await db.notes.get('display-timer');
 		this.inputFontHeight = await db.notes.get('lyrics-input-font-size');
 		this.inputFontWeight = await db.notes.get('input-font-weight');
 		this.displayNextLyrics = await db.notes.get('display-next-lyrics');
-		this.displayDiscordRpc = await db.notes.get('display-discord-rpc');
 		this.wordAreaAutoAdjustHeight = await db.notes.get('word-area-auto-adjust-height');
 	}
 
 
 	allApply(){
+		if(this.emulateName){
+			Apply.inputEmulateName(this.emulateName.data)
+		}
+
 		if(this.blurRange){
 			Apply.inputBlurRange(this.blurRange.data)
 		}
@@ -338,6 +341,10 @@ class SettingData {
 
 	buildSettingMenu(){
 
+		if(this.emulateName){
+			document.getElementById("emulate_name").value = this.emulateName.data
+		}
+
 		if(this.blurRange){
 			document.getElementById("word-area-blur-range").value = this.blurRange.data
 			document.getElementById("blur-range-label").textContent = Number(this.blurRange.data).toFixed(2)
@@ -357,10 +364,6 @@ class SettingData {
 
 		if(this.displayNextLyrics){
 			document.getElementById("display-next-lyrics").checked = this.displayNextLyrics.data
-		}
-
-		if(this.displayDiscordRpc){
-			document.getElementById("display-discord-rpc").checked = this.displayDiscordRpc.data
 		}
 
 		if(this.wordAreaAutoAdjustHeight){

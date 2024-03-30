@@ -18,6 +18,7 @@ function seekEnd() {
 	timer.updatePlayerClock(totalTime.duration)
 	timer.removeTimerEvent()
 	game.isStart = false
+	MediaControl.pause()
 	if(!game.isEdit){
 		game.isFinished = true
 	}
@@ -26,7 +27,7 @@ function seekEnd() {
 		//Python側でライブチャットの監視を中止
 		game.stopChatObserver()
 
-		const LiveID = document.getElementById("live-id").value
+		const LiveID = extractYouTubeVideoId(document.getElementById("live-id").value)
 
 		scoring.sendFireStore(LiveID, Object.assign({}, JSON.parse(JSON.stringify(chat.users))))
 

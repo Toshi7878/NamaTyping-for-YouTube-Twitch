@@ -49,10 +49,31 @@ class Game extends Load {
 		this.setMusicTitle()
 		const LiveID = document.getElementById("live-id").value
 		const LivePlatform = document.getElementById("live-platform").selectedOptions[0].textContent
+		const jsFrame = new JSFrame();
 
 		if (location.host == 'localhost:8080' && LiveID) {
 			//Python側でライブチャットの監視を開始
 			this.isObserve = this.startLiveChatObserver(LiveID, LivePlatform)
+			jsFrame.showToast({
+				align:'top',
+				style: {
+					borderRadius: '2px',
+					backgroundColor: '#198754b8',
+
+				},
+				html: `<span style="color:white;font-weight;bold;">Liveチャット接続完了</span>`
+			});
+		}else{
+			jsFrame.showToast({
+				align:'top',
+				style: {
+					borderRadius: '2px',
+					backgroundColor: '#ffc71db8',
+					color:'#FFF',
+					fontWeight:'bold'
+				},
+				html: `<span style="color:white;font-weight;bold;">Liveチャット未接続</span>`
+			});
 		}
 
 		chat = new Chat()
