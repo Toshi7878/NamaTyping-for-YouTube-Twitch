@@ -312,9 +312,7 @@ class SettingData {
 
 
 	allApply(){
-		if(this.emulateName){
-			Apply.inputEmulateName(this.emulateName.data)
-		}
+		Apply.inputEmulateName(this.emulateName.data)
 
 		if(this.blurRange){
 			Apply.inputBlurRange(this.blurRange.data)

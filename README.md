@@ -6,7 +6,7 @@ jz5氏制作の<a href="https://github.com/jz5/namatyping
 YouTube | Twitchのチャットで歌詞タイピングができます。
 
 # ダウンロード(ver1.0)
-https://github.com/Toshi7878/NamaTyping-for-YouTube-Twitch/raw/main/NamaTyping-for-YouTube-Twitch%20v1.0.zip
+https://github.com/Toshi7878/NamaTyping-for-YouTube-Twitch/raw/main/NamaTyping-for-YouTube-Twitch%20v1.1.zip
 
 # 仕様
 ・採点方式はニコ生タイピングの方式を採用<br>
