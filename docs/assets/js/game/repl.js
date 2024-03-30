@@ -1,7 +1,29 @@
 class MargeRepl {
 
+	sortRepl(){
+		let sort = this.result.sort((first, second) => second[0].length - first[0].length)
+
+		let numRepl = []
+
+		for(let i=0;i<sort.length;i++){
+			
+			const isNUM = !isNaN(parseInt(sort[i][0]))
+
+			if(isNUM){
+				numRepl.push(sort[i])
+				sort.splice(i, 1);
+				i--
+			}
+
+		}
+
+		numRepl = numRepl.sort((first, second) => parseInt(first[0])-parseInt(second[0]))
+
+		return numRepl.concat(sort)
+	}
+
 	marge(comparisonLyrics){
-		let replSort = this.result.sort((first, second) => second[0].length - first[0].length)
+		let replSort = this.sortRepl()
 
 		for(let i=0;i<comparisonLyrics.length;i++){
 
