@@ -67,7 +67,7 @@ class Chat:
 
 	def connectYouTubeChat(self):
 		self.isClickScoringBtn = False
-		self.livechat = pytchat.create(video_id = self.liveId) #配信IDを指定
+		self.livechat = pytchat.create(video_id = f'https://www.youtube.com/watch?v={self.liveId}') #配信IDを指定
 		#参加者のチャンネルID, 名前, コメントが入る
 		self.thread1 = threading.Thread(target=self.youtubeObserver)
 		self.thread1.start() # チャット監視を別スレッドで処理

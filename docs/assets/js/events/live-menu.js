@@ -18,11 +18,14 @@ class Live {
 
 		LIVE_ID_BOX.addEventListener('input', e => {
 			ToggleBtn.resultHistoryButton(e.target.value)
+
+			extractYouTubeVideoId(e.target.value)
 		})
 
 		RESULT_URL_BTN.addEventListener('click', e => {
 			if (navigator.clipboard) {
 				const LIVE_ID = extractYouTubeVideoId(LIVE_ID_BOX.value)
+
 				return navigator.clipboard.writeText(`https://namatyping-result.onrender.com/?${LIVE_ID}`).then(() => {
 					const jsFrame = new JSFrame();
 					jsFrame.showToast({
@@ -64,13 +67,21 @@ if (location.host == 'localhost:8080') {
 }
 
 function extractYouTubeVideoId(url) {
-	const regex = /[?&]v=([^?&]+)/;
-	const match = url.match(regex);
+	const PLATFORM = document.getElementById("live-platform")
 
+	const YOUTUBE_REGEX = /(?:youtu\.be|youtube).*(?:\/|v=)([a-zA-Z0-9_-]{11})/;
+	const YOUTUBE = url.match(YOUTUBE_REGEX);
+
+	const TWITCH_REGEX = /(?:https?:\/\/)?(?:www\.)?twitch\.tv\/(\w+)/;
+	const TWITCH = url.match(TWITCH_REGEX);
 	// Check if a match is found
-	if (match && match[1]) {
-		return match[1];
-	} else if(url.length == 11){
+	if (YOUTUBE && YOUTUBE[1]) {
+		PLATFORM.selectedIndex = 0 //YouTube Live
+		return YOUTUBE[1];
+	}else if(TWITCH && TWITCH[1]){
+		PLATFORM.selectedIndex = 1 //Twitch
+		return TWITCH[1]
+	} else {
 		// No match found or invalid URL
 		return url;
 	}

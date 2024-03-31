@@ -47,7 +47,7 @@ class Game extends Load {
 		ToggleBtn.disableStartButton()
 
 		this.setMusicTitle()
-		const LiveID = document.getElementById("live-id").value
+		const LiveID = extractYouTubeVideoId(document.getElementById("live-id").value)
 		const LivePlatform = document.getElementById("live-platform").selectedOptions[0].textContent
 		const jsFrame = new JSFrame();
 
