@@ -122,8 +122,21 @@ class SettingMenu {
 		});
 		this.frame.on('closeButton', 'click', (_frame, evt) => {
 			_frame.closeFrame();
+			window.removeEventListener('keydown', this.keyDownCloseEvent.bind(this))
 			this.frame.isOpen = false
 		});
+
+		window.addEventListener('keydown', this.keyDownCloseEvent.bind(this))
+	}
+
+	keyDownCloseEvent(event){
+
+		if(event.code == "Escape" && this.frame.isOpen){
+			this.frame.closeFrame();
+			window.removeEventListener('keydown', this.keyDownCloseEvent.bind(this))
+			this.frame.isOpen = false
+		}
+
 	}
 }
 
