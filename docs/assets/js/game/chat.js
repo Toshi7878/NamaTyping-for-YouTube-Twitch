@@ -128,7 +128,6 @@ class Chat {
 							judge = 'Good'
 							break;
 						}else if(correcting){
-							comment = comment.replace(/\S+\s/,'')
 							return this.judgeComment(correctLyrics, comment)
 						}else{
 							return {'lyrics':'', 'judge':'None'}

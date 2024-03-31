@@ -42,6 +42,7 @@ class DetailResultMenu {
 	}
 
 	addFrameEvents(){
+
 		this.frame.on('minimizeButton', 'click', (_frame, evt) => {
 
 			this.frame.hideFrameComponent('minimizeButton');
@@ -61,6 +62,7 @@ class DetailResultMenu {
 	
 	
 		});
+
 		this.frame.on('deminimizeButton', 'click', (_frame, evt) => {
 	
 			_frame.showFrameComponent('minimizeButton');
@@ -70,6 +72,7 @@ class DetailResultMenu {
 			_frame.setSize(_frame.extra.__restore_info.org_width, _frame.extra.__restore_info.org_height, force);
 	
 		});
+
 		this.frame.on('maximizeButton', 'click', (_frame, evt) => {
 	
 			_frame.extra.__restore_info = {
@@ -90,6 +93,7 @@ class DetailResultMenu {
 	
 	
 		});
+
 		this.frame.on('restoreButton', 'click', (_frame, evt) => {
 	
 			this.frame.setMovable(true);
@@ -105,12 +109,28 @@ class DetailResultMenu {
 	
 	
 		});
+
 		this.frame.on('closeButton', 'click', (_frame, evt) => {
 			_frame.closeFrame();
+			window.removeEventListener('keydown', this.keyDownCloseEvent.bind(this))
 			this.frame.isOpen = false
 		});
 
+		window.addEventListener('keydown', this.keyDownCloseEvent.bind(this))
+
+
 		$("#name-box").resizable({handles:'e'});
+	}
+
+	
+	keyDownCloseEvent(event){
+
+		if(event.code == "Escape" && this.frame.isOpen){
+			this.frame.closeFrame();
+			window.removeEventListener('keydown', this.keyDownCloseEvent.bind(this))
+			this.frame.isOpen = false
+		}
+
 	}
 }
 
