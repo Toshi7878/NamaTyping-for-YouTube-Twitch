@@ -106,7 +106,7 @@ class LrcFolder {
 			this.lrcFile
 			this.imgFile = ''
 			this.replFile
-
+			this.jsonFile
 		}
 	
 		async open(folder, isDrop) {
@@ -139,10 +139,20 @@ class LrcFolder {
 					}else{
 						this.replFile = files[i]
 					}
+				} else if(files[i].name.endsWith('.json')){
+					if(isDrop){
+						this.jsonFile = await new Promise((resolve) => { files[i].file(file => {resolve(file)}) });
+					}
 				}
 			}
-	
-			if (!this.lrcFile) {
+
+			if (this.jsonFile) {
+				const jsonReader = new FileReader()
+				jsonReader.readAsArrayBuffer(this.jsonFile)
+
+				let JSON_DATA = await new Promise(resolve => {jsonReader.onload = event => resolve(parseLrc.parseTextEncord(event))} );
+				parseJson = new ParseJson(JSON.parse( JSON_DATA ))
+			}else if (!this.lrcFile) {
 				localMedia = null
 				alert('lrcファイルが見つかりませんでした')
 			} else if (!this.mediaFile) {
