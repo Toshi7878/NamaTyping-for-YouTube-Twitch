@@ -66,12 +66,17 @@ class TwitchChatIRC:
         data = b''
 
         while True:
-            part = self.__SOCKET.recv(buffer_size)
+            try:
+                part = self.__SOCKET.recv(buffer_size)
+            except OSError:
+                break  # 例外が発生したらループから抜ける
+
+            if not part:  # データがない場合、ループから抜ける
+                break
 
             data += part
-            if len(part) < buffer_size:
-                break
-        return data.decode()  # ,'ignore'
+
+        return data.decode()
 
     def __join_channel(self, channel_name):
         channel_lower = channel_name.lower()
