@@ -1,9 +1,10 @@
-Maps
-lrc
-json
 .vscode
 情報
 dist
 build
 *.spec
 *.exe
+config.ini
+Maps
+lrc
+json
