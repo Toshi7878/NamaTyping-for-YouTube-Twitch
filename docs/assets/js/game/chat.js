@@ -88,10 +88,12 @@ class Chat {
 		console.log(this.users[userId]['result'])
 	}
 
+
 	judgeComment(correctLyrics, comment){
 			let judge = 'Great'
 			let correcting = ''
-
+			let reSearchFlag = false
+			
 			for(let i=0; i<correctLyrics.length; i++){
 
 				for(let m=0; m<correctLyrics[i].length; m++){
@@ -113,21 +115,29 @@ class Chat {
 
 					}
 
+					if(search > 0 && correcting){
+						reSearchFlag = true
+					}
+
 					//ハズレかrepl判定
 					if(m == correctLyrics[i].length-1){
-						search = repl.kanaToHira(comment).search(repl.kanaToHira(correctLyrics[i][m]))
+						let replSearch = repl.kanaToHira(comment).search(repl.kanaToHira(correctLyrics[i][m]))
 
-						if(i == 0 && search > 0){
+						if(i == 0 && replSearch > 0){
 							comment = comment.slice(search)
-							search = 0
+							replSearch = 0
 						}
 
-						if(search == 0){
+						if(replSearch > 0 && i && correcting){
+							reSearchFlag = true
+						}
+
+						if(replSearch == 0){
 							correcting += comment.slice(0, correctLyrics[i][m].length)
 							comment = comment.slice(correctLyrics[i][m].length)
 							judge = 'Good'
 							break;
-						}else if(correcting){
+						}else if(reSearchFlag){
 							return this.judgeComment(correctLyrics, comment)
 						}else{
 							return {'lyrics':'', 'judge':'None'}
@@ -140,6 +150,19 @@ class Chat {
 			return {'lyrics':correcting, 'judge':judge}
 
 
+	}
+
+	generateCombinations(input, index = 0, current = '') {
+		if (index === input.length) {
+			return [current];
+		}
+		
+		const subArray = input[index];
+		const combinations = [];
+		for (let i = 0; i < subArray.length; i++) {
+			combinations.push(...generateCombinations(input, index + 1, current + subArray[i]));
+		}
+		return combinations;
 	}
 
 }

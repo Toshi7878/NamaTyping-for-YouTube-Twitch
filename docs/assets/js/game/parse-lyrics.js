@@ -94,53 +94,53 @@ class ParseLrc{
 			const formatedLyricsLine = parseLrc.formatLyricsForGame(lyrics_array[i][1])
 
 
+			const isLyrics =  formatedLyricsLine != 'end' && lyrics_array[i][2].replace(/\s/g, '') != ''
 
-				if(formatedLyricsLine && lyrics_array[i][2].replace(/\s/g, '') != ''){
+			if(formatedLyricsLine && isLyrics){
 
-
-					if (charArray.length != 0 && charArray[charArray.length-1] != '') {
-						//位置フレーズの時間がminTime未満だったら次の歌詞を結合
-						charArray[charArray.length-1] = charArray[charArray.length-1] + " "
-					}
-
-					charArray.push(formatedLyricsLine)
-					timeArray.push(+lyrics_array[i][0])
-
+				if (charArray.length != 0 && charArray[charArray.length-1] != '') {
+					//位置フレーズの時間がminTime未満だったら次の歌詞を結合
+					charArray[charArray.length-1] = charArray[charArray.length-1] + " "
 				}
 
-				let nextTime
-				if(lyrics_array[i + 1]){
-					nextTime = lyrics_array[i + 2] && lyrics_array[i + 1][2].replace(/\s/g, '') == '' ? +lyrics_array[i + 2][0] : +lyrics_array[i + 1][0]
-				}
+				charArray.push(formatedLyricsLine)
+				timeArray.push(+lyrics_array[i][0])
+
+			}
+
+			let nextTime
+			if(lyrics_array[i + 1]){
+				nextTime = lyrics_array[i + 2] && lyrics_array[i + 1][2].replace(/\s/g, '') == '' ? +lyrics_array[i + 2][0] : +lyrics_array[i + 1][0]
+			}
 
 
-				//位置フレーズの時間がminTime以上
-				if (charArray.length > 0 && (!lyrics_array[i + 1] || minTime < nextTime - timeArray[0])) {
+			//位置フレーズの時間がminTime以上
+			if (charArray.length > 0 && (!lyrics_array[i + 1] || minTime < nextTime - timeArray[0])) {
 
-					timeArray.push(lyrics_array[i+1] ? +lyrics_array[i+1][0] : timeArray[timeArray.length-1]+10) //要修正
-					charArray.unshift('')
-					charArray.push('')
+				timeArray.push(lyrics_array[i+1] ? +lyrics_array[i+1][0] : timeArray[timeArray.length-1]+10) //要修正
+				charArray.unshift('')
+				charArray.push('')
 
-					
-					const previousArray = displayLyrics[displayLyrics.length-1]
-					if(previousArray){
-						const previousTime = previousArray['time'][previousArray['time'].length - 1]
-
-						if(previousTime != timeArray[0]){
-							previousArray['time'].push(timeArray[0])
-							previousArray['char'].push('')
-						}
-					}
-
-
-					displayLyrics.push({'time':timeArray, 'char':charArray})
-					comparisonLyrics.push(charArray.join('').split(' ').filter(x => x !== ""))
-
-					//初期化
-					charArray = [];
-					timeArray = [];
-				}
 				
+				const previousArray = displayLyrics[displayLyrics.length-1]
+				if(previousArray){
+					const previousTime = previousArray['time'][previousArray['time'].length - 1]
+
+					if(previousTime != timeArray[0]){
+						previousArray['time'].push(timeArray[0])
+						previousArray['char'].push('')
+					}
+				}
+
+
+				displayLyrics.push({'time':timeArray, 'char':charArray})
+				comparisonLyrics.push(charArray.join('').split(' ').filter(x => x !== ""))
+
+				//初期化
+				charArray = [];
+				timeArray = [];
+			}
+			
 
 		}
 
