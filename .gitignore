@@ -6,3 +6,4 @@ json
 dist
 build
 *.spec
+*.exe

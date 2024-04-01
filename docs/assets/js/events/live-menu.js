@@ -27,17 +27,8 @@ class Live {
 				const LIVE_ID = extractYouTubeVideoId(LIVE_ID_BOX.value)
 
 				return navigator.clipboard.writeText(`https://namatyping-result.onrender.com/?${LIVE_ID}`).then(() => {
-					const jsFrame = new JSFrame();
-					jsFrame.showToast({
-						width:500,
-						align:'top',
-						style: {
-							borderRadius: '2px',
-							backgroundColor: '#198754b8',
-		
-						},
-						html: `<span style="color:white;font-weight;bold;">クリップボードにリザルト履歴URLをコピーしました。</span>`
-					});
+					showToast(`<span style="color:white;font-weight;bold;">クリップボードにリザルト履歴URLをコピーしました。</span>`,
+					'#198754b8',500)
 				})
 
 			  }

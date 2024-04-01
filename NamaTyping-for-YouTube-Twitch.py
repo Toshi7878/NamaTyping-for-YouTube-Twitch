@@ -14,6 +14,9 @@ from module import twitch_chat_irc
 from module.typingtube import TypingTube
 from module.getCreateData import GetCreateData
 
+# config.iniファイルを読み込む
+config = configparser.ConfigParser()
+config.read('.\\config.ini')
 
 @eel.expose
 def sendURLtoGetParamData(url):
@@ -49,6 +52,18 @@ def stopChatObserver():
 
 	return True
 
+
+# ウィンドウサイズを保存する
+@eel.expose
+def saveWindowSize(width, height):
+    # 新しい値を設定する
+    config['DEFAULT']['window_width'] = str(width)
+    config['DEFAULT']['window_height'] = str(height)
+    # ファイルに書き込み
+    with open('.\\config.ini', 'w') as configfile:
+        config.write(configfile)
+
+    return True
 
 
 class Chat:
@@ -120,10 +135,6 @@ class Chat:
 
 
 eel.init("docs")
-
-# config.iniファイルを読み込む
-config = configparser.ConfigParser()
-config.read('.\\config.ini', encoding='utf-8')
 
 # window_widthとwindow_heightを取得する
 window_width = config.getint('DEFAULT', 'window_width')

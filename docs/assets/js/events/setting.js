@@ -37,7 +37,10 @@ class SettingMenu {
 				</div>
 				<label><input id="display-next-lyrics" type="checkbox" class="me-2" checked>3秒前に次の歌詞を表示</label>
 				<label><input id="word-area-auto-adjust-height" type="checkbox" class="me-2" checked>歌詞エリアの高さ自動調整</label>
-				<label><input type='button' class='mt-2' id='delete-result-history' value='リザルト履歴ページをリセット'></label>
+				<div class="mt-2 d-flex justify-content-between">
+					<label><input type="button" class="" id="delete-result-history" value="リザルト履歴ページをリセット"></label>
+					<label class="me-2"><input type="button" class="btn btn-primary" id="save-window-size" value="現在のウィンドウサイズを保存"></label>
+				</div>
 
 
 		</div>`
@@ -253,6 +256,7 @@ class SettingEvents{
 		document.getElementById("input-font-weight").addEventListener('change', this.inputFontWeight.bind(this))
 		document.getElementById("display-next-lyrics").addEventListener('change', this.displayNextLyrics.bind(this))
 		document.getElementById("delete-result-history").addEventListener('click', this.deleteResultData.bind(this))
+		document.getElementById("save-window-size").addEventListener('click', this.saveWindowSize.bind(this))
 		document.getElementById("word-area-auto-adjust-height").addEventListener('change', this.wordAreaAutoAdjustHeight.bind(this))
 	}
 
@@ -293,7 +297,15 @@ class SettingEvents{
 		const colRef = firestore.collection(LIVE_ID);
 		DeleteCollection.deleteCollection(firestore, colRef, 500);
 		firestore.collection("timeStamp").doc(LIVE_ID).delete()
-		alert('リザルト履歴をリセットしました。')
+		showToast(`<div style="color:white;font-weight;bold;">リザルト履歴をリセットしました。</div>`,'#198754b8')
+	}
+
+	async saveWindowSize(){
+		let result = await eel.saveWindowSize(window.outerWidth,window.outerHeight)();
+		showToast(`<div style="color:white;font-weight;bold;">ウィンドウサイズを保存しました。</div>
+		<div style="color:white;font-weight;bold;">Width${window.outerWidth}px × Height${window.outerHeight}px</div>`,
+		'#198754b8',500)
+		return result;
 	}
 
 	wordAreaAutoAdjustHeight(event){
