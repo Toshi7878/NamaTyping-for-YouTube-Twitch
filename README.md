@@ -19,6 +19,6 @@ YouTubeチャットでは短い間隔で同じユーザーが連投コメント�
 ・なるべく連投せず、貯め打ちしてコメント送信する(モデレーターを付けない場合)</strong><br>
 上記２点で対策が可能です。
 
-<img src="https://private-user-images.githubusercontent.com/38578537/318429081-3f2ca374-901e-42f0-ab80-4e257b69221d.png">
+<img src="https://github.com/Toshi7878/NamaTyping-for-YouTube-Twitch/blob/main/pic/readme1.png">
 
 
