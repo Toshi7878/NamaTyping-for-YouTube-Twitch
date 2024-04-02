@@ -291,7 +291,7 @@ class SettingEvents{
 	}
 
 	deleteResultData(){
-		const LIVE_ID = document.getElementById("live-id").value
+		const LIVE_ID = extractYouTubeVideoId(document.getElementById("live-id").value)
 
 		if(!LIVE_ID || !confirm(`配信ID ${LIVE_ID} のリザルト履歴をリセットしますか？`)){return;}
 		const colRef = firestore.collection(LIVE_ID);
