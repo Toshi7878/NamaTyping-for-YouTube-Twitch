@@ -18,7 +18,11 @@ function seekEnd() {
 	timer.updatePlayerClock(totalTime.duration)
 	timer.removeTimerEvent()
 	game.isStart = false
-	MediaControl.pause()
+
+	if(game.displayLyrics[timer.count]){
+		MediaControl.pause()
+	}
+
 	if(!game.isEdit){
 		game.isFinished = true
 	}

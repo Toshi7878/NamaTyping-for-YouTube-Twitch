@@ -8,3 +8,4 @@ Maps
 lrc
 json
 *.ini
+.venv

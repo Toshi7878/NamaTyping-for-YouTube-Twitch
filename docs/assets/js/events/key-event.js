@@ -1,4 +1,4 @@
-window.addEventListener('keydown', async (event) => {
+window.addEventListener('keydown', (event) => {
 
 	switch(event.code){
 		case 'Escape':
@@ -12,5 +12,16 @@ window.addEventListener('keydown', async (event) => {
 			// 	}
 
 			// }
+			break;
+		case 'F5':
+			event.preventDefault()
+			break;
+		case 'KeyR':
+
+			if(event.ctrlKey){
+				event.preventDefault()
+			}
+			
+			break;
 	}
 })

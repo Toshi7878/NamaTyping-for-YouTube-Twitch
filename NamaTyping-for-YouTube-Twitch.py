@@ -1,3 +1,4 @@
+from datetime import date
 import sys
 import os
 
@@ -12,6 +13,8 @@ import threading
 import configparser
 from module import twitch_chat_irc
 from module.typingtube import TypingTube
+import module.typingtube
+
 from module.getCreateData import GetCreateData
 
 # config.iniファイルを読み込む
@@ -27,8 +30,8 @@ def sendURLtoGetParamData(url):
 #TypingTubeから譜面を取得する
 @eel.expose
 def getTypingTubeEvent(id):
-	typingtube = TypingTube(id)
-	return typingtube.sendData
+    typingtube = TypingTube(id)
+    return {'data': typingtube.result, 'isAccess': typingtube.isAccess}
 
 chat = None
 
@@ -56,15 +59,22 @@ def stopChatObserver():
 # ウィンドウサイズを保存する
 @eel.expose
 def saveWindowSize(width, height):
-    # 新しい値を設定する
-    config['DEFAULT']['window_width'] = str(width)
-    config['DEFAULT']['window_height'] = str(height)
-    # ファイルに書き込み
-    with open('.\\config.ini', 'w') as configfile:
-        config.write(configfile)
+	# 新しい値を設定する
+	config['DEFAULT']['window_width'] = str(width)
+	config['DEFAULT']['window_height'] = str(height)
+	# ファイルに書き込み
+	with open('.\\config.ini', 'w') as configfile:
+		config.write(configfile)
 
-    return True
+	return True
 
+def close_window(arg1, arg2):
+	
+	if(module.typingtube.access != None):
+		module.typingtube.access.chrome.quit()
+		print('end')
+	
+	sys.exit()
 
 class Chat:
 
@@ -140,4 +150,4 @@ eel.init("docs")
 window_width = config.getint('DEFAULT', 'window_width')
 window_height = config.getint('DEFAULT', 'window_height')
 
-eel.start("index.html", size=(window_width, window_height), port=8080)
+eel.start("index.html", size=(window_width, window_height), port=8080, close_callback=close_window)
