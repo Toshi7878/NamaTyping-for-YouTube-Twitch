@@ -83,9 +83,6 @@ class Chat {
 			this.users[userId]['result'].push([userComment, 'None']);
 		}
 
-
-
-		console.log(this.users[userId]['result'])
 	}
 
 

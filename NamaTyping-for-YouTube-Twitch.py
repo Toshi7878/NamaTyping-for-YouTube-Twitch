@@ -1,4 +1,3 @@
-from datetime import date
 import sys
 import os
 
@@ -69,7 +68,7 @@ def saveWindowSize(width, height):
 	return True
 
 def close_window(arg1, arg2):
-	
+
 	if(module.typingtube.access != None):
 		module.typingtube.access.chrome.quit()
 		print('end')

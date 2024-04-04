@@ -69,7 +69,6 @@ class Timer {
 				const SKIP_REMAIN_TIME = (this.count == 0 ? 8 : 20)
 				const WIPE_END = timer.count == 0 || timer.count >= 0 && game.displayLyrics[timer.count-1]['time'].length == timer.wipeCount+1 ? true : false
 
-				console.log(`next ${NEXT_LYRICS_TIME - this.speedTime}`)
 				if(NEXT_LYRICS_TIME - this.speedTime > SKIP_REMAIN_TIME && WIPE_END){
 					document.getElementById("skip").textContent = `SKIP (${Math.floor((NEXT_LYRICS_TIME - this.speedTime) - (SKIP_REMAIN_TIME-1)).toFixed()})`
 				}else{

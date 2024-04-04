@@ -146,9 +146,8 @@ class DetailResult extends Scoring {
 				selectableRollingSelection : true ,
 				rowClick:function(e, row){
 					const DATA = row._row.data['順位']
-					console.log(row._row.data)
 					detailResult.displayDetailResult(DATA)
-					},
+				},
 			});
 			table.selectRow(table.getRows()[0])
 			this.displayDetailResult(1)
