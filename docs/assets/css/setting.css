@@ -8,7 +8,8 @@
 	user-select: none;
 }
 
-#lyrics-input-font-size {
+#lyrics-input-font-zoom,
+#lyrics-input-font-spacing {
 	height: 26px;
 	width: 60px;
 }

@@ -22,7 +22,7 @@ class SettingMenu {
 
 		this.frame = jsFrame.create({
 			title: '設定',
-			left: 60, top: 60, width: 615, height: 350,
+			left: 60, top: 60, width: 615, height: 390,
 			movable: true,//マウスで移動可能
 			resizable: true,//マウスでリサイズ可能
 			appearanceName: 'redstone',//プリセット名は 'yosemite','redstone','popup'
@@ -32,8 +32,9 @@ class SettingMenu {
 				<label>歌詞・ランキング背景の不透明度:<input id='word-area-blur-range' type="range" class="menu-range mx-2" max="1" step="0.01" value="0.6"><span id='blur-range-label'>0.60</span></label>
 				<label><input id="display-timer" type="checkbox" class="me-2" checked>再生時間を、歌詞表示領域にも表示する</label>
 				<div>
-					<label>一人プレイ用 ツールバーのフォントサイズ:<input type="number" id="lyrics-input-font-size" class="ms-2" value='29'>px</label>
+					<label>一人プレイ用 ツールバーのフォントサイズ:<input type="number" id="lyrics-input-font-zoom" class="ms-2" value='200'>%</label>
 					<label class="ms-2"><input id="input-font-weight" type="checkbox" class="me-2">フォントを太く表示</label>
+					<label>一人プレイ用 ツールバーの文字間隔:<input type="number"min="0" step="0.1" max="2" id="lyrics-input-font-spacing" class="ms-2" value='0'>px</label>
 				</div>
 				<label><input id="display-next-lyrics" type="checkbox" class="me-2" checked>3秒前に次の歌詞を表示</label>
 				<label><input id="word-area-auto-adjust-height" type="checkbox" class="me-2" checked>歌詞エリアの高さ自動調整</label>
@@ -148,11 +149,6 @@ class Apply{
 
 	static inputEmulateName(value){
 
-		//IndexedDBにデータが無い場合は初期化
-		if(!settingData.emulateName){
-			settingData.emulateName = {data:'名無し'}
-		}
-
 		if(value){
 			settingData.emulateName.data = value
 		}
@@ -182,16 +178,18 @@ class Apply{
 		const HEIGHT = value
 		const BOTTOM_MENU = document.getElementById("bottom-menu")
 
-		document.getElementById("lyrics-input").style.height = HEIGHT+'px'
-		document.getElementById("lyrics-input").style.fontSize = String(HEIGHT-11)+'px'
+		document.getElementById("lyrics-input").style.zoom = `${value}%`
 
-		const INPUT_HEIGHT = document.getElementById("user-input").clientHeight
-		BOTTOM_MENU.style.bottom = String(INPUT_HEIGHT + 10) + 'px'
+		const INPUT_HEIGHT = document.getElementById("user-input").offsetHeight
+		BOTTOM_MENU.style.bottom = String(INPUT_HEIGHT) + 'px'
 
 		adjustWordArea()
 		adjustMedia()
 	}
 
+	static changeInputFontSpacing(value){
+		document.getElementById("lyrics-input").style.letterSpacing = `${value}px`
+	}
 
 	static inputFontWeight(value){
 
@@ -250,7 +248,9 @@ class SettingEvents{
 		document.getElementById("emulate_name").addEventListener('input', this.inputEmulateName.bind(this))
 		document.getElementById("word-area-blur-range").addEventListener('input', this.inputBlurRange.bind(this))
 		document.getElementById("display-timer").addEventListener('input', this.displayTimer.bind(this))
-		document.getElementById("lyrics-input-font-size").addEventListener('change', this.changeInputHeight.bind(this))
+		document.getElementById("lyrics-input-font-zoom").addEventListener('change', this.changeInputHeight.bind(this))
+		document.getElementById("lyrics-input-font-spacing").addEventListener('change', this.changeInputFontSpacing.bind(this))
+
 		document.getElementById("input-font-weight").addEventListener('change', this.inputFontWeight.bind(this))
 		document.getElementById("display-next-lyrics").addEventListener('change', this.displayNextLyrics.bind(this))
 		document.getElementById("delete-result-history").addEventListener('click', this.deleteResultData.bind(this))
@@ -279,6 +279,12 @@ class SettingEvents{
 	changeInputHeight(event){
 		Apply.changeInputHeight(event.target.value)
 		settingData.inputFontHeight.data = event.target.value
+		this.putIndexedDB(event.target.id, event.target.value)
+	}
+
+	changeInputFontSpacing(event){
+		Apply.changeInputFontSpacing(event.target.value)
+		settingData.inputFontSpacing.data = event.target.value
 		this.putIndexedDB(event.target.id, event.target.value)
 	}
 
@@ -334,7 +340,8 @@ class SettingData {
 		this.emulateName = await db.notes.get('emulate_name') || {id:'emulate_name', data:'名無し'};
 		this.blurRange = await db.notes.get('word-area-blur-range') || {id:'display-timer', data:0.6};
 		this.displayTimer = await db.notes.get('display-timer') || {id:'display-timer', data:true};
-		this.inputFontHeight = await db.notes.get('lyrics-input-font-size') || {id:'lyrics-input-font-size', data:29};
+		this.inputFontHeight = await db.notes.get('lyrics-input-font-zoom') || {id:'lyrics-input-font-zoom', data:200};
+		this.inputFontSpacing = await db.notes.get('lyrics-input-font-spacing') || {id:'lyrics-input-font-spacing', data:0};
 		this.inputFontWeight = await db.notes.get('input-font-weight') || {id:'input-font-weight', data:false};
 		this.displayNextLyrics = await db.notes.get('display-next-lyrics') || {id:'display-next-lyrics', data:true};
 		this.wordAreaAutoAdjustHeight = await db.notes.get('word-area-auto-adjust-height') || {id:'word-area-auto-adjust-height', data:true};
@@ -358,6 +365,9 @@ class SettingData {
 			Apply.changeInputHeight(this.inputFontHeight.data)
 		}
 
+		if(this.inputFontSpacing){
+			Apply.changeInputFontSpacing(this.inputFontSpacing.data)
+		}
 
 		if(this.inputFontWeight){
 			Apply.inputFontWeight(this.inputFontWeight.data)
@@ -385,7 +395,11 @@ class SettingData {
 		}
 
 		if(this.inputFontHeight){
-			document.getElementById("lyrics-input-font-size").value = this.inputFontHeight.data
+			document.getElementById("lyrics-input-font-zoom").value = this.inputFontHeight.data
+		}
+
+		if(this.inputFontSpacing){
+			document.getElementById("lyrics-input-font-spacing").value = this.inputFontSpacing.data
 		}
 
 		if(this.inputFontWeight){
