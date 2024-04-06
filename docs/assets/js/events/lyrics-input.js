@@ -18,7 +18,14 @@ class LyricsInput {
 
 		//変換確定時に発火しないようkeyCodeを使用
 		if (event.keyCode === 13 && chat) {
-			if(event.target.tagName == 'TEXTAREA' && event.shiftKey){return;}
+
+			if(event.target.tagName == 'TEXTAREA' && event.shiftKey){
+				setTimeout( () => {
+					const t = document.getElementById("lyrics-textarea");
+					t.scrollTop = t.scrollHeight
+				}, 2)
+				return;
+			}
 	
 	
 			const chatData = {
