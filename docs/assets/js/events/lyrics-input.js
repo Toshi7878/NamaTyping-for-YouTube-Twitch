@@ -1,27 +1,46 @@
 const lyricsInput = document.getElementById('lyrics-input')
+const lyricsTextArea = document.getElementById('lyrics-textarea')
 
 
-lyricsInput.addEventListener('keydown', event => {
+class LyricsInput {
 
-	//変換確定時に発火しないようkeyCodeを使用
-	if (event.keyCode === 13 && chat) {
+	constructor(){
 
+		
+		lyricsInput.addEventListener('keydown', this.submitEmulateComment)
+		lyricsInput.addEventListener('focus', this.removePlaceholder)
+		lyricsTextArea.addEventListener('keydown', this.submitEmulateComment)
+		lyricsTextArea.addEventListener('focus', this.removePlaceholder)
 
-		const chatData = {
-				'name': settingData.emulateName.data,
-				'id':'solo',
-				'comment': event.target.value
-		}
-
-		chat.checkPhraseMatch(chatData)
-		event.target.value = ''
 	}
 
-})
+	submitEmulateComment(event){
 
-lyricsInput.addEventListener('focus', event => {
-	event.target.removeAttribute('placeholder')
-})
+		//変換確定時に発火しないようkeyCodeを使用
+		if (event.keyCode === 13 && chat) {
+			if(event.target.tagName == 'TEXTAREA' && event.shiftKey){return;}
+	
+	
+			const chatData = {
+					'name': settingData.emulateName.data,
+					'id':'solo',
+					'comment': event.target.value
+			}
+	
+			chat.checkPhraseMatch(chatData)
+			event.target.value = ''
+			event.preventDefault()
+		}
+	
+	}
+
+	removePlaceholder(event){
+		event.target.removeAttribute('placeholder')
+	}
+
+}
+
+new LyricsInput()
 
 const lyricsInputToggleBtn = document.getElementById("solo-play")
 const bottomMenu = document.getElementById("bottom-menu")
@@ -37,6 +56,7 @@ async function loadSoloPlayOption(){
 	}
 
 }
+
 loadSoloPlayOption()
 
 

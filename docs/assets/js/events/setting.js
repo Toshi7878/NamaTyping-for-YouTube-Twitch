@@ -22,7 +22,7 @@ class SettingMenu {
 
 		this.frame = jsFrame.create({
 			title: '設定',
-			left: 60, top: 60, width: 615, height: 390,
+			left: 60, top: 60, width: 615, height: 420	,
 			movable: true,//マウスで移動可能
 			resizable: true,//マウスでリサイズ可能
 			appearanceName: 'redstone',//プリセット名は 'yosemite','redstone','popup'
@@ -31,13 +31,19 @@ class SettingMenu {
 				<label>名前(コメントエミュレート時)<input value="名無し" id="emulate_name"></label>
 				<label>歌詞・ランキング背景の不透明度:<input id='word-area-blur-range' type="range" class="menu-range mx-2" max="1" step="0.01" value="0.6"><span id='blur-range-label'>0.60</span></label>
 				<label><input id="display-timer" type="checkbox" class="me-2" checked>再生時間を、歌詞表示領域にも表示する</label>
-				<div>
-					<label>一人プレイ用 ツールバーのフォントサイズ:<input type="number" id="lyrics-input-font-zoom" class="ms-2" value='200'>%</label>
-					<label class="ms-2"><input id="input-font-weight" type="checkbox" class="me-2">フォントを太く表示</label>
-					<label>一人プレイ用 ツールバーの文字間隔:<input type="number"min="0" step="0.1" max="2" id="lyrics-input-font-spacing" class="ms-2" value='0'>px</label>
-				</div>
 				<label><input id="display-next-lyrics" type="checkbox" class="me-2" checked>3秒前に次の歌詞を表示</label>
 				<label><input id="word-area-auto-adjust-height" type="checkbox" class="me-2" checked>歌詞エリアの高さ自動調整</label>
+				<div>
+					<h4>一人プレイ用 ツールバー設定</h4>
+    				<div>
+						<label>フォントサイズ:<input type="number" id="lyrics-input-font-zoom" class="ms-2" value="200">%</label>
+						<label class="ms-2"><input id="input-font-weight" type="checkbox" class="me-2">太く表示</label>
+					</div>
+					<div>
+						<label>文字間隔:<input type="number" min="0" step="0.1" max="2" id="lyrics-input-font-spacing" class="ms-2" value="0">px</label>
+						<label class="ms-2"><input id="input-use-textarea" type="checkbox" class="me-2">テキストエリアを使用</label>
+					</div>
+				</div>
 				<div class="mt-2 d-flex justify-content-between">
 					<label><input type="button" class="" id="delete-result-history" value="リザルト履歴ページをリセット"></label>
 					<label class="me-2"><input type="button" class="btn btn-primary" id="save-window-size" value="現在のウィンドウサイズを保存"></label>
@@ -174,11 +180,10 @@ class Apply{
 
 	}
 
-	static changeInputHeight(value){
-		const HEIGHT = value
+	static changeInputHeight(){
 		const BOTTOM_MENU = document.getElementById("bottom-menu")
 
-		document.getElementById("lyrics-input").style.zoom = `${value}%`
+		Apply.updateUserInputStyle()
 
 		const INPUT_HEIGHT = document.getElementById("user-input").offsetHeight
 		BOTTOM_MENU.style.bottom = String(INPUT_HEIGHT) + 'px'
@@ -188,16 +193,27 @@ class Apply{
 	}
 
 	static changeInputFontSpacing(value){
-		document.getElementById("lyrics-input").style.letterSpacing = `${value}px`
+		Apply.updateUserInputStyle()
 	}
 
 	static inputFontWeight(value){
 
+		Apply.updateUserInputStyle()
+
+	}
+
+	static inputUseTextArea(value){
+
 		if(value){
-			document.getElementById("lyrics-input").classList.add('fw-bold')
+			document.getElementById("lyrics-input").classList.remove('active-input')
+			document.getElementById("lyrics-textarea").classList.add('active-input')
+
 		}else{
-			document.getElementById("lyrics-input").classList.remove('fw-bold')
+			document.getElementById("lyrics-textarea").classList.remove('active-input')
+			document.getElementById("lyrics-input").classList.add('active-input')
 		}
+
+		Apply.changeInputHeight()
 
 	}
 
@@ -233,7 +249,19 @@ class Apply{
 		}
 	}
 
+	static updateUserInputStyle(){
+		const zoom = settingData.inputFontHeight.data
+		const letterSpacing = settingData.inputFontSpacing.data
+		const fontWeight = settingData.inputFontWeight.data ? "bold":"normal"
 
+		document.getElementById("user-input-style").textContent = `
+		.active-input {
+			zoom: ${zoom}%;
+			letter-spacing: ${letterSpacing}px;
+			font-weight: ${fontWeight};
+		}
+		`
+	}
 
 }
 
@@ -250,8 +278,8 @@ class SettingEvents{
 		document.getElementById("display-timer").addEventListener('input', this.displayTimer.bind(this))
 		document.getElementById("lyrics-input-font-zoom").addEventListener('change', this.changeInputHeight.bind(this))
 		document.getElementById("lyrics-input-font-spacing").addEventListener('change', this.changeInputFontSpacing.bind(this))
-
 		document.getElementById("input-font-weight").addEventListener('change', this.inputFontWeight.bind(this))
+		document.getElementById("input-use-textarea").addEventListener('change', this.inputUseTextArea.bind(this))
 		document.getElementById("display-next-lyrics").addEventListener('change', this.displayNextLyrics.bind(this))
 		document.getElementById("delete-result-history").addEventListener('click', this.deleteResultData.bind(this))
 		document.getElementById("save-window-size").addEventListener('click', this.saveWindowSize.bind(this))
@@ -259,44 +287,50 @@ class SettingEvents{
 	}
 
 	inputEmulateName(event){
-		Apply.inputEmulateName(event.target.value, event)
 		settingData.emulateName.data = event.target.value
+		Apply.inputEmulateName(event.target.value, event)
 		this.putIndexedDB(event.target.id, event.target.value)
 	}
 
 	inputBlurRange(event){
-		Apply.inputBlurRange(event.target.value)
 		settingData.blurRange.data = event.target.value
+		Apply.inputBlurRange(event.target.value)
 		this.putIndexedDB(event.target.id, event.target.value)
 	}
 
 	displayTimer(event){
-		Apply.displayTimer(event.target.checked)
 		settingData.displayTimer.data = event.target.checked
+		Apply.displayTimer(event.target.checked)
 		this.putIndexedDB(event.target.id, event.target.checked)
 	}
 
 	changeInputHeight(event){
-		Apply.changeInputHeight(event.target.value)
 		settingData.inputFontHeight.data = event.target.value
+		Apply.changeInputHeight(event.target.value)
 		this.putIndexedDB(event.target.id, event.target.value)
 	}
 
 	changeInputFontSpacing(event){
-		Apply.changeInputFontSpacing(event.target.value)
 		settingData.inputFontSpacing.data = event.target.value
+		Apply.changeInputFontSpacing(event.target.value)
 		this.putIndexedDB(event.target.id, event.target.value)
 	}
 
 	inputFontWeight(event){
-		Apply.inputFontWeight(event.target.checked)
 		settingData.inputFontWeight.data = event.target.checked
+		Apply.inputFontWeight(event.target.checked)
+		this.putIndexedDB(event.target.id, event.target.checked)
+	}
+
+	inputUseTextArea(event){
+		settingData.inputUseTextArea.data = event.target.checked
+		Apply.inputUseTextArea(event.target.checked)
 		this.putIndexedDB(event.target.id, event.target.checked)
 	}
 
 	displayNextLyrics(event){
-		Apply.displayNextLyrics(event.target.checked)
 		settingData.displayNextLyrics.data = event.target.checked
+		Apply.displayNextLyrics(event.target.checked)
 		this.putIndexedDB(event.target.id, event.target.checked)
 	}
 
@@ -343,6 +377,7 @@ class SettingData {
 		this.inputFontHeight = await db.notes.get('lyrics-input-font-zoom') || {id:'lyrics-input-font-zoom', data:200};
 		this.inputFontSpacing = await db.notes.get('lyrics-input-font-spacing') || {id:'lyrics-input-font-spacing', data:0};
 		this.inputFontWeight = await db.notes.get('input-font-weight') || {id:'input-font-weight', data:false};
+		this.inputUseTextArea = await db.notes.get('input-use-textarea') || {id:'input-use-textarea', data:false};
 		this.displayNextLyrics = await db.notes.get('display-next-lyrics') || {id:'display-next-lyrics', data:true};
 		this.wordAreaAutoAdjustHeight = await db.notes.get('word-area-auto-adjust-height') || {id:'word-area-auto-adjust-height', data:true};
 	}
@@ -371,6 +406,10 @@ class SettingData {
 
 		if(this.inputFontWeight){
 			Apply.inputFontWeight(this.inputFontWeight.data)
+		}
+
+		if(this.inputUseTextArea){
+			Apply.inputUseTextArea(this.inputUseTextArea.data)
 		}
 
 		if(this.wordAreaAutoAdjustHeight){
@@ -404,6 +443,10 @@ class SettingData {
 
 		if(this.inputFontWeight){
 			document.getElementById("input-font-weight").checked = this.inputFontWeight.data
+		}
+
+		if(this.inputUseTextArea){
+			document.getElementById("input-use-textarea").checked = this.inputUseTextArea.data
 		}
 
 		if(this.displayNextLyrics){

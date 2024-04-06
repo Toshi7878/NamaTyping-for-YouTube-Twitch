@@ -29,6 +29,13 @@
 	<script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
 	<script src="/eel.js"></script>
 	<script src="https://code.createjs.com/1.0.0/easeljs.min.js"></script>
+	<style id="user-input-style">
+		.active-input {
+			zoom: 200%;
+			letter-spacing: 0px;
+			font-weight: normal;
+		}
+	</style>
 </head>
 
 <body>
@@ -240,7 +247,8 @@
 
 		</div>
 
-		<div id="user-input" class="menu" style="display:none;">
+		<div id="user-input" class="menu">
+			<textarea id="lyrics-textarea" placeholder="（コメント受信をエミュレートします。コメントサーバーへの送信は行いません。）Shift+Enterで送信せずに改行できます。"></textarea>
 			<input id="lyrics-input" type='input' autocomplete="off" placeholder="（コメント受信をエミュレートします。コメントサーバーへの送信は行いません。）">
 		</div>
 
