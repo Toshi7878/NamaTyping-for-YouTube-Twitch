@@ -106,6 +106,7 @@ body {
 #lyrics-next {
   color: #aaa;
   font-size: 60%;
+  white-space: nowrap;
 }
 
 #next {
