@@ -45,6 +45,7 @@ function adjustMedia() {
 
 adjustWordArea()
 adjustMedia()
+
 $("#word-area").resizable({
 	handles: 'n',
 	resize: resizeEvent,

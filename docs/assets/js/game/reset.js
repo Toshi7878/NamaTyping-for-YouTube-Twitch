@@ -4,7 +4,7 @@ function resetLyricsArea() {
 		document.getElementById("lyrics").classList.remove('d-block')
 		timer.lyricsRenderReset()
 		timer.clockSet(['00', '00'])
-		timer.checkAdjustWordArea()
+		//timer.checkAdjustWordArea()
 	}
 }
 

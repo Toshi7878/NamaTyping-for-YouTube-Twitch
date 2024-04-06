@@ -174,6 +174,9 @@ class Timer {
 		this.wipeElements = NEXT_HEAD.getElementsByClassName("wipe-layer")[0].children
 		this.wipeCount = 0
 		this.checkAdjustWordArea()
+
+		const lyricsElement = document.getElementById("lyrics");
+		lyricsElement.scrollTop = lyricsElement.scrollHeight;
 	}
 	
 
@@ -203,6 +206,7 @@ class Timer {
 	}
 
 	displayMusicTitle(){
+		document.getElementById("music-title-container").classList.remove('d-none')
 		document.getElementById("music-title-container").classList.add("title-fade-in")
 	}
 

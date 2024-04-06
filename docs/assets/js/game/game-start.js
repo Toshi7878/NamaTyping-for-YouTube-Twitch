@@ -98,6 +98,7 @@ class Game extends Load {
 	}
 
 	setMusicTitle(){
+		document.getElementById("music-title-container").classList.add('d-none')
 		document.getElementById("music-title-container").classList.remove("title-fade-in")
 		document.getElementById("title").textContent = this.title
 	}

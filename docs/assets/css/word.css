@@ -54,7 +54,6 @@ body {
   bottom: 3%;
   color: #fff;
   display: none;
-  max-height: 500px;
   width: auto;
   overflow-y: scroll;
   caret-color: #73ff00;
