@@ -54,13 +54,13 @@
 
 .label-btn:hover {
 	background: #cfe6fd;
-	outline: solid #e4e7eb;
+	outline: solid thin #e4e7eb;
 }
 
 .checked-button:hover,
 .label-btn:active {
 	background: #b2d8fe;
-	outline: solid #68a8e9;
+	outline: solid thin #68a8e9;
 }
 
 .checked-button {

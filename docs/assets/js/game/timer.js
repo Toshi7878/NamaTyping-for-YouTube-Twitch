@@ -16,7 +16,7 @@ class Timer {
 		this.wipeElements
 		document.getElementById("lyrics").classList.add('d-block')
 		this.lyricsRenderReset()
-
+		Lyrics.initializeWipeStyle()
 
 	}
 
@@ -80,12 +80,13 @@ class Timer {
 			this.updateClockCount = Math.floor(this.speedTime)
 		}
 
-		if (!this.isNextFadeIn && game.displayLyrics[this.count]){
+		if (settingData.displayNextLyrics.data && !this.isNextFadeIn && game.displayLyrics[this.count]){
 			const NEXT_LYRICS_TIME = (game.displayLyrics[this.count]['time'][0] / this.speed)
 
 			if(NEXT_LYRICS_TIME - this.speedTime < 3) {
 				document.getElementById("next").classList.add("next-fade-in")
 				this.isNextFadeIn = true
+				this.correctLyrics = this.updateCorrectLyrics(this.count+1)
 			}
 
 		}
@@ -102,10 +103,8 @@ class Timer {
 
 		if(this.headTime > game.displayLyrics[this.count-1]['time'][this.wipeCount]){
 			this.wipeElements[this.wipeCount].removeAttribute('style')
-			this.wipeElements[this.wipeCount].classList.remove('wipe-now')
+			this.wipeElements[this.wipeCount].setAttribute('style',`background:-webkit-linear-gradient(0deg, #ffa500 100%, white 0%);-webkit-background-clip:text;`)
 			this.wipeCount++
-			this.shadowElements[this.wipeCount].classList.add('wipe-pass')
-			this.wipeElements[this.wipeCount].classList.add('wipe-now')
 		}
 
 		const LineTimeArray = game.displayLyrics[this.count-1]['time']
@@ -142,25 +141,13 @@ class Timer {
 	lyricsRenderReset(){
 		const headElement = document.getElementsByClassName("head-lyrics")
 		const previousElements = document.getElementsByClassName("previous-lyrics")
-		const wipePassElements = document.getElementsByClassName("wipe-pass")
-		const wipeNowElement = document.getElementsByClassName("wipe-now")
 
-
-		for(let i=0;i<headElement.length;i++){
-			headElement[i].classList.remove("head-lyrics")
+		while (headElement.length > 0) {
+			headElement[0].classList.remove("head-lyrics")
 		}
 
-		for(let i=0;i<wipePassElements.length;i++){
-			wipePassElements[i].classList.remove("wipe-pass")
-		}
-
-		for(let i=0;i<wipeNowElement.length;i++){
-			wipeNowElement[i].removeAttribute('style')
-			wipeNowElement[i].classList.remove("wipe-now")
-		}
-
-		for(let i=0;i<previousElements.length;i++){
-			previousElements[i].classList.remove("previous-lyrics")
+		while (previousElements.length > 0) {
+			previousElements[0].classList.remove("previous-lyrics")
 		}
 
 	}

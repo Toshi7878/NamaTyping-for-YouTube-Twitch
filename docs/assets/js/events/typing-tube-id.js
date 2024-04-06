@@ -1,13 +1,23 @@
-const typingtubeID = document.getElementById('typing-tube-id')
 
-typingtubeID.addEventListener('keydown', getMap)
+document.body.addEventListener("paste", pasteEvent, false);
+
+function pasteEvent(event) {
+
+		if(document.activeElement.type == 'text'){return;}
+		const clipboardData = (event.clipboardData || window.clipboardData).getData('text');
+
+		if(requestLimitter){
+			showToast(`<span style="color:white;font-weight;bold;">${requestLimitter.count}秒後に再リクエスト可</span>`, '#ffc71db8')
+		}else{
+			getMap(clipboardData)
+		}
+}
 
 class RequestLimitter {
 	
 	constructor(reqDate){
 		this.reqDate = reqDate
 		this.count = 9
-		typingtubeID.placeholder = this.count
 		this.setInterval = setInterval(this.requestLimitter.bind(this))
 	}
 
@@ -15,11 +25,10 @@ class RequestLimitter {
 		const NOW_DATE = new Date().getTime()
 		const LIMIT = 9 - ( (NOW_DATE-this.reqDate)/1000)
 		if(this.count - LIMIT > 1){
-			typingtubeID.placeholder = this.count
 			this.count--
 		}else if(this.count < 0){
-			typingtubeID.placeholder = 'ID here'
 			clearInterval(this.setInterval)
+			requestLimitter = null
 		}
 	}
 	
@@ -46,33 +55,25 @@ class TypingTube {
 
 		if(result.isAccess){
 			requestLimitter = new RequestLimitter(new Date().getTime())
-		}else{
-			typingtubeID.placeholder = 'ID here'
 		}
 	}
 
 }
 
 
+function getMap(value){
 
-function getMap(event){
-
-	if(event.key == 'Enter'){
-		const ID = event.target.value.match(/\d+$/)
-		const IS_OK = ID && location.host == 'localhost:8080' && event.target.placeholder == 'ID here'
+		if(!value.match('https://typing-tube.net/movie')){return;}
+		const ID = value.match(/\d+$/)
+		const IS_OK = ID && location.host == 'localhost:8080'
 	
 		if (IS_OK) {
 	
 			if(isNaN(Number(ID[0]))){
-				showToast(`<span style="color:white;font-weight;bold;">無効なIDです</span>`, '#ffc71db8')
 				return;
 			}
 	
 			const TYPING_TUBE = new TypingTube(ID[0])
 			TYPING_TUBE.pythonSendURL(event).then(TYPING_TUBE.setTypingTubeData.bind(TYPING_TUBE))
-			event.target.value = ''
-			event.target.placeholder = 'Loading...'
 		}
-	}
-
 }

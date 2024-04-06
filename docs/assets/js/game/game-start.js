@@ -1,6 +1,20 @@
 class Load {
 	
+	static SPEED_RANGE = {
+		'LocalMedia':{
+			'max':5,
+			'step':0.01,
+			'min':0
+		},
+		'YouTube':{
+			'max':2,
+			'step':0.25,
+			'min':0.25
+		}
+	}
+
 	constructor(setData) {
+		document.getElementById('folder-input').value = '';
 		this.platform = setData['platform']
 		this.displayLyrics = setData['gameLyricsData'][0]
 		this.comparisonLyrics = setData['gameLyricsData'][1]
@@ -20,6 +34,7 @@ class Load {
 
 		if(this.platform == 'YouTube'){
 			youtube = new YouTube(setData['movieURL'])
+			this.applySpeedRange(this.platform)
 		}else if(this.platform == 'SoundCloud'){
 			soundCloud = new SoundCloud(setData['movieURL'])
 			soundCloud.player = SC.Widget(document.getElementById("sc-widget"));
@@ -28,7 +43,17 @@ class Load {
 			localMedia = new LocalMedia(lrcFolder.mediaFile, lrcFolder.imgFile)
 			localMedia.player = document.getElementById("video")
 			playerEvent = new PlayerEvent(HTMLMediaPlayerState, this.platform)
+			this.applySpeedRange(this.platform)
 		}
+	}
+
+	applySpeedRange(platform){
+		const SPEED_RANGE_ELEMENT = document.getElementById("speed")
+
+		SPEED_RANGE_ELEMENT.min = Load.SPEED_RANGE[platform]['min']
+		SPEED_RANGE_ELEMENT.max = Load.SPEED_RANGE[platform]['max']
+		SPEED_RANGE_ELEMENT.step = Load.SPEED_RANGE[platform]['step']
+		document.getElementById("speed-label").textContent = Number(+document.getElementById("speed").value).toFixed(2)
 	}
 
 }

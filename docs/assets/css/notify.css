@@ -59,12 +59,6 @@
 	width: 5vh;
 }
 
-.checked-button:hover,
-.label-btn:active {
-	background: #b2d8fe;
-	outline: solid #68a8e9;
-}
-
 #notify-options .checked-button {
 	background: #71b8ff8c;
 	outline: solid 1.5px #c7c7c759;

@@ -194,7 +194,6 @@
 		<div id="bottom-menu" class="menu">
 			<div>
 				<div id="bottom-left-menu" class="dividing-line">
-					<input type="input" id="typing-tube-id" class="menu-text-box d-none" placeholder="ID here">
 					<label for="file-input" class="label-btn d-none" title="開く">
 						<!-- title="開く" -->
 						<img src="assets\img\folder-open-document-music.png">
@@ -229,8 +228,10 @@
 						<input type="range" class="menu-range" id="volume" min="0" max="100" value="50" title="50">
 					</div>
 					<div id="player-speed">
-						<img title="速度" src="assets\img\metronome.png">
-						<input type="range" class="menu-range" id="speed" min="0.25" max="2" value="1" step="0.25">
+						<label for="speed-button" class="label-btn" title="速度">
+							<img id="speed-button" src="assets\img\metronome.png">
+						</label>
+						<input type="range" class="menu-range" id="speed" min="0" max="5" value="1" step="0.01">
 						<span id="speed-label">1.00</span>
 					</div>
 
@@ -244,7 +245,6 @@
 		</div>
 
 	</section>
-	<script src="assets\js\indexeddb\indexed-db.js"></script>
 	<script src="assets\js\indexeddb\indexed-db.js"></script>
 
 	<script src="assets\js\game\parse-lyrics.js"></script>

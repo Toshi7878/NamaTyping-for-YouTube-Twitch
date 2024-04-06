@@ -12,21 +12,8 @@ document.getElementById('folder-input').addEventListener('change', event => {
 class DropEvent {
 
 	constructor(){
-		document.getElementById("notify").addEventListener('dragover', this.dragOver);
-	  	document.getElementById("notify").addEventListener('dragleave', this.dragLeave);
 		document.getElementById("notify").addEventListener("drop", this.drop.bind(this), false);
-		document.getElementById("word-area").addEventListener('dragover', this.dragOver);
-		document.getElementById("word-area").addEventListener('dragleave', this.dragLeave);
 		document.getElementById("word-area").addEventListener("drop", this.drop.bind(this), false);
-	}
-
-	dragOver(event){
-		event.target.style.borderColor = 'blue';
-		event.preventDefault();
-	}
-
-	dragLeave(event){
-		event.target.style.borderColor = '';
 	}
 
 	async drop(event) {

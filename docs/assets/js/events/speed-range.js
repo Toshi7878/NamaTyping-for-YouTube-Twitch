@@ -8,3 +8,15 @@ document.getElementById("speed").addEventListener('input', event => {
 
 	document.getElementById("speed-label").textContent = Number(event.target.value).toFixed(2)
 })
+
+document.getElementById("speed-button").addEventListener('click', event => {
+	
+	if(timer){
+		timer.speed = 1
+		MediaControl.speedChange(timer.speed)
+		totalTime = new TotalTime()
+	}
+
+	document.getElementById("speed").value = 1
+	document.getElementById("speed-label").textContent = '1.00'
+})

@@ -39,8 +39,6 @@ class EditTimer extends Timer{
 			this.wipeCount++
 
 			if(!this.wipeElements[this.wipeCount]){return;}
-			this.shadowElements[this.wipeCount].classList.add('wipe-pass')
-			this.wipeElements[this.wipeCount].classList.add('wipe-now')
 		}
 
 		const LineTimeArray = game.displayLyrics[this.count-1]['time']
@@ -76,23 +74,11 @@ class EditTimer extends Timer{
 
 	lyricsRenderReset(){
 		const headElement = document.getElementsByClassName("head-lyrics")
-		const wipePassElements = document.getElementsByClassName("wipe-pass")
-		const wipeNowElement = document.getElementsByClassName("wipe-now")
-
 
 		if(this.count > 0){
 			for(let i=0;i<headElement.length;i++){
 				headElement[i].classList.remove("head-lyrics")
 			}
-		}
-
-		for(let i=0;i<wipePassElements.length;i++){
-			wipePassElements[i].classList.remove("wipe-pass")
-		}
-
-		for(let i=0;i<wipeNowElement.length;i++){
-			wipeNowElement[i].removeAttribute('style')
-			wipeNowElement[i].classList.remove("wipe-now")
 		}
 
 	}

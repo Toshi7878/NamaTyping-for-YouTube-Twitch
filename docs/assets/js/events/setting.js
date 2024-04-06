@@ -48,8 +48,6 @@ class SettingMenu {
 		//ウィンドウを表示する
 		this.frame.isOpen = true
 
-		settingData = new SettingData()
-		await settingData.load()
 		settingData.buildSettingMenu()
 
 		this.addFrameEvents();
@@ -262,31 +260,37 @@ class SettingEvents{
 
 	inputEmulateName(event){
 		Apply.inputEmulateName(event.target.value, event)
+		settingData.emulateName.data = event.target.value
 		this.putIndexedDB(event.target.id, event.target.value)
 	}
 
 	inputBlurRange(event){
 		Apply.inputBlurRange(event.target.value)
+		settingData.blurRange.data = event.target.value
 		this.putIndexedDB(event.target.id, event.target.value)
 	}
 
 	displayTimer(event){
 		Apply.displayTimer(event.target.checked)
+		settingData.displayTimer.data = event.target.checked
 		this.putIndexedDB(event.target.id, event.target.checked)
 	}
 
 	changeInputHeight(event){
 		Apply.changeInputHeight(event.target.value)
+		settingData.inputFontHeight.data = event.target.value
 		this.putIndexedDB(event.target.id, event.target.value)
 	}
 
 	inputFontWeight(event){
 		Apply.inputFontWeight(event.target.checked)
+		settingData.inputFontWeight.data = event.target.checked
 		this.putIndexedDB(event.target.id, event.target.checked)
 	}
 
 	displayNextLyrics(event){
 		Apply.displayNextLyrics(event.target.checked)
+		settingData.displayNextLyrics.data = event.target.checked
 		this.putIndexedDB(event.target.id, event.target.checked)
 	}
 
@@ -310,6 +314,7 @@ class SettingEvents{
 
 	wordAreaAutoAdjustHeight(event){
 		Apply.wordAreaAutoAdjustHeight(event.target.checked)
+		settingData.wordAreaAutoAdjustHeight.data = event.target.checked
 		this.putIndexedDB(event.target.id, event.target.checked)
 	}
 
@@ -326,13 +331,13 @@ class SettingData {
 	}
 
 	async load(){
-		this.emulateName = await db.notes.get('emulate_name') || {data:'名無し'};
-		this.blurRange = await db.notes.get('word-area-blur-range');
-		this.displayTimer = await db.notes.get('display-timer');
-		this.inputFontHeight = await db.notes.get('lyrics-input-font-size');
-		this.inputFontWeight = await db.notes.get('input-font-weight');
-		this.displayNextLyrics = await db.notes.get('display-next-lyrics');
-		this.wordAreaAutoAdjustHeight = await db.notes.get('word-area-auto-adjust-height');
+		this.emulateName = await db.notes.get('emulate_name') || {id:'emulate_name', data:'名無し'};
+		this.blurRange = await db.notes.get('word-area-blur-range') || {id:'display-timer', data:0.6};
+		this.displayTimer = await db.notes.get('display-timer') || {id:'display-timer', data:true};
+		this.inputFontHeight = await db.notes.get('lyrics-input-font-size') || {id:'lyrics-input-font-size', data:29};
+		this.inputFontWeight = await db.notes.get('input-font-weight') || {id:'input-font-weight', data:false};
+		this.displayNextLyrics = await db.notes.get('display-next-lyrics') || {id:'display-next-lyrics', data:true};
+		this.wordAreaAutoAdjustHeight = await db.notes.get('word-area-auto-adjust-height') || {id:'word-area-auto-adjust-height', data:true};
 	}
 
 

@@ -27,8 +27,8 @@ class ParseLrc{
 		for (let i = 0; i < lyrics.length; i++) {
 			let timeArray = lyrics[i].match(/\[\d\d:\d\d.\d\d\]/g)
 
-			let charArray = this.formatLyricsForGame(lyrics[i].replace(/\[\d\d:\d\d.\d\d\]/g, '@@timestamp@@')).split('@@timestamp@@');
-			let lyricsArray = this.formatLyricsForGame(lyrics[i].replace(/\[\d\d:\d\d.\d\d\]/g, '')).split(' ').filter(x => x !== "");
+			let charArray = this.formatLyricsForLrc(lyrics[i].replace(/\[\d\d:\d\d.\d\d\]/g, '@@timestamp@@')).split('@@timestamp@@');
+			let lyricsArray = this.formatLyricsForLrc(lyrics[i].replace(/\[\d\d:\d\d.\d\d\]/g, '')).split(' ').filter(x => x !== "");
 
 			if(timeArray){
 
@@ -62,8 +62,21 @@ class ParseLrc{
 		return [displayLyrics, comparisonLyrics];
 	}
 
+	formatLyricsForLrc(text){
+		//残す文字を正規表現で下の配列に記入
+		text = text.replace(/<style>[\s\S]*?<\/style>/, ""); //styleタグ全体削除
+		text = text.replace(/[（\(]/g, " "); //左括弧をスペースに変更
+		text = text.replace(/<.*>/, ""); //HTMLタグを削除
 
-	formatLyricsForGame(text){
+		text = text.normalize('NFKC').toLowerCase(); // 全角英数字を半角に変換
+		text = text.replace(new RegExp(regex, 'g'), ""); //regexListに含まれていない文字を削除
+		// text = text.replace(/([a-z])(\.)/g, "$1");　//ピリオド
+		// text = text.replace(/([a-z])(-)/g, "$1"); //ハイフン
+		
+		return text;
+	}
+
+	formatLyricsForMap(text){
 		//残す文字を正規表現で下の配列に記入
 		text = text.replace(/<style>[\s\S]*?<\/style>/, ""); //styleタグ全体削除
 		text = text.replace(/[（\(].*?[\)）]/g, ""); //()（）の歌詞を削除
@@ -76,6 +89,7 @@ class ParseLrc{
 		
 		return text;
 	}
+
 
 
 	//TypingTubeの短いラインをminStrLength以上になるように成形。
@@ -91,7 +105,7 @@ class ParseLrc{
 
 			lyrics_array[i][1] = this.deleteRubyTag(lyrics_array[i][1])
 
-			const formatedLyricsLine = parseLrc.formatLyricsForGame(lyrics_array[i][1])
+			const formatedLyricsLine = parseLrc.formatLyricsForMap(lyrics_array[i][1])
 
 
 			const isLyrics =  formatedLyricsLine != 'end' && lyrics_array[i][2].replace(/\s/g, '') != ''

@@ -12,7 +12,7 @@ class Lyrics {
 				const char = displayLyrics[i]['char']
 				const times = displayLyrics[i]['time']
 
-				let lyricsElement = `<div data-count="${i}" id="lyrics-${i}" class="${char.length > 3 ? `text-keep-all`:""} ${isEdit ? `previous-lyrics`:""} ${i == 0 ? 'head-lyrics':''}">`
+				let lyricsElement = `<div data-count="${i}" id="lyrics-${i}" class="${char.length > 3 ? `text-keep-all`:""}${isEdit ? ` previous-lyrics`:""}${i == 0 ? ' head-lyrics':''}">`
 				let shadowElement = `<div class="shadow-layer">`
 				let wipeElement = `<div class="wipe-layer">`
 				let charElements = ''
@@ -41,5 +41,16 @@ class Lyrics {
 				Skip.addSkipEvent()
 			}
 		}
+
+	static initializeWipeStyle(){
+		const wipeLayer = document.getElementsByClassName('wipe-layer')
+		for(let i=0;i<wipeLayer.length;i++){
+			const wipeSpans = wipeLayer[i].children
+
+			for(let m=0;m<wipeSpans.length;m++){
+				wipeSpans[m].setAttribute('style',`background:-webkit-linear-gradient(0deg, #ffa500 0%, white 0%);-webkit-background-clip:text;`)
+			}
+		}
+	}
 
 	}

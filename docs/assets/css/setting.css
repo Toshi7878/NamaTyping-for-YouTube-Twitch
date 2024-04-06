@@ -5,6 +5,7 @@
 #option-container {
 	display: flex;
 	flex-direction: column;
+	user-select: none;
 }
 
 #lyrics-input-font-size {
