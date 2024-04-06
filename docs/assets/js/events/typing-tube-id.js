@@ -3,7 +3,7 @@ document.body.addEventListener("paste", pasteEvent, false);
 
 function pasteEvent(event) {
 
-		if(document.activeElement.type == 'text'){return;}
+		if(document.activeElement.type == 'text' || game && game.isStart){return;}
 		const clipboardData = (event.clipboardData || window.clipboardData).getData('text');
 
 		if(requestLimitter){
