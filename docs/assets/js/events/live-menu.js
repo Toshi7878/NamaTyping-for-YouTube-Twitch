@@ -63,7 +63,7 @@ function extractYouTubeVideoId(url) {
 	const YOUTUBE_REGEX = /(?:youtu\.be|youtube).*(?:\/|v=)([a-zA-Z0-9_-]{11})/;
 	const YOUTUBE = url.match(YOUTUBE_REGEX);
 
-	const TWITCH_REGEX = /(?:https?:\/\/)?(?:www\.)?twitch\.tv\/(\w+)/;
+	const TWITCH_REGEX = /https?:\/\/(?:www\.)?twitch\.tv\/(?:popout\/)?(\w+)/;
 	const TWITCH = url.match(TWITCH_REGEX);
 	// Check if a match is found
 	if (YOUTUBE && YOUTUBE[1]) {

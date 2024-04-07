@@ -8,6 +8,9 @@ document.getElementById('folder-input').addEventListener('change', event => {
 })
 
 
+document.body.addEventListener('dragover', event => {
+    event.preventDefault();
+});
 
 class DropEvent {
 

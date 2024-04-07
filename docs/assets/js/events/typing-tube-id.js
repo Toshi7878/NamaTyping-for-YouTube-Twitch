@@ -1,4 +1,3 @@
-
 document.body.addEventListener("paste", pasteEvent, false);
 
 function pasteEvent(event) {

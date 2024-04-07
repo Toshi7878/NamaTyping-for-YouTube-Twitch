@@ -1,5 +1,8 @@
-const regexList = ['[^ぁ-んゔ', 'ァ-ンヴ', '一-龥', 'a-z', 'A-Z', '\\d', ' ', "々%&@&=+ー～~'-]"];//\.
-const regex = regexList.join('');
+const regexList = ['[^-ぁ-んゔ', 'ァ-ンヴ', '一-龥', '\\w', '\\d', ' ', "々%&@&=+ー～~\'\u00C0-\u00FF",];
+const Hangul = ['\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F\uFFA0-\uFFDC\uFFA0-\uFFDC'];
+const cyrillicAlphabet = ['\u0400-\u04FF]']
+
+const regex = regexList.concat(Hangul).concat(cyrillicAlphabet).join('');
 
 class ParseLrc{
 
