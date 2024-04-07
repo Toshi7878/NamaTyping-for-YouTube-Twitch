@@ -63,7 +63,12 @@ class Scoring {
 		this.displayCount--
 
 		if (this.usersScore[this.displayCount-1]) {
-			setTimeout(this.displayResult.bind(this), 1000)
+
+			if(this.usersScore < 10){
+				setTimeout(this.displayResult.bind(this), 1000)
+			}else{
+				setTimeout(this.displayResult.bind(this), 500)
+			}
 		}
 	}
 

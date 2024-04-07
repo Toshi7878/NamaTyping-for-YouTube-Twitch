@@ -106,7 +106,7 @@ class Chat:
 
 			for c in self.livechat.get().sync_items():
 
-					print(f'{c.author.name} : {c.message}')
+					# print(f'{c.author.name} : {c.message}')
 
 					data = {
 						'name': c.author.name,
