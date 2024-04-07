@@ -69,43 +69,58 @@ class LyricsInput {
 
 new LyricsInput()
 
-const lyricsInputToggleBtn = document.getElementById("solo-play")
 const bottomMenu = document.getElementById("bottom-menu")
 
-async function loadSoloPlayOption(){
-	const TOGGLE_DATA = await db.notes.get('solo-play')
-		
-	if(TOGGLE_DATA && TOGGLE_DATA.data){
-		lyricsInputToggleBtn.parentElement.classList.add('checked-button')
-		lyricsInput.parentElement.style.display = 'block'
-		bottomMenu.style.bottom = String(lyricsInput.parentElement.clientHeight+10)+'px'
-		lyricsInputToggleBtn.checked = true
+
+
+class soloPlayToggle {
+	
+	constructor(){
+		this.lyricsInputToggleBtn = document.getElementById("solo-play")
+
+		this.loadSoloPlayOption()
+		this.lyricsInputToggleBtn.addEventListener('change', this.toggleEvent.bind(this))
+
 	}
 
-}
+	async loadSoloPlayOption(){
+		const TOGGLE_DATA = await db.notes.get('solo-play') || {id:'solo-play',data:true}
+			
+		if(TOGGLE_DATA.data){
+			this.lyricsInputToggleBtn.parentElement.classList.add('checked-button')
+			this.lyricsInputToggleBtn.checked = true
+			lyricsInput.parentElement.classList.remove('d-none')
+			bottomMenu.style.bottom = String(lyricsInput.parentElement.clientHeight)+'px'
+		}else{
+			this.lyricsInputToggleBtn.parentElement.classList.remove('checked-button')
+			this.lyricsInputToggleBtn.checked = false
+		}
+	
+	}
 
-loadSoloPlayOption()
+	toggleEvent(event){
+		this.toggleCheckbox(event.target)
+	
+		adjustWordArea()
+		adjustMedia()
+	}
 
-
-lyricsInputToggleBtn.addEventListener('change', event => {
-
-	toggleCheckbox(event.target)
-	adjustWordArea()
-	adjustMedia()
-
-})
-
-function toggleCheckbox(element){
+	toggleCheckbox(element){
 		db.notes.put({id:element.id, data:element.checked});
 	
 		if(element.checked){		
 			element.parentElement.classList.add('checked-button')
-			lyricsInput.parentElement.style.display = 'block'
-			bottomMenu.style.bottom = String(lyricsInput.parentElement.clientHeight+10)+'px'
+			lyricsInput.parentElement.classList.remove('d-none')
+			bottomMenu.style.bottom = String(lyricsInput.parentElement.offsetHeight)+'px'
 	
 		}else{
 			element.parentElement.classList.remove('checked-button')
-			lyricsInput.parentElement.style.display = 'none'
+			lyricsInput.parentElement.classList.add('d-none')
 			bottomMenu.style.bottom = '15px'
 		}
+	}
+	
 }
+
+new soloPlayToggle()
+

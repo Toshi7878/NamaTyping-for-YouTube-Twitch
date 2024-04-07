@@ -55,21 +55,11 @@ class NotifyOption extends LoadNotifyOption{
 			document.getElementById("notify").textContent = ''
 		})
 		
-		// document.getElementById("notify-comment").addEventListener('change', event => {
-		// 	NotifyOption.toggleCheckbox(event.target)
-		// 	this[CHECKBOX_ID[event.target.id]] = event.target.checked
-		// })
-		
 		document.getElementById("notify-scoring").addEventListener('change', event => {
 			NotifyOption.toggleCheckbox(event.target)
 			this[CHECKBOX_ID[event.target.id]] = event.target.checked
 		})
 		
-		// document.getElementById("notify-username").addEventListener('change', event => {
-		// 	NotifyOption.toggleCheckbox(event.target)
-		// 	this[CHECKBOX_ID[event.target.id]] = event.target.checked
-		// })
-
 		document.getElementById("notify-font-size-up").addEventListener('click', event => {
 			const FONT_SIZE = parseFloat(getComputedStyle(NOTIFY).fontSize)
 		

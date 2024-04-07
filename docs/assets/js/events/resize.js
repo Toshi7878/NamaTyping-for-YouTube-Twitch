@@ -7,14 +7,14 @@ window.addEventListener('resize', e => {
 
 function adjustWordArea(event) {
 	if(!game || !game.isEdit){
+
 		const bottomMenu = document.getElementById("bottom-menu")
-		const bottom = (parseFloat(getComputedStyle(bottomMenu).bottom) + bottomMenu.clientHeight) * 0.8
-		const WORD_AREA_HEIGHT = document.getElementById("word-area").clientHeight
+		const wordAreaBottom = (parseFloat(getComputedStyle(bottomMenu).bottom) + bottomMenu.clientHeight) * 0.8
 	
 		if(event == undefined){
 			document.getElementById("word-area").style.top = ``
 		}
-		document.getElementById("word-area").style.bottom = `${bottom.toString()}px`
+		document.getElementById("word-area").style.bottom = `${wordAreaBottom.toString()}px`
 	}else if(editor){
 		editor.resizeWordArea()
 	}
