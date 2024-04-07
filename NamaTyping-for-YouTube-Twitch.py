@@ -99,7 +99,7 @@ class Chat:
 
 	#YouTubeチャットを監視
 	def youtubeObserver(self):
-		print('start YouTube Observer')
+		# print('start YouTube Observer')
 
 		while self.livechat.is_alive():
 
@@ -119,7 +119,7 @@ class Chat:
 
 			if self.isClickScoringBtn == True: #採点ボタンが押されたらwhileループを停止
 				self.isClickScoringBtn = False
-				print('stop YouTube Observer')
+				# print('stop YouTube Observer')
 				break
 
 
@@ -130,7 +130,7 @@ class Chat:
 
 
 	def twitchSendCommentData(self, message): 
-		print(f'{message["display-name"]} : {message["message"]}') 
+		# print(f'{message["display-name"]} : {message["message"]}') 
 
 		data = {
 			'name': message['display-name'],
