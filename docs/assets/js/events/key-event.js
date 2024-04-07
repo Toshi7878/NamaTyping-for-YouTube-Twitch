@@ -23,5 +23,12 @@ window.addEventListener('keydown', (event) => {
 			}
 			
 			break;
+
+		case 'KeyF':
+
+			// if(event.ctrlKey){
+			// 	event.preventDefault()
+			// }
+			break;
 	}
 })

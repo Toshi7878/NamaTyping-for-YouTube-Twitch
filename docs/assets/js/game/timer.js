@@ -243,7 +243,7 @@ class Timer {
 			const MIN_HEIGHT = ADJUST_HEIGHT > DEFAULT_HEIGHT && LYRICS_TOP_POSITION ? ADJUST_HEIGHT : DEFAULT_HEIGHT
 			WORD_AREA.style.height = `${MIN_HEIGHT}px`
 			adjustWordArea()
-			resizeEvent(null, MIN_HEIGHT)
+			Resize.resizeEvent(null, MIN_HEIGHT)
 		}
 
 	}

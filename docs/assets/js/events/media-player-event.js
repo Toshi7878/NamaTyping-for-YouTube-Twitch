@@ -49,7 +49,7 @@ class PlayerEvent {
 	//動画 音楽プレイヤーが再生可能な状態になった
 	onPlayerReady(event) {
 		console.log("未スタート")
-		adjustMedia()
+		Resize.adjustMedia()
 
 		MediaControl.volumeChange(volume)
 

@@ -5,8 +5,6 @@ const lyricsTextArea = document.getElementById('lyrics-textarea')
 class LyricsInput {
 
 	constructor(){
-
-		
 		lyricsInput.addEventListener('keydown', this.submitEmulateComment.bind(this))
 		lyricsInput.addEventListener('focus', this.removePlaceholder)
 		lyricsTextArea.addEventListener('keydown', this.submitEmulateComment.bind(this))
@@ -100,9 +98,7 @@ class soloPlayToggle {
 
 	toggleEvent(event){
 		this.toggleCheckbox(event.target)
-	
-		adjustWordArea()
-		adjustMedia()
+		Resize.resize()
 	}
 
 	toggleCheckbox(element){

@@ -192,8 +192,7 @@ class Apply{
 		const INPUT_HEIGHT = document.getElementById("user-input").offsetHeight
 		BOTTOM_MENU.style.bottom = String(INPUT_HEIGHT ? INPUT_HEIGHT:'10') + 'px'
 
-		adjustWordArea()
-		adjustMedia()
+		Resize.resize()
 	}
 
 	static inputUseTextArea(value){
