@@ -17,24 +17,33 @@ class LyricsInput {
 	submitEmulateComment(event){
 
 		//変換確定時に発火しないようkeyCodeを使用
-		if (event.keyCode === 13 && chat) {
+		if (event.keyCode === 13) {
 
-			if(event.target.tagName == 'TEXTAREA' && event.shiftKey){
-				setTimeout( () => {
-					const t = document.getElementById("lyrics-textarea");
-					t.scrollTop = t.scrollHeight
-				}, 2)
-				return;
+			if(event.target.tagName == 'TEXTAREA'){
+
+				if(settingData.userSubmitType.data == 0){
+
+					if(event.shiftKey){
+						//Shift+Enterで改行
+						setTimeout( () => document.getElementById("lyrics-textarea").scrollTop = 99999999999999, 1)
+						return;
+					}
+	
+				}else if(settingData.userSubmitType.data == 1){
+
+					if(!event.ctrlKey){
+						//Ctrlキーを押していなかったら改行
+						setTimeout(() => document.getElementById("lyrics-textarea").scrollTop = 99999999999999, 1)
+						return;
+					}
+				}
+
 			}
-	
-	
-			const chatData = {
-					'name': settingData.emulateName.data,
-					'id':'solo',
-					'comment': event.target.value
+
+			if(chat){
+				submit(event.target.value)
 			}
-	
-			chat.checkPhraseMatch(chatData)
+
 			event.target.value = ''
 			event.preventDefault()
 		}
@@ -43,6 +52,17 @@ class LyricsInput {
 
 	removePlaceholder(event){
 		event.target.removeAttribute('placeholder')
+	}
+
+
+	submit(comment){
+		const chatData = {
+			'name': settingData.emulateName.data,
+			'id':'solo',
+			'comment': comment
+		}
+
+		chat.checkPhraseMatch(chatData)
 	}
 
 }

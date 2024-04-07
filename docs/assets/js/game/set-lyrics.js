@@ -26,16 +26,8 @@ class Lyrics {
 
 				lyricsNode += Element
 			}
-			lyricsNode += `<div id='lyrics-next' ${isEdit ? `style="display:none;"`:""}><span id='next-label'>NEXT: </span>&#8203;<span id='skip'></span><span id='next'></span></div>`
+			lyricsNode += `<div id='lyrics-next' ${settingData.displayNextLyrics.data ? `class="d-none"`:''}><span id='next-label'>NEXT: </span>&#8203;<span id='skip'></span><span id='next'></span></div>`
 			document.getElementById("lyrics").innerHTML = lyricsNode
-
-
-			const settingData = new SettingData()
-			await settingData.load()
-
-			if(settingData && settingData.displayNextLyrics){
-				Apply.displayNextLyrics(settingData.displayNextLyrics.data)
-			}
 
 			if(!isEdit){
 				Skip.addSkipEvent()

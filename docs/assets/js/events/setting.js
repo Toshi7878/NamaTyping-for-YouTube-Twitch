@@ -19,7 +19,12 @@ class SettingMenu {
 
 	async display(){
 		const jsFrame = new JSFrame();
-
+		const DISPLAY_TIMER = settingData.displayTimer.data
+		const FONT_WEIGHT = settingData.inputFontWeight.data
+		const USE_TEXTAREA = settingData.inputUseTextArea.data
+		const DISPLAY_NEXT_LYRICS = settingData.displayNextLyrics.data
+		const AUTO_ADJUST_HEIGHT = settingData.wordAreaAutoAdjustHeight.data
+		const USER_SUBMIT_TYPE = settingData.userSubmitType.data
 		this.frame = jsFrame.create({
 			title: '設定',
 			left: 60, top: 60, width: 615, height: 420	,
@@ -28,20 +33,24 @@ class SettingMenu {
 			appearanceName: 'redstone',//プリセット名は 'yosemite','redstone','popup'
 			html:
 			`<div id="option-container" class="ms-2 fs-6 lh-lg font-monospace">
-				<label>名前(コメントエミュレート時)<input value="名無し" id="emulate_name"></label>
-				<label>歌詞・ランキング背景の不透明度:<input id='word-area-blur-range' type="range" class="menu-range mx-2" max="1" step="0.01" value="0.6"><span id='blur-range-label'>0.60</span></label>
-				<label><input id="display-timer" type="checkbox" class="me-2" checked>再生時間を、歌詞表示領域にも表示する</label>
-				<label><input id="display-next-lyrics" type="checkbox" class="me-2" checked>3秒前に次の歌詞を表示</label>
-				<label><input id="word-area-auto-adjust-height" type="checkbox" class="me-2" checked>歌詞エリアの高さ自動調整</label>
+				<label>名前(コメントエミュレート時)<input value="${settingData.emulateName.data}" id="emulate_name"></label>
+				<label>歌詞・ランキング背景の不透明度:<input id='word-area-blur-range' type="range" class="menu-range mx-2" max="1" step="0.01" value="${settingData.blurRange.data}"><span id='blur-range-label'>${Number(settingData.blurRange.data).toFixed(2)}</span></label>
+				<label><input id="display-timer" type="checkbox" class="me-2" ${DISPLAY_TIMER ? 'checked':''}>再生時間を、歌詞表示領域にも表示する</label>
+				<label><input id="display-next-lyrics" type="checkbox" class="me-2" ${DISPLAY_NEXT_LYRICS ? 'checked':''}>3秒前に次の歌詞を表示</label>
+				<label><input id="word-area-auto-adjust-height" type="checkbox" class="me-2" ${AUTO_ADJUST_HEIGHT ? 'checked':''}>歌詞エリアの高さ自動調整</label>
 				<div>
 					<h4>一人プレイ用 ツールバー設定</h4>
     				<div>
-						<label>フォントサイズ:<input type="number" id="lyrics-input-font-zoom" class="ms-2" value="200">%</label>
-						<label class="ms-2"><input id="input-font-weight" type="checkbox" class="me-2">太く表示</label>
+						<label>フォントサイズ:<input type="number" id="lyrics-input-font-zoom" class="ms-2" value="${settingData.inputFontHeight.data}">%</label>
+						<label class="ms-2"><input id="input-font-weight" type="checkbox" class="me-2" ${FONT_WEIGHT ? 'checked':''}>太く表示</label>
 					</div>
 					<div>
-						<label>文字間隔:<input type="number" min="0" step="0.1" max="2" id="lyrics-input-font-spacing" class="ms-2" value="0">px</label>
-						<label class="ms-2"><input id="input-use-textarea" type="checkbox" class="me-2">テキストエリアを使用</label>
+						<label>文字間隔:<input type="number" min="0" step="0.1" max="2" id="lyrics-input-font-spacing" class="ms-2" value="${settingData.inputFontSpacing.data}">px</label>
+						<label class="ms-2"><input id="input-use-textarea" type="checkbox" class="me-2" ${USE_TEXTAREA ? 'checked':''}>テキストエリアを使用</label>
+						<select id="user-submit-type" class="form-select-sm${USE_TEXTAREA ? '':' invisible'}" style="height:28px;">
+							<option${USER_SUBMIT_TYPE == 0 ? ' selected':''}>送信:Enter 改行:Shift+Enter</option>
+							<option${USER_SUBMIT_TYPE == 1 ? ' selected':''}>送信:Ctrl+Enter 改行:Enter</option>
+						</select>
 					</div>
 				</div>
 				<div class="mt-2 d-flex justify-content-between">
@@ -54,8 +63,6 @@ class SettingMenu {
 		}).show();;
 		//ウィンドウを表示する
 		this.frame.isOpen = true
-
-		settingData.buildSettingMenu()
 
 		this.addFrameEvents();
 		const settingEvents = new SettingEvents()
@@ -154,10 +161,7 @@ let settingMenu
 class Apply{
 
 	static inputEmulateName(value){
-
-		if(value){
 			settingData.emulateName.data = value
-		}
 	}
 
 	static inputBlurRange(value){
@@ -190,16 +194,6 @@ class Apply{
 
 		adjustWordArea()
 		adjustMedia()
-	}
-
-	static changeInputFontSpacing(value){
-		Apply.updateUserInputStyle()
-	}
-
-	static inputFontWeight(value){
-
-		Apply.updateUserInputStyle()
-
 	}
 
 	static inputUseTextArea(value){
@@ -284,6 +278,8 @@ class SettingEvents{
 		document.getElementById("delete-result-history").addEventListener('click', this.deleteResultData.bind(this))
 		document.getElementById("save-window-size").addEventListener('click', this.saveWindowSize.bind(this))
 		document.getElementById("word-area-auto-adjust-height").addEventListener('change', this.wordAreaAutoAdjustHeight.bind(this))
+		document.getElementById("user-submit-type").addEventListener('change', this.userSubmitType.bind(this))
+
 	}
 
 	inputEmulateName(event){
@@ -312,13 +308,13 @@ class SettingEvents{
 
 	changeInputFontSpacing(event){
 		settingData.inputFontSpacing.data = event.target.value
-		Apply.changeInputFontSpacing(event.target.value)
+		Apply.updateUserInputStyle()
 		this.putIndexedDB(event.target.id, event.target.value)
 	}
 
 	inputFontWeight(event){
 		settingData.inputFontWeight.data = event.target.checked
-		Apply.inputFontWeight(event.target.checked)
+		Apply.updateUserInputStyle()
 		this.putIndexedDB(event.target.id, event.target.checked)
 	}
 
@@ -326,6 +322,19 @@ class SettingEvents{
 		settingData.inputUseTextArea.data = event.target.checked
 		Apply.inputUseTextArea(event.target.checked)
 		this.putIndexedDB(event.target.id, event.target.checked)
+
+		const SUBMIT_TYPE = document.getElementById("user-submit-type")
+
+		if(SUBMIT_TYPE){
+
+			if(event.target.checked){
+				SUBMIT_TYPE.classList.remove('invisible')
+			}else{
+				SUBMIT_TYPE.classList.add('invisible')
+			}
+			
+		}
+
 	}
 
 	displayNextLyrics(event){
@@ -358,6 +367,11 @@ class SettingEvents{
 		this.putIndexedDB(event.target.id, event.target.checked)
 	}
 
+	userSubmitType(event){
+		settingData.userSubmitType.data = event.target.selectedIndex
+		this.putIndexedDB(event.target.id, event.target.selectedIndex)
+	}
+
 	putIndexedDB(id, value){
 		db.notes.put({id: event.target.id, data:value});
 	}
@@ -365,10 +379,6 @@ class SettingEvents{
 
 
 class SettingData {
-
-	constructor(){
-
-	}
 
 	async load(){
 		this.emulateName = await db.notes.get('emulate_name') || {id:'emulate_name', data:'名無し'};
@@ -380,83 +390,20 @@ class SettingData {
 		this.inputUseTextArea = await db.notes.get('input-use-textarea') || {id:'input-use-textarea', data:false};
 		this.displayNextLyrics = await db.notes.get('display-next-lyrics') || {id:'display-next-lyrics', data:true};
 		this.wordAreaAutoAdjustHeight = await db.notes.get('word-area-auto-adjust-height') || {id:'word-area-auto-adjust-height', data:true};
+		this.userSubmitType = await db.notes.get('user-submit-type') || {id:'user-submit-type', data:0};
+
+		settingData.allApply()
 	}
 
 
 	allApply(){
-		if(this.emulateName){
 			Apply.inputEmulateName(this.emulateName.data)
-		}
-
-		if(this.blurRange){
 			Apply.inputBlurRange(this.blurRange.data)
-		}
-
-		if(this.displayTimer){
 			Apply.displayTimer(this.displayTimer.data)
-		}
-
-		if(this.inputFontHeight){
 			Apply.changeInputHeight(this.inputFontHeight.data)
-		}
-
-		if(this.inputFontSpacing){
-			Apply.changeInputFontSpacing(this.inputFontSpacing.data)
-		}
-
-		if(this.inputFontWeight){
-			Apply.inputFontWeight(this.inputFontWeight.data)
-		}
-
-		if(this.inputUseTextArea){
 			Apply.inputUseTextArea(this.inputUseTextArea.data)
-		}
-
-		if(this.wordAreaAutoAdjustHeight){
 			Apply.wordAreaAutoAdjustHeight(this.wordAreaAutoAdjustHeight.data)
-		}
-	}
-
-
-	buildSettingMenu(){
-
-		if(this.emulateName){
-			document.getElementById("emulate_name").value = this.emulateName.data
-		}
-
-		if(this.blurRange){
-			document.getElementById("word-area-blur-range").value = this.blurRange.data
-			document.getElementById("blur-range-label").textContent = Number(this.blurRange.data).toFixed(2)
-		}
-
-		if(this.displayTimer){
-			document.getElementById("display-timer").checked = this.displayTimer.data
-		}
-
-		if(this.inputFontHeight){
-			document.getElementById("lyrics-input-font-zoom").value = this.inputFontHeight.data
-		}
-
-		if(this.inputFontSpacing){
-			document.getElementById("lyrics-input-font-spacing").value = this.inputFontSpacing.data
-		}
-
-		if(this.inputFontWeight){
-			document.getElementById("input-font-weight").checked = this.inputFontWeight.data
-		}
-
-		if(this.inputUseTextArea){
-			document.getElementById("input-use-textarea").checked = this.inputUseTextArea.data
-		}
-
-		if(this.displayNextLyrics){
-			document.getElementById("display-next-lyrics").checked = this.displayNextLyrics.data
-		}
-
-		if(this.wordAreaAutoAdjustHeight){
-			document.getElementById("word-area-auto-adjust-height").checked = this.wordAreaAutoAdjustHeight.data
-		}
-
+			Apply.displayNextLyrics(this.displayNextLyrics.data)
 	}
 
 }
@@ -467,5 +414,4 @@ let settingData
 (async () => {
 	settingData = new SettingData()
 	await settingData.load()
-	settingData.allApply()
 })()
