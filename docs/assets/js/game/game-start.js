@@ -28,6 +28,7 @@ class Load {
 
 		deleteMedia(setData['edit'])
 		this.setMedia(setData)
+		this.setMusicTitle()
 	}
 
 	setMedia(setData){
@@ -56,6 +57,12 @@ class Load {
 		document.getElementById("speed-label").textContent = Number(+document.getElementById("speed").value).toFixed(2)
 	}
 
+	setMusicTitle(){
+		document.getElementById("music-title-container").classList.add('d-none')
+		document.getElementById("music-title-container").classList.remove("title-fade-in")
+		document.getElementById("title").textContent = this.title
+	}
+
 }
 
 class Game extends Load {
@@ -71,7 +78,6 @@ class Game extends Load {
 
 		ToggleBtn.disableStartButton()
 
-		this.setMusicTitle()
 		const LiveID = extractYouTubeVideoId(document.getElementById("live-id").value)
 		const LivePlatform = document.getElementById("live-platform").selectedOptions[0].textContent
 
@@ -95,12 +101,6 @@ class Game extends Load {
 	async stopChatObserver(){
 		let result = await eel.stopChatObserver()();
 		return result;
-	}
-
-	setMusicTitle(){
-		document.getElementById("music-title-container").classList.add('d-none')
-		document.getElementById("music-title-container").classList.remove("title-fade-in")
-		document.getElementById("title").textContent = this.title
 	}
 
 }
