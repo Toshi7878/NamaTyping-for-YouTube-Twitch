@@ -26,7 +26,7 @@ class Lyrics {
 
 				lyricsNode += Element
 			}
-			lyricsNode += `<div id='lyrics-next' ${settingData.displayNextLyrics.data ? `class="d-none"`:''}><span id='next-label'>NEXT: </span>&#8203;<span id='skip'></span><span id='next'></span></div>`
+			lyricsNode += `<div id='lyrics-next'><span id='next-label'${settingData.displayNextLyrics.data ? ``:' class="d-none"'}>NEXT: </span>&#8203;<span id='skip'></span><span id='next'${settingData.displayNextLyrics.data ? ``:' class="d-none"'}></span></div>`
 			document.getElementById("lyrics").innerHTML = lyricsNode
 
 			if(!isEdit){
