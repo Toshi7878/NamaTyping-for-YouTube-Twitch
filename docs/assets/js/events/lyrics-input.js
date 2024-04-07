@@ -7,9 +7,9 @@ class LyricsInput {
 	constructor(){
 
 		
-		lyricsInput.addEventListener('keydown', this.submitEmulateComment)
+		lyricsInput.addEventListener('keydown', this.submitEmulateComment.bind(this))
 		lyricsInput.addEventListener('focus', this.removePlaceholder)
-		lyricsTextArea.addEventListener('keydown', this.submitEmulateComment)
+		lyricsTextArea.addEventListener('keydown', this.submitEmulateComment.bind(this))
 		lyricsTextArea.addEventListener('focus', this.removePlaceholder)
 
 	}
@@ -41,7 +41,7 @@ class LyricsInput {
 			}
 
 			if(chat){
-				submit(event.target.value)
+				this.submit(event.target.value)
 			}
 
 			event.target.value = ''
