@@ -7,7 +7,7 @@ class DetailResultMenu {
 		const jsFrame = new JSFrame();
 
 		this.frame = jsFrame.create({
-			title: '採点結果',
+			title: '採点結果(Escキーで閉じる)',
 			left: 100, top: 20, width: 1100, height: 700,
 			movable: true,//マウスで移動可能
 			resizable: true,//マウスでリサイズ可能
