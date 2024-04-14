@@ -136,6 +136,9 @@ class LrcFolder {
 				}
 			}
 
+			//Lrcデータ読み込み用regex正規表現を初期化
+			parseLrc = new ParseLrc()
+			
 			if (this.jsonFile) {
 				const jsonReader = new FileReader()
 				jsonReader.readAsArrayBuffer(this.jsonFile)
@@ -177,7 +180,6 @@ class LrcFolder {
 				gameLyricsData[1] = repl.marge(gameLyricsData[1])
 				const setData = {'platform':'LocalMedia', 'title':this.lrcFile.name.slice(0,-4), 'gameLyricsData':gameLyricsData}
 				game = new Game(setData)
-
 			}
 		}
 	

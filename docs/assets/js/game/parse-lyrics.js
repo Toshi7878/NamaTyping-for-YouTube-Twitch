@@ -1,15 +1,17 @@
-const regexList = ['[^-ぁ-んゔ', 'ァ-ンヴ', '一-龥', '\\w', '\\d', ' ', "々%&@&=+ー～~\'\u00C0-\u00FF",];
+const regexList = ['[^-ぁ-んゔ', 'ァ-ンヴ', '一-龥', '\\w', '\\d', ' ', "々%&@&=+ー～~\u00C0-\u00FF",];
 const Hangul = ['\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F\uFFA0-\uFFDC\uFFA0-\uFFDC'];
 const cyrillicAlphabet = ['\u0400-\u04FF]']
-
-const regex = regexList.concat(Hangul).concat(cyrillicAlphabet).join('');
 
 class ParseLrc{
 
 	constructor(){
-
+		this.customRegex = lrcSettingData['lrc-regex-switch'].data ? [this.escapeAllCharacters(lrcSettingData['lrc-regex'].data)] : [""]
+		this.regex = regexList.concat(Hangul).concat(this.customRegex).concat(cyrillicAlphabet).join('');
 	}
 
+	escapeAllCharacters(string) {
+		return string.replace(/./g, '\\$&');
+	}
 
 	parseTextEncord(event) {
 		const b = event.currentTarget.result;
@@ -20,7 +22,6 @@ class ParseLrc{
 
 		return su8;
 	}
-
 
 	//読み込んだlrc形式の歌詞を成型
 	timeConvert(lyrics) {
@@ -57,128 +58,18 @@ class ParseLrc{
 				}
 	
 				displayLyrics.push({'time':timeArray, 'char':charArray})
-				comparisonLyrics.push(lyricsArray)
-			}
-
-		}
-
-		return [displayLyrics, comparisonLyrics];
-	}
-
-	formatLyricsForLrc(text){
-		//残す文字を正規表現で下の配列に記入
-		text = text.replace(/<style>[\s\S]*?<\/style>/, ""); //styleタグ全体削除
-		text = text.replace(/[（\(]/g, " "); //左括弧をスペースに変更
-		text = text.replace(/<.*>/, ""); //HTMLタグを削除
-
-		text = text.normalize('NFKC').toLowerCase(); // 全角英数字を半角に変換
-		text = text.replace(new RegExp(regex, 'g'), ""); //regexListに含まれていない文字を削除
-		// text = text.replace(/([a-z])(\.)/g, "$1");　//ピリオド
-		// text = text.replace(/([a-z])(-)/g, "$1"); //ハイフン
-		
-		return text;
-	}
-
-	formatLyricsForMap(text){
-		//残す文字を正規表現で下の配列に記入
-		text = text.replace(/<style>[\s\S]*?<\/style>/, ""); //styleタグ全体削除
-		text = text.replace(/[（\(].*?[\)）]/g, ""); //()（）の歌詞を削除
-		text = text.replace(/<.*>/, ""); //HTMLタグを削除
-
-		text = text.normalize('NFKC').toLowerCase(); // 全角英数字を半角に変換
-		text = text.replace(new RegExp(regex, 'g'), ""); //regexListに含まれていない文字を削除
-		// text = text.replace(/([a-z])(\.)/g, "$1");　//ピリオド
-		// text = text.replace(/([a-z])(-)/g, "$1"); //ハイフン
-		
-		return text;
-	}
-
-
-
-	//TypingTubeの短いラインをminStrLength以上になるように成形。
-	parseTypingTubeData(lyrics_array) {
-		const minStrLength = 15
-		const minTime = 5;
-		let charArray = [];
-		let timeArray = [];
-		let displayLyrics = []
-		let comparisonLyrics = [];
-
-		for (let i = 0; i < lyrics_array.length; i++) {
-
-			lyrics_array[i][1] = this.deleteRubyTag(lyrics_array[i][1])
-
-			const formatedLyricsLine = parseLrc.formatLyricsForMap(lyrics_array[i][1])
-
-
-			const isLyrics =  formatedLyricsLine != 'end' && lyrics_array[i][2].replace(/\s/g, '') != ''
-
-			if(formatedLyricsLine && isLyrics){
-
-				if (charArray.length != 0 && charArray[charArray.length-1] != '') {
-					//位置フレーズの時間がminTime未満だったら次の歌詞を結合
-					charArray[charArray.length-1] = charArray[charArray.length-1] + " "
-				}
-
-				charArray.push(formatedLyricsLine)
-				timeArray.push(+lyrics_array[i][0])
-
-			}
-
-			let nextTime
-			if(lyrics_array[i + 1]){
-				nextTime = lyrics_array[i + 2] && lyrics_array[i + 1][2].replace(/\s/g, '') == '' ? +lyrics_array[i + 2][0] : +lyrics_array[i + 1][0]
-			}
-
-
-			//位置フレーズの時間がminTime以上
-			if (charArray.length > 0 && (!lyrics_array[i + 1] || minTime < nextTime - timeArray[0])) {
-
-				timeArray.push(lyrics_array[i+1] ? +lyrics_array[i+1][0] : timeArray[timeArray.length-1]+10) //要修正
-				charArray.unshift('')
-				charArray.push('')
-
 				
-				const previousArray = displayLyrics[displayLyrics.length-1]
-				if(previousArray){
-					const previousTime = previousArray['time'][previousArray['time'].length - 1]
-
-					if(previousTime != timeArray[0]){
-						previousArray['time'].push(timeArray[0])
-						previousArray['char'].push('')
-					}
-				}
-
-
-				displayLyrics.push({'time':timeArray, 'char':charArray})
-				comparisonLyrics.push(charArray.join('').split(' ').filter(x => x !== ""))
-
-				//初期化
-				charArray = [];
-				timeArray = [];
+				const comparison = parseLrc.insertSpacesEng(lyricsArray)
+				comparisonLyrics.push(comparison)
 			}
-			
 
 		}
 
 		return [displayLyrics, comparisonLyrics];
 	}
-
-	deleteRubyTag(lyric) {
-		const ruby_convert = lyric.match(/<*ruby(?: .+?)?>.*?<*\/ruby*>/g)
-		if (ruby_convert) {
-			for (let v = 0; v < ruby_convert.length; v++) {
-				const start = ruby_convert[v].indexOf(">") + 1
-				const end = ruby_convert[v].indexOf("<rt>")
-				const ruby = ruby_convert[v].slice(start, end)
-				lyric = lyric.replace(ruby_convert[v], ruby)
-			}
-		}
-		return lyric;
-	}
-
 
 	joinLyrics(lyrics){
+		
 		if(!Array.isArray(lyrics)){return;}
 		
 		let str = ''
@@ -190,6 +81,51 @@ class ParseLrc{
 		return str;
 	}
 
+
+	formatLyricsForLrc(text){
+		//残す文字を正規表現で下の配列に記入
+		text = text.replace(/<style>[\s\S]*?<\/style>/, ""); //styleタグ全体削除
+
+		if(!/\(/.test(lrcSettingData['lrc-regex'].data)){
+			text = text.replace(/[（\(]/g, " "); //左括弧をスペースに変更
+		}
+
+		text = text.replace(/<.*>/, ""); //HTMLタグを削除
+
+		if(lrcSettingData["lrc-eng-case-sensitive"].data){
+			text = text.normalize('NFKC') //全角を半角に変換
+		}else{
+			text = text.normalize('NFKC').toLowerCase() //全角を半角に変換 & 小文字に変換;
+		}
+
+		text = text.replace(new RegExp(parseLrc.regex, 'g'), ""); //regexListに含まれていない文字を削除
+	
+		return text;
+	}
+
+
+	insertSpacesEng(comparison){
+
+		if(!lrcSettingData['lrc-eng-space'].data){return comparison}
+
+		for(let i=0;i<comparison.length;i++){
+
+			const IS_ALL_HANKAKU = /^[!-~]*$/.test(comparison[i])
+			const IS_NEXT = comparison[i+1]
+
+			if(IS_ALL_HANKAKU){
+		
+				if(IS_NEXT && /^[!-~]*$/.test(IS_NEXT[0])){
+					comparison[i] = comparison[i] + " "
+				}
+				
+			}
+			
+		}
+
+		return comparison;
+
+	}
 }
 
-let parseLrc = new ParseLrc()
+let parseLrc

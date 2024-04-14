@@ -171,12 +171,14 @@ let chat
 
 
 function formatComment(text){
-	//残す文字を正規表現で下の配列に記入
-	text = text.normalize('NFKC').toLowerCase();
+	
+	if(lrcSettingData["lrc-eng-case-sensitive"].data){
+		text = text.normalize('NFKC') //全角を半角に変換
+	}else{
+		text = text.normalize('NFKC').toLowerCase() //全角を半角に変換 & 小文字に変換;
+	}
 
 	//parse-lyrics.jsのregexを使用
-	text = text.replace(new RegExp(regex, 'g'), "");
-	// text = text.replace(/([a-z])(\.)/g, "$1");
-	// text = text.replace(/([a-z])(-)/g, "$1");
+	text = text.replace(new RegExp(parseLrc.regex, 'g'), "");
 	return text;
 }

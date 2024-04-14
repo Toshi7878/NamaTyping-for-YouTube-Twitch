@@ -46,6 +46,9 @@ class TypingTube {
 	}
 
 	setTypingTubeData(result) {
+		//Lrcデータ読み込み用regex正規表現を初期化
+		parseLrc = new ParseLrc()
+		
 		if(result.data){
 			parseJson = new ParseJson(result.data)
 		}else{

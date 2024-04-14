@@ -26,19 +26,19 @@ class SettingMenu {
 		const AUTO_ADJUST_HEIGHT = settingData.wordAreaAutoAdjustHeight.data
 		const USER_SUBMIT_TYPE = settingData.userSubmitType.data
 		this.frame = jsFrame.create({
-			title: '設定',
-			left: 60, top: 60, width: 615, height: 420	,
+			title: '設定(Escキーで閉じる)',
+			left: 70, top: 70, width: 615, height: 440,
 			movable: true,//マウスで移動可能
 			resizable: true,//マウスでリサイズ可能
 			appearanceName: 'redstone',//プリセット名は 'yosemite','redstone','popup'
 			html:
-			`<div id="option-container" class="ms-2 fs-6 lh-lg font-monospace">
+			`<form id="option-container" class="ms-2 mt-2 fs-6 lh-lg font-monospace">
 				<label>名前(コメントエミュレート時)<input value="${settingData.emulateName.data}" id="emulate_name"></label>
 				<label>歌詞・ランキング背景の不透明度:<input id='word-area-blur-range' type="range" class="menu-range mx-2" max="1" step="0.01" value="${settingData.blurRange.data}"><span id='blur-range-label'>${Number(settingData.blurRange.data).toFixed(2)}</span></label>
 				<label><input id="display-timer" type="checkbox" class="me-2" ${DISPLAY_TIMER ? 'checked':''}>再生時間を、歌詞表示領域にも表示する</label>
 				<label><input id="display-next-lyrics" type="checkbox" class="me-2" ${DISPLAY_NEXT_LYRICS ? 'checked':''}>3秒前に次の歌詞を表示</label>
 				<label><input id="word-area-auto-adjust-height" type="checkbox" class="me-2" ${AUTO_ADJUST_HEIGHT ? 'checked':''}>歌詞エリアの高さ自動調整</label>
-				<div>
+				<div class="mt-4">
 					<h4>一人プレイ用 ツールバー設定</h4>
     				<div>
 						<label>フォントサイズ:<input type="number" id="lyrics-input-font-zoom" class="ms-2" value="${settingData.inputFontHeight.data}">%</label>
@@ -53,19 +53,17 @@ class SettingMenu {
 						</select>
 					</div>
 				</div>
-				<div class="mt-2 d-flex justify-content-between">
+				<div class="mt-5 d-flex justify-content-between">
 					<label><input type="button" class="" id="delete-result-history" value="リザルト履歴ページをリセット"></label>
 					<label class="me-2"><input type="button" class="btn btn-primary" id="save-window-size" value="現在のウィンドウサイズを保存"></label>
 				</div>
-
-
-		</div>`
+		</form>`
 		}).show();;
 		//ウィンドウを表示する
 		this.frame.isOpen = true
 
 		this.addFrameEvents();
-		const settingEvents = new SettingEvents()
+		new SettingEvents()
 	}
 
 

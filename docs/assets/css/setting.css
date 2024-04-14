@@ -2,7 +2,8 @@
 	width: 200px;
 }
 
-#option-container {
+#option-container,
+#typing-option-container {
 	display: flex;
 	flex-direction: column;
 	user-select: none;
@@ -18,6 +19,11 @@
 	font-size: 0.8rem;
 }
 
-div#option-container>* {
+div#option-container>*,
+#typing-option-container>* {
 	margin: 5px 0;
+}
+
+.w-90 {
+	width: 90%;
 }
