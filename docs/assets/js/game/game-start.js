@@ -91,6 +91,7 @@ class Game extends Load {
 
 		chat = new Chat()
 		this.startTimeStamp = new Date().getTime()
+		this.setMusicTitle()
 	}
 
 	async startLiveChatObserver(id, livePlatform) {
