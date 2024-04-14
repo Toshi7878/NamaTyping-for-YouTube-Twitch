@@ -54,7 +54,7 @@ class LrcSettingMenu {
 				<div class="d-flex">
 				<label class="m-2">
 					<input type="checkbox" id="lrc-eng-space" ${ENG_SPACE ? 'checked':''}>
-					英語スペースを有効(まだ未実装)
+					英語スペースを有効
 				</label>
 				<label class="m-2">
 					<input type="checkbox" id="lrc-eng-case-sensitive" ${CASE_SENSITIVE ? 'checked':''}>
