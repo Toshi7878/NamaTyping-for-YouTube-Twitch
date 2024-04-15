@@ -223,7 +223,7 @@ class DetailResult extends Scoring {
 
 
 		 for(let i=0;i<result.length;i++){
-				resultData.push({'no':(i+1), 'judge':result[i][1], 'comment':result[i][0], 'lyrics':result[i][3]})
+				resultData.push({'no':(i+1), 'judge':result[i][1], 'comment':result[i][0].replace(/ /g, 'ˍ'), 'lyrics':result[i][3].replace(/ /g, 'ˍ')})
 		 }
 
 
