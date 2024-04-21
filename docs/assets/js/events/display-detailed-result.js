@@ -142,7 +142,9 @@ class DetailResult extends Scoring {
 
 	constructor(){
 		super()
-		this.displayRankTable()
+		if(game){
+			this.displayRankTable()
+		}
 	}
 
 	//this.scoreData  ['名前', 'スコア', 'ID']
@@ -150,10 +152,11 @@ class DetailResult extends Scoring {
 		let rankData = []
 
 		for(let i=0;i<this.usersScore.length;i++){
-			const SCORE = Math.round((1000 / this.totalNotes) * this.usersScore[i][1])
+			const SCORE = this.usersScore[i]['score']
+			const TOTAL_NOTES = game ? game.totalNotes : 0
 
 
-			rankData.push({'順位':(i+1), '点数':(isNaN(SCORE) ? 0:SCORE) , '名前':this.usersScore[i][0], '打数':`${Math.round(this.usersScore[i][1])} / ${this.totalNotes}`})
+			rankData.push({'順位':this.usersScore[i]['displayRank'], '点数':(isNaN(SCORE) ? 0:SCORE) , '名前':this.usersScore[i]['name'], '打数':`${Math.round(this.usersScore[i]['typeCount'])} / ${TOTAL_NOTES}`, 'number':this.usersScore[i]['number']})
 		}
 
 		return rankData
@@ -167,25 +170,25 @@ class DetailResult extends Scoring {
 				selectable:1,
 				selectableRollingSelection : true ,
 				rowClick:function(e, row){
-					const DATA = row._row.data['順位']
+					const DATA = row._row.data['number']
 					detailResult.displayDetailResult(DATA)
 				},
 			});
 			table.selectRow(table.getRows()[0])
-			this.displayDetailResult(1)
+			this.displayDetailResult(0)
 
 	}
 
 	
-	generateDetailResult(rank){
-		const userID = this.usersScore[rank-1][2]
+	generateDetailResult(number){
+		const userID = this.usersScore[number]['userID']
 		const result = chat && chat.users[userID] ? chat.users[userID]['result'].slice(0, chat.users[userID]['result'].length) : [['','']]
 		const resultData = []
 		let NoneComment = ''
 
 		 for(let i=0;i<result.length;i++){
 
-			if(i > this.correctLyrics.length){break;}
+			if(i > game.scoringLyrics.length){break;}
 
 			if(result[i][1] == 'None' && result[i][2] == null){
 				NoneComment += result.slice(i,i+1)[0][0]
@@ -201,9 +204,9 @@ class DetailResult extends Scoring {
 			}else if(result[i][2] !== i){
 
 				if(!NoneComment){
-					result.splice(i, 0,['','Skip',i,this.correctLyrics[i]])
+					result.splice(i, 0,['','Skip',i,game.scoringLyrics[i]])
 				}else{
-					result.splice(i, 0,[NoneComment,'None',i,this.correctLyrics[i]])
+					result.splice(i, 0,[NoneComment,'None',i,game.scoringLyrics[i]])
 					NoneComment = ''
 				}
 
@@ -213,17 +216,22 @@ class DetailResult extends Scoring {
 
 		}
 
-		if(result.length < this.correctLyrics.length){
+		if(result.length < game.scoringLyrics.length){
 
-			for(let i=result.length;i<this.correctLyrics.length;i++){
-				result.push(['','',i,this.correctLyrics[i]])
+			for(let i=result.length;i<game.scoringLyrics.length;i++){
+				result.push(['','',i,game.scoringLyrics[i]])
 			}
 
 		}
 
 
 		 for(let i=0;i<result.length;i++){
-				resultData.push({'no':(i+1), 'judge':result[i][1], 'comment':result[i][0].replace(/ /g, 'ˍ'), 'lyrics':result[i][3].replace(/ /g, 'ˍ')})
+				const JUDGE = result[i][1]
+				const COMMENT = result[i][0]
+				const LYRICS = result[i][3] ? result[i][3] : ""
+
+				if(!COMMENT && !LYRICS){continue;}
+				resultData.push({'no':(i+1), 'judge':JUDGE, 'comment':COMMENT.replace(/ /g, 'ˍ'), 'lyrics':LYRICS.replace(/ /g, 'ˍ')})
 		 }
 
 
@@ -231,7 +239,7 @@ class DetailResult extends Scoring {
 	}
 
 
-	displayDetailResult(rank){
+	displayDetailResult(number){
 		
 		let table = new Tabulator("#detail-result-table", {
 			columns:[
@@ -240,7 +248,7 @@ class DetailResult extends Scoring {
 				{title:"コメント",field:"comment"},
 				{title:"歌詞",field:"lyrics"}
 			],
-			data:this.generateDetailResult(rank)
+			data:this.generateDetailResult(number)
 		});
 	}
 

@@ -66,6 +66,7 @@ class Chat {
 			
 					userComment = userComment.slice(correct['lyrics'].length + userComment.indexOf(correct['lyrics']));
 					this.users[userId]['typeCount'] += JOIN_LYRICS.length / (correct['judge'] == 'Good' ? 1.5 : 1);
+					this.users[userId]['score']  = Math.round((1000 / game.totalNotes) * this.users[userId]['typeCount'])
 					this.users[userId]['lyricsIndex'] = i+1
 					this.users[userId]['result'].push([correct['lyrics'], correct['judge'],i,(correct['judge'] == 'Good' ? JOIN_LYRICS : '')]);
 	

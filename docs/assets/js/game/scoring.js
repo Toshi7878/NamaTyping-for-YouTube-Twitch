@@ -1,34 +1,8 @@
 class Scoring {
 	constructor() {
-
-			this.usersScore = chat && Object.keys(chat.users).length ? this.parseResultData() : [ [' ',0,' '] ]
-			this.correctLyrics = timer ? this.generateJoinLyrics( timer.updateCorrectLyrics(game.comparisonLyrics.length) ) : []
-			this.totalNotes = timer ? this.calcTotalNotes(this.correctLyrics) : 0
+			this.usersScore = chat && Object.keys(chat.users).length ? this.parseResultData() : [ {name:'', typeCount:0, userID:'', score:0, displayRank:0, number:0} ]
 			this.displayCount = this.usersScore.length
-
 	}
-
-	
-	generateJoinLyrics(lyricsArray){
-		let result = []
-		for(let i=0;i<lyricsArray.length;i++){
-			result.push(parseLrc.joinLyrics(lyricsArray[i]))
-		}
-
-		return result;
-	}
-
-
-	calcTotalNotes(lyricsArray){
-		let totalNotes = 0
-
-		for(let i=0;i<lyricsArray.length;i++){
-			totalNotes += lyricsArray[i].length
-		}
-		return totalNotes
-	}
-
-
 
 	parseResultData(){
 		const usersID = Object.keys(chat.users)
@@ -38,25 +12,43 @@ class Scoring {
 
 			const name = chat.users[usersID[i]]['name']
 			const typeCount = chat.users[usersID[i]]['typeCount']
-			const result = chat.users[usersID[i]]['result']
-			resultData.push([name,typeCount,usersID[i]])
+			const score = chat.users[usersID[i]]['score']
+			resultData.push({'name':name, 'typeCount':typeCount, 'userID':usersID[i], 'score':score})
 
 		}
 
-		return resultData.sort((a, b) => {return b[1] - a[1];})
+		//順位ソート
+		resultData = resultData.sort((a, b) => {return b['typeCount'] - a['typeCount'];})
+
+		for(let i=0;i<resultData.length;i++){
+
+			if(i == 0){
+				resultData[i]['displayRank'] = '1位'
+			}else if(resultData[i-1]['typeCount'] == resultData[i]['typeCount']){
+				//前の人と同じ順位
+				resultData[i]['displayRank'] = resultData[i-1]['displayRank']
+			}else{
+				resultData[i]['displayRank'] = (i+1)+'位'
+			}
+
+			resultData[i]['number'] = i
+		}
+		
+
+		return resultData
 	}
 
 
 	displayResult() {
 		if(game.isStart || !this.usersScore[this.displayCount-1]){return;}
 		
-		const rank = this.displayCount
-		const score = Math.round((1000 / this.totalNotes) * (this.usersScore[this.displayCount-1] ? this.usersScore[this.displayCount-1][1] : 0))
-		const name = this.usersScore[this.displayCount-1] ? this.usersScore[this.displayCount-1][0] : settingData.emulateName.data
+		const rank = this.usersScore[this.displayCount-1]['displayRank']
+		const score = this.usersScore[this.displayCount-1]['score'] + "点"
+		const name = this.usersScore[this.displayCount-1]['name']
 		document.getElementById("result").insertAdjacentHTML('afterbegin',
 			`<div class='user-result'>
-		<span class='rank'>${rank}位</span> 
-		<span class='score'>${score}点</span> 
+		<span class='rank'>${rank}</span> 
+		<span class='score'>${score}</span> 
 		<span class='name'>${name}</span>
 		</div>`)
 
@@ -87,7 +79,7 @@ class Scoring {
 		  await dataRef.set({
 			title: game.title,
 			detailData: detailData,
-			lyricsData: this.correctLyrics,
+			lyricsData: game.generateJoinLyrics( game.comparisonLyrics.flat(1) ),
 			startTimeStamp:game.startTimeStamp
 		  })
 

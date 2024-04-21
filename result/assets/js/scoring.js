@@ -16,7 +16,6 @@ class Scoring {
 		return lyricsArray;
 	}
 
-
 	calcTotalNotes(lyricsArray){
 		let totalNotes = 0
 
@@ -36,11 +35,31 @@ class Scoring {
 
 			const name = Object.values(USER_RESULT.name)[0]
 			const typeCount = Object.values(USER_RESULT.typeCount)[0]
-			resultData.push([name,typeCount,usersID[i]])
+
+			resultData.push({'name':name, 'typeCount':typeCount, 'userID':usersID[i]})
 		}
 
-		return resultData.sort((a, b) => {return b[1] - a[1];})
+		//順位ソート
+		resultData = resultData.sort((a, b) => {return b['typeCount'] - a['typeCount'];})
+
+		for(let i=0;i<resultData.length;i++){
+
+			if(i == 0){
+				resultData[i]['displayRank'] = '1位'
+			}else if(resultData[i-1]['typeCount'] == resultData[i]['typeCount']){
+				//前の人と同じ順位
+				resultData[i]['displayRank'] = resultData[i-1]['displayRank']
+			}else{
+				resultData[i]['displayRank'] = (i+1)+'位'
+			}
+
+			resultData[i]['number'] = i
+		}
+				
+		return resultData
 	}
+
+
 
 	parseResultObject(detailData){
 		let resultArray = []

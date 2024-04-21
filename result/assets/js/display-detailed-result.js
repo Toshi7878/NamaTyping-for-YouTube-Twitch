@@ -128,10 +128,9 @@ class DetailResult extends Scoring {
 		let rankData = []
 
 		for(let i=0;i<this.usersScore.length;i++){
-			const SCORE = Math.round((1000 / this.totalNotes) * this.usersScore[i][1])
+			const SCORE = Math.round((1000 / this.totalNotes) * this.usersScore[i]['typeCount'])
 
-
-			rankData.push({'順位':(i+1), '点数':(isNaN(SCORE) ? 0:SCORE) , '名前':this.usersScore[i][0], '打数':`${Math.round(this.usersScore[i][1])} / ${this.totalNotes}`})
+			rankData.push({'順位':this.usersScore[i]['displayRank'], '点数':(isNaN(SCORE) ? 0:SCORE) , '名前':this.usersScore[i]['name'], '打数':`${Math.round(this.usersScore[i]['typeCount'])} / ${this.totalNotes}`, 'number':this.usersScore[i]['number']})
 		}
 
 		return rankData
@@ -145,18 +144,18 @@ class DetailResult extends Scoring {
 				selectable:1,
 				selectableRollingSelection : true ,
 				rowClick:function(e, row){
-					const DATA = row._row.data['順位']
+					const DATA = row._row.data['number']
 					detailResult.displayDetailResult(DATA)
 				},
 			});
 			table.selectRow(table.getRows()[0])
-			this.displayDetailResult(1)
+			this.displayDetailResult(0)
 
 	}
 
 	
-	generateDetailResult(rank){
-		const userID = this.usersScore[rank-1][2]
+	generateDetailResult(number){
+		const userID = this.usersScore[number]['userID']
 		const USER_RESULT = this.usersResult[userID].mapValue.fields
 		const result = this.parseResultObject(Object.values(USER_RESULT.result.mapValue.fields))
 		const resultData = []
@@ -200,9 +199,13 @@ class DetailResult extends Scoring {
 
 		}
 
-
 		 for(let i=0;i<result.length;i++){
-			resultData.push({'no':(i+1), 'judge':result[i][1], 'comment':result[i][0].replace(/ /g, 'ˍ'), 'lyrics':result[i][3].replace(/ /g, 'ˍ')})
+			const JUDGE = result[i][1]
+			const COMMENT = result[i][0]
+			const LYRICS = result[i][3] ? result[i][3] : ""
+
+			if(!COMMENT && !LYRICS){continue;}
+			resultData.push({'no':(i+1), 'judge':JUDGE, 'comment':COMMENT.replace(/ /g, 'ˍ'), 'lyrics':LYRICS.replace(/ /g, 'ˍ')})
 		}
 
 
@@ -210,7 +213,7 @@ class DetailResult extends Scoring {
 	}
 
 
-	displayDetailResult(rank){
+	displayDetailResult(number){
 		
 		let table = new Tabulator("#detail-result-table", {
 			columns:[
@@ -219,7 +222,7 @@ class DetailResult extends Scoring {
 				{title:"コメント",field:"comment"},
 				{title:"歌詞",field:"lyrics"}
 			],
-			data:this.generateDetailResult(rank)
+			data:this.generateDetailResult(number)
 		});
 	}
 

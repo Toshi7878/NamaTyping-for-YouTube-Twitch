@@ -1,4 +1,18 @@
-class Load {
+class TotalNotes {
+
+	generateJoinLyrics(lyricsArray){
+		let result = []
+		for(let i=0;i<lyricsArray.length;i++){
+			result.push(parseLrc.joinLyrics(lyricsArray[i]))
+		}
+	
+		return result;
+	}
+	
+}
+
+
+class Load extends TotalNotes{
 	
 	static SPEED_RANGE = {
 		'LocalMedia':{
@@ -14,10 +28,13 @@ class Load {
 	}
 
 	constructor(setData) {
+		super()
 		document.getElementById('folder-input').value = '';
 		this.platform = setData['platform']
 		this.displayLyrics = setData['gameLyricsData'][0]
 		this.comparisonLyrics = setData['gameLyricsData'][1]
+		this.scoringLyrics = this.generateJoinLyrics( this.comparisonLyrics.flat(1) )
+		this.totalNotes = this.scoringLyrics.join('').length
 		this.title = setData['title']
 		this.isStart = false;
 		this.isFinished = false;

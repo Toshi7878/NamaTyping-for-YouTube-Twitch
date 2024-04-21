@@ -24,3 +24,7 @@
 #detail-box {
 	width: 70%;
 }
+
+[tabulator-field='number'] {
+	display: none !important;
+}
