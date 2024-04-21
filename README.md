@@ -4,8 +4,8 @@
 jz5氏制作の<a href="https://github.com/jz5/namatyping">ニコ生タイピング</a>をオマージュして作成されたタイピングゲームです。<br>
 YouTube | Twitchのチャットで歌詞タイピングができます。
 
-# ダウンロード(ver2.0)
-https://github.com/Toshi7878/NamaTyping-for-YouTube-Twitch/raw/main/NamaTyping-for-YouTube-Twitch%20v2.0.zip
+# ダウンロード(ver2.11)
+https://github.com/Toshi7878/NamaTyping-for-YouTube-Twitch/raw/main/NamaTyping-for-YouTube-Twitch%20v2.11.zip
 
 # 仕様
 ・採点方式はニコ生タイピングの方式を採用<br>
