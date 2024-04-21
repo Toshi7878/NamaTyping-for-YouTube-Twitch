@@ -95,7 +95,7 @@ class Chat {
 			for(let i=0; i<correctLyrics.length; i++){
 
 				for(let m=0; m<correctLyrics[i].length; m++){
-					let search = comment.search(correctLyrics[i][m])
+					let search = comment.search( parseLrc.escapeAllCharacters(correctLyrics[i][m]) )
 				
 					//great判定
 					if(m == 0){
@@ -119,7 +119,7 @@ class Chat {
 
 					//ハズレかrepl判定
 					if(m == correctLyrics[i].length-1){
-						let replSearch = repl.kanaToHira(comment).search(repl.kanaToHira(correctLyrics[i][m]))
+						let replSearch = repl.kanaToHira(comment).search(parseLrc.escapeAllCharacters(repl.kanaToHira(correctLyrics[i][m])))
 
 						if(i == 0 && replSearch > 0){
 							comment = comment.slice(search)
