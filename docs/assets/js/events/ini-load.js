@@ -24,12 +24,13 @@ if (location.host == 'localhost:8080') {
 		const Ini = new INI();
 		await Ini.loadINI()
 
-		await settingData.load()
 		await lrcSettingData.load()
 		live = new Live()
-		new soloPlayToggle()
 		notifyOption = new NotifyOption()
 		loadFontSize()
+		loadVolume()
+		new soloPlayToggle()
+		await settingData.load()
 	}
 
 	start();

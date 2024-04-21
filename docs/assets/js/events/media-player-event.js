@@ -51,7 +51,7 @@ class PlayerEvent {
 		console.log("未スタート")
 		Resize.adjustMedia()
 
-		MediaControl.volumeChange(volume)
+		MediaControl.volumeChange(document.getElementById("volume").value)
 
 		ToggleBtn.disableScoreButton()
 		totalTime = new TotalTime()

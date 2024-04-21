@@ -102,8 +102,8 @@ class soloPlayToggle {
 	
 	}
 
-	toggleEvent(event){
-		this.toggleCheckbox(event.target)
+	async toggleEvent(event){
+		await this.toggleCheckbox(event.target)
 		Resize.resize()
 	}
 

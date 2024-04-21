@@ -1,17 +1,15 @@
 
-let volume
 
 async function loadVolume(){
 	let LOAD_VOLUME_DATA
 	if (location.host == 'localhost:8080') {
 		LOAD_VOLUME_DATA = {data:Number(iniData['volume'])};
 	}else{
-		LOAD_VOLUME_DATA = await db.notes.get('volume')
+		LOAD_VOLUME_DATA = await db.notes.get('volume') || {data:50}
 	}
-	volume = LOAD_VOLUME_DATA ? LOAD_VOLUME_DATA.data : 50
 
-	document.getElementById('volume').value = volume
-	document.getElementById('volume').title = volume
+	document.getElementById('volume').value = LOAD_VOLUME_DATA.data
+	document.getElementById('volume').title = LOAD_VOLUME_DATA.data
 
 }
 if (location.host != 'localhost:8080') {
@@ -19,17 +17,15 @@ if (location.host != 'localhost:8080') {
 }
 
 document.getElementById('volume').addEventListener('input',async event => {
-	volume = event.target.value
 	
 	if (location.host == 'localhost:8080') {
-		await eel.saveSetting('volume',volume)();
+		await eel.saveSetting('volume',event.target.value)();
 	}
 	
-	db.notes.put({id: 'volume', data:+volume});
-
-	document.getElementById('volume').title = volume
+	db.notes.put({id: 'volume', data:+event.target.value});
+	document.getElementById('volume').title = event.target.value
 
 	if(game){
-		MediaControl.volumeChange(volume)
+		MediaControl.volumeChange(event.target.value)
 	}
 })
