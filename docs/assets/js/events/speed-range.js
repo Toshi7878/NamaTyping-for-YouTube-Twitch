@@ -9,7 +9,7 @@ document.getElementById("speed").addEventListener('input', event => {
 	document.getElementById("speed-label").textContent = Number(event.target.value).toFixed(2)
 })
 
-document.getElementById("speed-button").addEventListener('click', event => {
+document.getElementById("speed-button").parentElement.addEventListener('click', event => {
 	
 	if(timer){
 		timer.speed = 1
