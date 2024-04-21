@@ -82,7 +82,13 @@ class soloPlayToggle {
 	}
 
 	async loadSoloPlayOption(){
-		const TOGGLE_DATA = await db.notes.get('solo-play') || {id:'solo-play',data:true}
+		let TOGGLE_DATA
+
+		if (location.host == 'localhost:8080') {
+			TOGGLE_DATA = {data:iniData['solo-play'] === 'True' ? true:false};
+		}else{
+			TOGGLE_DATA = await db.notes.get('solo-play') || {id:'solo-play',data:true}
+		}
 			
 		if(TOGGLE_DATA.data){
 			this.lyricsInputToggleBtn.parentElement.classList.add('checked-button')
@@ -101,7 +107,12 @@ class soloPlayToggle {
 		Resize.resize()
 	}
 
-	toggleCheckbox(element){
+	async toggleCheckbox(element){
+		
+		if (location.host == 'localhost:8080') {
+			await eel.saveSetting(element.id,element.checked)();
+		}
+
 		db.notes.put({id:element.id, data:element.checked});
 	
 		if(element.checked){		
@@ -117,6 +128,7 @@ class soloPlayToggle {
 	}
 	
 }
-
-new soloPlayToggle()
+if (location.host != 'localhost:8080') {
+	new soloPlayToggle()
+}
 

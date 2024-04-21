@@ -27,7 +27,7 @@ class LrcSettingMenu {
 	async display(){
 
 		const LRC_REGEX_SWITCH = lrcSettingData["lrc-regex-switch"].data
-		const LRC_REGEX = lrcSettingData["lrc-regex"].data
+		const LRC_REGEX = lrcSettingData["lrc-regex"].data.replace(/\"/g,'&quot;')
 		const ENG_SPACE = lrcSettingData["lrc-eng-space"].data
 		const CASE_SENSITIVE = lrcSettingData["lrc-eng-case-sensitive"].data
 
@@ -168,8 +168,21 @@ class LrcSettingData {
 
 		for(let i=0;i<ElementsID.length;i++){
 			const ID = Object.keys(ElementsID[i])[0]
-			const DEFAULT_VALUE = ElementsID[i][ID]
-			this[ID] = await db.notes.get(ID) || {id:ID, data:DEFAULT_VALUE};
+			const IS_CHECKBOX = typeof ElementsID[i][ID]
+			if (location.host == 'localhost:8080') {
+
+				if(IS_CHECKBOX == 'boolean'){
+					this[ID] = {data:iniData[ID] === 'True' ? true:false};
+				}else{
+					this[ID] = {data:iniData[ID]};
+				}
+
+			}else{
+				const DEFAULT_VALUE = ElementsID[i][ID]
+				this[ID] = await db.notes.get(ID) || {id:ID, data:DEFAULT_VALUE};
+			}
+
+
 		}
 
 	}
@@ -192,13 +205,23 @@ class LrcSettingData {
 		}
 	}
 
-	change(event){
+	async change(event){
 
 		if(event.target.type == "checkbox"){
+
+			if (location.host == 'localhost:8080') {
+				await eel.saveSetting(event.target.id, event.target.checked)();
+			}
+		
 			db.notes.put({id: event.target.id, data:event.target.checked});
 			this[event.target.id].data = event.target.checked
 			this.checkboxEvent(event.target)
 		}else{
+
+			if (location.host == 'localhost:8080') {
+				await eel.saveSetting(event.target.id, event.target.value)();
+			}
+
 			db.notes.put({id: event.target.id, data:event.target.value});
 			this[event.target.id].data = event.target.value
 		}
@@ -213,5 +236,7 @@ let lrcSettingData
 
 (async () => {
 	lrcSettingData = new LrcSettingData()
-	await lrcSettingData.load()
+	if (location.host != 'localhost:8080') {
+		await lrcSettingData.load()
+	}
 })()

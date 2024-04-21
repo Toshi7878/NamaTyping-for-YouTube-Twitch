@@ -18,7 +18,7 @@ from module.getCreateData import GetCreateData
 
 # config.iniファイルを読み込む
 config = configparser.ConfigParser()
-config.read('.\\config.ini')
+config.read('.\\config.ini',encoding='utf-8')
 
 @eel.expose
 def sendURLtoGetParamData(url):
@@ -59,10 +59,26 @@ def stopChatObserver():
 @eel.expose
 def saveWindowSize(width, height):
 	# 新しい値を設定する
-	config['DEFAULT']['window_width'] = str(width)
-	config['DEFAULT']['window_height'] = str(height)
+	config['WINDOW']['window_width'] = str(width)
+	config['WINDOW']['window_height'] = str(height)
 	# ファイルに書き込み
 	with open('.\\config.ini', 'w') as configfile:
+		config.write(configfile)
+
+	return True
+
+# 設定をロードする
+@eel.expose
+def loadSetting():
+	return dict(config.items('APP'))
+
+# 設定を保存する
+@eel.expose
+def saveSetting(id, value):
+	# 新しい値を設定する
+	config['APP'][id] = f"\"{str(value)}\""
+	# ファイルに書き込み
+	with open('.\\config.ini', 'w', encoding='utf-8') as configfile:
 		config.write(configfile)
 
 	return True
@@ -146,7 +162,8 @@ class Chat:
 eel.init("docs")
 
 # window_widthとwindow_heightを取得する
-window_width = config.getint('DEFAULT', 'window_width')
-window_height = config.getint('DEFAULT', 'window_height')
+window_width = config.getint('WINDOW', 'window_width')
+window_height = config.getint('WINDOW', 'window_height')
 
-eel.start("index.html", size=(window_width, window_height), port=8080, close_callback=close_window)
+eel.start("index.html", size=(window_width, window_height), port=8080, close_callback=close_window,
+		  cmdline_args=['--incognito'])

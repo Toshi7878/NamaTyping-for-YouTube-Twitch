@@ -25,6 +25,7 @@ class SettingMenu {
 		const DISPLAY_NEXT_LYRICS = settingData.displayNextLyrics.data
 		const AUTO_ADJUST_HEIGHT = settingData.wordAreaAutoAdjustHeight.data
 		const USER_SUBMIT_TYPE = settingData.userSubmitType.data
+		const EMULATE_NAME = settingData.emulateName.data.replace(/\"/g,'&quot;')
 		this.frame = jsFrame.create({
 			title: '設定(Escキーで閉じる)',
 			left: 70, top: 70, width: 615, height: 440,
@@ -33,7 +34,7 @@ class SettingMenu {
 			appearanceName: 'redstone',//プリセット名は 'yosemite','redstone','popup'
 			html:
 			`<form id="option-container" class="ms-2 mt-2 fs-6 lh-lg font-monospace">
-				<label>名前(コメントエミュレート時)<input value="${settingData.emulateName.data}" id="emulate_name"></label>
+				<label>名前(コメントエミュレート時)<input value="${EMULATE_NAME}" id="emulate_name"></label>
 				<label>歌詞・ランキング背景の不透明度:<input id='word-area-blur-range' type="range" class="menu-range mx-2" max="1" step="0.01" value="${settingData.blurRange.data}"><span id='blur-range-label'>${Number(settingData.blurRange.data).toFixed(2)}</span></label>
 				<label><input id="display-timer" type="checkbox" class="me-2" ${DISPLAY_TIMER ? 'checked':''}>再生時間を、歌詞表示領域にも表示する</label>
 				<label><input id="display-next-lyrics" type="checkbox" class="me-2" ${DISPLAY_NEXT_LYRICS ? 'checked':''}>3秒前に次の歌詞を表示</label>
@@ -279,43 +280,65 @@ class SettingEvents{
 
 	}
 
-	inputEmulateName(event){
+	async inputEmulateName(event){
+		if (location.host == 'localhost:8080') {
+			await eel.saveSetting(event.target.id,event.target.value)();
+		}
 		settingData.emulateName.data = event.target.value
 		Apply.inputEmulateName(event.target.value, event)
 		this.putIndexedDB(event.target.id, event.target.value)
+		return result;
 	}
 
-	inputBlurRange(event){
+	async inputBlurRange(event){
+		if (location.host == 'localhost:8080') {
+			await eel.saveSetting(event.target.id,event.target.value)();
+		}
 		settingData.blurRange.data = event.target.value
 		Apply.inputBlurRange(event.target.value)
 		this.putIndexedDB(event.target.id, event.target.value)
 	}
 
-	displayTimer(event){
+	async displayTimer(event){
+		if (location.host == 'localhost:8080') {
+			await eel.saveSetting(event.target.id,event.target.checked)();
+		}
 		settingData.displayTimer.data = event.target.checked
 		Apply.displayTimer(event.target.checked)
 		this.putIndexedDB(event.target.id, event.target.checked)
 	}
 
-	changeInputHeight(event){
+	async changeInputHeight(event){
+		if (location.host == 'localhost:8080') {
+			await eel.saveSetting(event.target.id,event.target.value)();
+		}
 		settingData.inputFontHeight.data = event.target.value
 		Apply.changeInputHeight(event.target.value)
 		this.putIndexedDB(event.target.id, event.target.value)
 	}
 
-	changeInputFontSpacing(event){
+	async changeInputFontSpacing(event){
+		if (location.host == 'localhost:8080') {
+			await eel.saveSetting(event.target.id,event.target.value)();
+		}
 		settingData.inputFontSpacing.data = event.target.value
 		Apply.updateUserInputStyle()
 		this.putIndexedDB(event.target.id, event.target.value)
 	}
 
-	inputFontWeight(event){
+	async inputFontWeight(event){
+		if (location.host == 'localhost:8080') {
+			await eel.saveSetting(event.target.id,event.target.checked)();
+		}
 		settingData.inputFontWeight.data = event.target.checked
 		Apply.updateUserInputStyle()
 		this.putIndexedDB(event.target.id, event.target.checked)
 	}
 
-	inputUseTextArea(event){
+	async inputUseTextArea(event){
+		if (location.host == 'localhost:8080') {
+			await eel.saveSetting(event.target.id,event.target.checked)();
+		}
 		settingData.inputUseTextArea.data = event.target.checked
 		Apply.inputUseTextArea(event.target.checked)
 		this.putIndexedDB(event.target.id, event.target.checked)
@@ -334,7 +357,10 @@ class SettingEvents{
 
 	}
 
-	displayNextLyrics(event){
+	async displayNextLyrics(event){
+		if (location.host == 'localhost:8080') {
+			await eel.saveSetting(event.target.id,event.target.checked)();
+		}
 		settingData.displayNextLyrics.data = event.target.checked
 		Apply.displayNextLyrics(event.target.checked)
 		this.putIndexedDB(event.target.id, event.target.checked)
@@ -351,20 +377,28 @@ class SettingEvents{
 	}
 
 	async saveWindowSize(){
-		let result = await eel.saveWindowSize(window.outerWidth,window.outerHeight)();
+		if (location.host == 'localhost:8080') {
+			await eel.saveWindowSize(window.outerWidth,window.outerHeight)();
+		}
 		showToast(`<div style="color:white;font-weight;bold;">ウィンドウサイズを保存しました。</div>
 		<div style="color:white;font-weight;bold;">Width${window.outerWidth}px × Height${window.outerHeight}px</div>`,
 		'#198754b8',500)
 		return result;
 	}
 
-	wordAreaAutoAdjustHeight(event){
+	async wordAreaAutoAdjustHeight(event){
+		if (location.host == 'localhost:8080') {
+			await eel.saveSetting(event.target.id,event.target.checked)();
+		}
 		Apply.wordAreaAutoAdjustHeight(event.target.checked)
 		settingData.wordAreaAutoAdjustHeight.data = event.target.checked
 		this.putIndexedDB(event.target.id, event.target.checked)
 	}
 
-	userSubmitType(event){
+	async userSubmitType(event){
+		if (location.host == 'localhost:8080') {
+			await eel.saveSetting(event.target.id,event.target.selectedIndex)();
+		}
 		settingData.userSubmitType.data = event.target.selectedIndex
 		this.putIndexedDB(event.target.id, event.target.selectedIndex)
 	}
@@ -378,16 +412,29 @@ class SettingEvents{
 class SettingData {
 
 	async load(){
-		this.emulateName = await db.notes.get('emulate_name') || {id:'emulate_name', data:'名無し'};
-		this.blurRange = await db.notes.get('word-area-blur-range') || {id:'display-timer', data:0.6};
-		this.displayTimer = await db.notes.get('display-timer') || {id:'display-timer', data:true};
-		this.inputFontHeight = await db.notes.get('lyrics-input-font-zoom') || {id:'lyrics-input-font-zoom', data:200};
-		this.inputFontSpacing = await db.notes.get('lyrics-input-font-spacing') || {id:'lyrics-input-font-spacing', data:0};
-		this.inputFontWeight = await db.notes.get('input-font-weight') || {id:'input-font-weight', data:false};
-		this.inputUseTextArea = await db.notes.get('input-use-textarea') || {id:'input-use-textarea', data:false};
-		this.displayNextLyrics = await db.notes.get('display-next-lyrics') || {id:'display-next-lyrics', data:true};
-		this.wordAreaAutoAdjustHeight = await db.notes.get('word-area-auto-adjust-height') || {id:'word-area-auto-adjust-height', data:true};
-		this.userSubmitType = await db.notes.get('user-submit-type') || {id:'user-submit-type', data:0};
+		if (location.host == 'localhost:8080') {
+			this.emulateName = {data:iniData['emulate_name']};
+			this.blurRange = {data:Number(iniData['word-area-blur-range'])};
+			this.displayTimer = {data:iniData['display-timer'] === 'True' ? true:false};
+			this.inputFontHeight = {data:Number(iniData['lyrics-input-font-zoom'])};
+			this.inputFontSpacing = {data:Number(iniData['lyrics-input-font-spacing'])};
+			this.inputFontWeight = {data:iniData['input-font-weight'] === 'True' ? true:false};
+			this.inputUseTextArea = {data:iniData['input-use-textarea'] === 'True' ? true:false};
+			this.displayNextLyrics = {data:iniData['display-next-lyrics'] === 'True' ? true:false};
+			this.wordAreaAutoAdjustHeight = {data:iniData['word-area-auto-adjust-height'] === 'True' ? true:false};
+			this.userSubmitType =  {data:Number(iniData['user-submit-type'])};
+		}else{
+			this.emulateName = await db.notes.get('emulate_name') || {id:'emulate_name', data:'名無し'};
+			this.blurRange = await db.notes.get('word-area-blur-range') || {id:'display-timer', data:0.6};
+			this.displayTimer = await db.notes.get('display-timer') || {id:'display-timer', data:true};
+			this.inputFontHeight = await db.notes.get('lyrics-input-font-zoom') || {id:'lyrics-input-font-zoom', data:200};
+			this.inputFontSpacing = await db.notes.get('lyrics-input-font-spacing') || {id:'lyrics-input-font-spacing', data:0};
+			this.inputFontWeight = await db.notes.get('input-font-weight') || {id:'input-font-weight', data:false};
+			this.inputUseTextArea = await db.notes.get('input-use-textarea') || {id:'input-use-textarea', data:false};
+			this.displayNextLyrics = await db.notes.get('display-next-lyrics') || {id:'display-next-lyrics', data:true};
+			this.wordAreaAutoAdjustHeight = await db.notes.get('word-area-auto-adjust-height') || {id:'word-area-auto-adjust-height', data:true};
+			this.userSubmitType = await db.notes.get('user-submit-type') || {id:'user-submit-type', data:0};	
+		}
 
 		settingData.allApply()
 	}
@@ -407,8 +454,9 @@ class SettingData {
 
 let settingData
 
-
 (async () => {
 	settingData = new SettingData()
-	await settingData.load()
+	if (location.host != 'localhost:8080') {
+		await settingData.load()
+	}
 })()

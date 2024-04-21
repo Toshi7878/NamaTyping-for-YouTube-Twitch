@@ -38,19 +38,33 @@ class Live {
 
 	async streamPlatformLoadData(){
 		const PLATFORM = document.getElementById("live-platform")
-		const SELECT_PLATFORM = await db.notes.get('live-platform')
+		let SELECT_PLATFORM
+		if (location.host == 'localhost:8080') {
+			SELECT_PLATFORM = {data:Number(iniData['live-platform'])};
+		}else{
+			SELECT_PLATFORM = await db.notes.get('live-platform')
+		}
 		
 		if(SELECT_PLATFORM){
 			PLATFORM.selectedIndex = SELECT_PLATFORM.data
 		}
 
-		PLATFORM.addEventListener('change', e => {
+		PLATFORM.addEventListener('change',async e => {
+			
+			if (location.host == 'localhost:8080') {
+				await eel.saveSetting('live-platform',e.target.selectedIndex)();
+			}
+		
 			db.notes.put({id: 'live-platform', data:e.target.selectedIndex});
 		})
 	}
 }
 
-let live = new Live()
+let live
+
+if (location.host != 'localhost:8080') {
+	live = new Live()
+}
 
 if (location.host == 'localhost:8080') {
 	document.getElementById("live-id").removeAttribute('disabled')

@@ -10,8 +10,13 @@ const NOTIFY = document.getElementById("notify")
 class LoadNotifyOption{
 
 	 async loadFontSize(){
-		const LOAD_FONT_SIZE = await db.notes.get('notify-font-size')
+		let LOAD_FONT_SIZE;
 
+		if (location.host == 'localhost:8080') {
+			LOAD_FONT_SIZE = {data:Number(iniData['notify-font-size'])};
+		}else{
+			LOAD_FONT_SIZE = await db.notes.get('notify-font-size')
+		}
 		if(LOAD_FONT_SIZE){
 			NOTIFY.style.fontSize = String(LOAD_FONT_SIZE.data) + 'px'
 			NOTIFY.style.lineHeight = String(LOAD_FONT_SIZE.data + 15) + 'px'
@@ -25,7 +30,12 @@ class LoadNotifyOption{
 	}
 
 	async loadOption(id){
-		const TOGGLE_DATA = await db.notes.get(id)
+		let TOGGLE_DATA
+		if (location.host == 'localhost:8080') {
+			TOGGLE_DATA = {data:iniData[id] === 'True' ? true:false};
+		}else{
+			TOGGLE_DATA = await db.notes.get(id)
+		}
 			
 		if(TOGGLE_DATA && TOGGLE_DATA.data){
 			const ELEMENT = document.getElementById(id)
@@ -60,7 +70,7 @@ class NotifyOption extends LoadNotifyOption{
 			this[CHECKBOX_ID[event.target.id]] = event.target.checked
 		})
 		
-		document.getElementById("notify-font-size-up").addEventListener('click', event => {
+		document.getElementById("notify-font-size-up").addEventListener('click', async event => {
 			const FONT_SIZE = parseFloat(getComputedStyle(NOTIFY).fontSize)
 		
 			if(FONT_SIZE >= 65){return;}
@@ -73,10 +83,15 @@ class NotifyOption extends LoadNotifyOption{
 			}
 		
 			event.target.parentElement.nextElementSibling.classList.add("arrow-highlight")
+
+			if (location.host == 'localhost:8080') {
+				await eel.saveSetting('notify-font-size',FONT_SIZE + FONT_SIZE_INCREMENT)();
+			}
+
 			db.notes.put({id: 'notify-font-size', data:FONT_SIZE + FONT_SIZE_INCREMENT});
 		})
 
-		document.getElementById("notify-font-size-down").addEventListener('click', event => {
+		document.getElementById("notify-font-size-down").addEventListener('click',async event => {
 			const FONT_SIZE = parseFloat(getComputedStyle(NOTIFY).fontSize)
 
 			if(FONT_SIZE <= 20){return;}
@@ -89,6 +104,9 @@ class NotifyOption extends LoadNotifyOption{
 			}
 		
 			event.target.parentElement.previousElementSibling.classList.add("arrow-highlight")
+			if (location.host == 'localhost:8080') {
+				await eel.saveSetting('notify-font-size',FONT_SIZE + FONT_SIZE_INCREMENT)();
+			}
 			db.notes.put({id: 'notify-font-size', data:FONT_SIZE - FONT_SIZE_INCREMENT});
 		})
 
@@ -96,7 +114,10 @@ class NotifyOption extends LoadNotifyOption{
 		this.loadFontSize()
 	}
 
-	static toggleCheckbox(element){
+	static async toggleCheckbox(element){
+		if (location.host == 'localhost:8080') {
+			await eel.saveSetting(element.id,element.checked)();
+		}
 		db.notes.put({id:element.id, data:element.checked});
 	
 		if(element.checked){		
@@ -108,4 +129,8 @@ class NotifyOption extends LoadNotifyOption{
 	}
 }
 
-let notifyOption = new NotifyOption()
+let notifyOption
+
+if (location.host != 'localhost:8080') {
+	notifyOption = new NotifyOption()
+}
