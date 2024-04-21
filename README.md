@@ -12,6 +12,10 @@ https://github.com/Toshi7878/NamaTyping-for-YouTube-Twitch/raw/main/NamaTyping-f
 ・replファイル対応<br>
 ・リザルト履歴共有機能あり
 
+# Chrome拡張
+・<a href="https://chromewebstore.google.com/detail/%E3%83%8B%E3%82%B3%E3%82%BF%E3%82%A4%E3%83%81%E3%83%A3%E3%83%83%E3%83%88%E3%80%90youtubetwitch%E3%80%91/bidpkflopdgbedmffpdipndddiceklje?hl=ja&authuser=0">ニコタイチャット【YouTube|Twitch】</a>
+チャットの入力部分の大きさを変更できます(ポップアップ表示時のみ)
+
 # YouTube Liveチャットの注意点
 YouTubeチャットでは短い間隔で同じユーザーが連投コメントを行うと、一定時間コメントが反映されない仕様があります。<br>
 <strong>・参加者にモデレーターを付ける🔧(モデレーターを付けることで連投コメントが全て反映されるようになります)<br>
@@ -20,8 +24,3 @@ YouTubeチャットでは短い間隔で同じユーザーが連投コメント�
 
 
 <img src="https://github.com/Toshi7878/NamaTyping-for-YouTube-Twitch/blob/main/pic/readme1.png">
-
-
-# Chrome拡張
-・<a href="https://chromewebstore.google.com/detail/%E3%83%8B%E3%82%B3%E3%82%BF%E3%82%A4%E3%83%81%E3%83%A3%E3%83%83%E3%83%88%E3%80%90youtubetwitch%E3%80%91/bidpkflopdgbedmffpdipndddiceklje?hl=ja&authuser=0">ニコタイチャット【YouTube|Twitch】</a>
-チャットの入力部分の大きさを変更できます(ポップアップ表示時のみ)
