@@ -1,6 +1,6 @@
 class Scoring {
 	constructor() {
-			this.usersScore = chat && Object.keys(chat.users).length ? this.parseResultData() : [ {name:'', typeCount:0, userID:'', score:0, displayRank:0, number:0} ]
+			this.usersScore = chat && Object.keys(chat.users).length ? this.parseResultData() : [ {name:'', typeCount:0, userID:'', score:0, displayRank:'0位', number:0} ]
 			this.displayCount = this.usersScore.length
 	}
 

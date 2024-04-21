@@ -14,12 +14,9 @@ body {
 
 }
 
-#word-area::-webkit-scrollbar {
+#word-area::-webkit-scrollbar,
+#result::-webkit-scrollbar {
   width: 0;
-}
-
-#word-area:hover {
-  overflow-y: scroll;
 }
 
 #height-dragger {
@@ -46,6 +43,9 @@ body {
   color: #fff;
   position: absolute;
   top: 2.2%;
+  overflow-y: scroll;
+  height: 100%;
+  padding-bottom: 2rem;
 }
 
 
