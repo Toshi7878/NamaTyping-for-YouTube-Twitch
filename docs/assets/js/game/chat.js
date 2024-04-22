@@ -184,5 +184,8 @@ function formatComment(text){
 
 	//parse-lyrics.jsのregexを使用
 	text = text.replace(new RegExp(parseLrc.regex, 'g'), "");
+	
+	//全角の前後のスペースを削除
+	text = text.replace(/(\s+)([^!-~])/g, '$2').replace(/([^!-~])(\s+)/g, '$1')
 	return text;
 }
