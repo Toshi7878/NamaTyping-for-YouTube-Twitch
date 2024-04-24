@@ -7,7 +7,7 @@ class DetailResultMenu {
 		const jsFrame = new JSFrame();
 
 		this.frame = jsFrame.create({
-			title: '採点結果(Escキーで閉じる)',
+			title: '採点結果(Escキーで閉じる・Fキーで全画面表示)',
 			left: 100, top: 20, width: 1100, height: 700,
 			movable: true,//マウスで移動可能
 			resizable: true,//マウスでリサイズ可能
@@ -23,6 +23,41 @@ class DetailResultMenu {
 		this.frame.isOpen = true
 
 		this.addFrameEvents();
+	}
+
+	frameMaximize(_frame, evt){
+	
+		this.frame.extra.__restore_info = {
+			org_left: this.frame.getLeft(),
+			org_top: this.frame.getTop(),
+			org_width: this.frame.getWidth(),
+			org_height: this.frame.getHeight()
+		};
+
+		this.frame.isMaximize = true
+		this.frame.hideFrameComponent('maximizeButton');
+		this.frame.showFrameComponent('restoreButton');
+
+		this.frame.setPosition(0, 0);
+		this.frame.setSize(window.innerWidth - 2, window.innerHeight - 2, true);
+
+		this.frame.setMovable(false);
+		this.frame.setResizable(false);
+	}
+
+	frameRestore(_frame, evt){
+	
+		this.frame.setMovable(true);
+		this.frame.setResizable(true);
+
+		this.frame.setPosition(this.frame.extra.__restore_info.org_left, this.frame.extra.__restore_info.org_top);
+
+		const force = true;
+		this.frame.setSize(this.frame.extra.__restore_info.org_width, this.frame.extra.__restore_info.org_height, force);
+
+		this.frame.isMaximize = false
+		this.frame.showFrameComponent('maximizeButton');
+		this.frame.hideFrameComponent('restoreButton');
 	}
 
 	addFrameEvents(){
@@ -54,41 +89,10 @@ class DetailResultMenu {
 			_frame.setSize(_frame.extra.__restore_info.org_width, _frame.extra.__restore_info.org_height, force);
 	
 		});
-		this.frame.on('maximizeButton', 'click', (_frame, evt) => {
-	
-			_frame.extra.__restore_info = {
-				org_left: _frame.getLeft(),
-				org_top: _frame.getTop(),
-				org_width: _frame.getWidth(),
-				org_height: _frame.getHeight()
-			};
-	
-			this.frame.hideFrameComponent('maximizeButton');
-			this.frame.showFrameComponent('restoreButton');
-	
-			this.frame.setPosition(0, 0);
-			this.frame.setSize(window.innerWidth - 2, window.innerHeight - 2, true);
-	
-			this.frame.setMovable(false);
-			this.frame.setResizable(false);
-	
-	
-		});
-		this.frame.on('restoreButton', 'click', (_frame, evt) => {
-	
-			this.frame.setMovable(true);
-			this.frame.setResizable(true);
-	
-			_frame.setPosition(_frame.extra.__restore_info.org_left, _frame.extra.__restore_info.org_top);
-	
-			const force = true;
-			_frame.setSize(_frame.extra.__restore_info.org_width, _frame.extra.__restore_info.org_height, force);
-	
-			_frame.showFrameComponent('maximizeButton');
-			_frame.hideFrameComponent('restoreButton');
-	
-	
-		});
+		this.frame.on('maximizeButton', 'click', this.frameMaximize.bind(this));
+
+		this.frame.on('restoreButton', 'click', this.frameRestore.bind(this));
+
 		this.frame.on('closeButton', 'click', (_frame, evt) => {
 			_frame.closeFrame();
 			window.removeEventListener('keydown', this.keyDownCloseEvent.bind(this))
@@ -107,6 +111,13 @@ class DetailResultMenu {
 			this.frame.closeFrame();
 			window.removeEventListener('keydown', this.keyDownCloseEvent.bind(this))
 			this.frame.isOpen = false
+		}else if(event.code == "KeyF"){
+			
+			if(this.frame.isMaximize){
+				this.frameRestore()
+			}else{
+				this.frameMaximize()
+			}
 		}
 
 	}
