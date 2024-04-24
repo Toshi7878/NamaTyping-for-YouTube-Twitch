@@ -119,7 +119,7 @@ class Chat {
 
 					//ハズレかrepl判定
 					if(m == correctLyrics[i].length-1){
-						let replSearch = repl.kanaToHira(comment).search(this.escapeRegExp(repl.kanaToHira(correctLyrics[i][m])))
+						let replSearch = repl.kanaToHira(comment.toLowerCase()).search(this.escapeRegExp(repl.kanaToHira(correctLyrics[i][m].toLowerCase())))
 
 						if(i == 0 && replSearch > 0){
 							comment = comment.slice(search)
@@ -187,5 +187,11 @@ function formatComment(text){
 	
 	//全角の前後のスペースを削除
 	text = text.replace(/(\s+)([^!-~])/g, '$2').replace(/([^!-~])(\s+)/g, '$1')
+	
+	//テキストの末尾が半角ならば末尾に半角スペース追加
+	if(/[!-~]$/.test(text)){
+		text = text + " "
+	}
+	
 	return text;
 }
