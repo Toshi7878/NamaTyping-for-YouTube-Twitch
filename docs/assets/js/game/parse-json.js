@@ -120,11 +120,11 @@ class ParseJson{
 
 	formatLyricsForMap(text){
 		//残す文字を正規表現で下の配列に記入
-		text = text.replace(/<.*?style>[\s\S]*?<.*?\/style>/, ""); //styleタグ全体削除
+		text = text.replace(/<[^>]*?style>[\s\S]*?<[^>]*?\/style[^>]*?>/g, ""); //styleタグ全体削除
 		text = text.replace(/[（\(].*?[\)）]/g, ""); //()（）の歌詞を削除
-		text = text.replace(/<.*>(.*?)<.*?\/.*>/g, "$1")//HTMLタグの中の文字を取り出す
+		text = text.replace(/<[^>]*>(.*?)<[^>]*?\/[^>]*>/g, "$1")//HTMLタグの中の文字を取り出す
 
-		text = text.replace(/<.*>/, ""); //単体のHTMLタグを削除
+		text = text.replace(/<[^>]*>/, ""); //単体のHTMLタグを削除
 
 		if(lrcSettingData["lrc-eng-case-sensitive"].data){
 			text = text.normalize('NFKC') //全角を半角に変換
