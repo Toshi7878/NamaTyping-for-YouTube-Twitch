@@ -122,7 +122,7 @@ class Chat {
 						let replSearch = repl.kanaToHira(comment.toLowerCase()).search(this.escapeRegExp(repl.kanaToHira(correctLyrics[i][m].toLowerCase())))
 
 						if(i == 0 && replSearch > 0){
-							comment = comment.slice(search)
+							comment = comment.slice(replSearch)
 							replSearch = 0
 						}
 
