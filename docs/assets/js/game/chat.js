@@ -175,7 +175,8 @@ let chat
 
 
 function formatComment(text){
-	
+	text = parseLrc.formatSymbols(text) //記号整形
+
 	if(lrcSettingData["lrc-eng-case-sensitive"].data){
 		text = text.normalize('NFKC') //全角を半角に変換
 	}else{
@@ -192,6 +193,5 @@ function formatComment(text){
 	if(/[!-~]$/.test(text)){
 		text = text + " "
 	}
-	
 	return text;
 }

@@ -60,6 +60,7 @@ class ParseLrc{
 				displayLyrics.push({'time':timeArray, 'char':charArray})
 				
 				const comparison = parseLrc.insertSpacesEng(lyricsArray)
+
 				comparisonLyrics.push(comparison)
 			}
 
@@ -92,6 +93,8 @@ class ParseLrc{
 
 		text = text.replace(/<.*>/, ""); //HTMLタグを削除
 
+		text = this.formatSymbols(text) //記号整形
+
 		if(lrcSettingData["lrc-eng-case-sensitive"].data){
 			text = text.normalize('NFKC') //全角を半角に変換
 		}else{
@@ -99,8 +102,23 @@ class ParseLrc{
 		}
 
 		text = text.replace(new RegExp(parseLrc.regex, 'g'), ""); //regexListに含まれていない文字を削除
-	
+
 		return text;
+	}
+
+	formatSymbols(text){
+		//記号整形
+		return text
+			.replace(/…/g,"...")
+			.replace(/‥/g,"..")
+			.replace(/･/g,"・")
+			.replace(/〜/g,"～")
+			.replace(/｢/g,"「")
+			.replace(/｣/g,"」")
+			.replace(/､/g,"、")
+			.replace(/｡/g,"。")
+			.replace(/－/g,"ー")
+			.replace(/，/g,"、");
 	}
 
 

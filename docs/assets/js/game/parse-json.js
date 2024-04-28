@@ -126,6 +126,8 @@ class ParseJson{
 
 		text = text.replace(/<[^>]*>/, ""); //単体のHTMLタグを削除
 
+		text = parseLrc.formatSymbols(text) //記号整形
+
 		if(lrcSettingData["lrc-eng-case-sensitive"].data){
 			text = text.normalize('NFKC') //全角を半角に変換
 		}else{
