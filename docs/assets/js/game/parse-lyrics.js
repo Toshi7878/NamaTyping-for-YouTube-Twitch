@@ -117,8 +117,7 @@ class ParseLrc{
 			.replace(/｣/g,"」")
 			.replace(/､/g,"、")
 			.replace(/｡/g,"。")
-			.replace(/－/g,"ー")
-			.replace(/，/g,"、");
+			.replace(/－/g,"ー");
 	}
 
 
