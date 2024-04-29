@@ -46,6 +46,12 @@ class Load extends TotalNotes{
 		deleteMedia(setData['edit'])
 		this.setMedia(setData)
 		this.setMusicTitle()
+
+		if(document.getElementById("notify").lastChild.textContent.slice(0,4) == 'rule'){
+			document.getElementById("notify").lastChild.remove()
+		}
+
+		this.rulesNotify()
 	}
 
 	setMedia(setData){
@@ -80,6 +86,22 @@ class Load extends TotalNotes{
 		document.getElementById("title").textContent = this.title
 	}
 
+	rulesNotify(){
+		const SPACE = lrcSettingData['lrc-eng-space'].data
+		const CASE_SENSITIVE = lrcSettingData["lrc-eng-case-sensitive"].data
+		const ADD_CHAR = lrcSettingData['lrc-regex-switch'].data && lrcSettingData['lrc-regex'].data ? `追加文字: ${lrcSettingData['lrc-regex'].data}`:''
+		let engResult = ''
+
+		if(SPACE && CASE_SENSITIVE){
+			engResult = ADD_CHAR ? `英語スペース・大文字あり, ` : `英語スペース・大文字あり`
+		}else if(SPACE){
+			engResult = ADD_CHAR ? `英語スペースあり, ` : `英語スペースあり`
+		}else if(CASE_SENSITIVE){
+			engResult = ADD_CHAR ? `英語大文字あり, ` : `英語大文字あり`
+		}
+		if(!SPACE && !CASE_SENSITIVE && !ADD_CHAR){return;}
+		Notify.add(`rule: ${engResult}${ADD_CHAR}`, lrcSettingData["rule-color"].data)
+	}
 }
 
 class Game extends Load {

@@ -2,7 +2,8 @@ const ElementsID = [
 	{'lrc-regex-switch':true},
 	{'lrc-regex':""},
 	{'lrc-eng-space': false},
-	{'lrc-eng-case-sensitive': false}
+	{'lrc-eng-case-sensitive': false},
+	{'rule-color': "#FFFFFF"}
 ]
 
 class LrcSettingMenu {
@@ -30,6 +31,7 @@ class LrcSettingMenu {
 		const LRC_REGEX = lrcSettingData["lrc-regex"].data.replace(/\"/g,'&quot;')
 		const ENG_SPACE = lrcSettingData["lrc-eng-space"].data
 		const CASE_SENSITIVE = lrcSettingData["lrc-eng-case-sensitive"].data
+		const RULE_COLOR = lrcSettingData["rule-color"].data
 
 		const jsFrame = new JSFrame();
 		this.frame = jsFrame.create({
@@ -59,7 +61,9 @@ class LrcSettingMenu {
 				<label class="m-2">
 					<input type="checkbox" id="lrc-eng-case-sensitive" ${CASE_SENSITIVE ? 'checked':''}>
 					英語大文字判定を有効
-				</label>		
+				</label>
+				<label class="m-2">
+					<input type="color" id="rule-color" value="${RULE_COLOR}">ルール表示色</label>		
 				</div>
 				<div id="update-plate" class="invisible fw-bold">変更はlrcファイルロード後に適用されます。</div>
 			</form>`
@@ -184,11 +188,6 @@ class LrcSettingData {
 
 
 		}
-
-	}
-
-
-	Apply(){
 
 	}
 
