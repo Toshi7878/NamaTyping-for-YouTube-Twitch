@@ -1,6 +1,6 @@
 import sys
 import os
-
+import ast
 # pyinstallerのnoconsoleオプション使用時は
 # 標準出力が存在せずwriteできないため、devnullにリダイレクトしておく
 if hasattr(sys.stdout, 'write') == False: sys.stdout = open(os.devnull, 'w')
@@ -164,6 +164,9 @@ eel.init("docs")
 # window_widthとwindow_heightを取得する
 window_width = config.getint('WINDOW', 'window_width')
 window_height = config.getint('WINDOW', 'window_height')
+eel_option = ast.literal_eval(config.get('WINDOW', 'eel_option'))
+
+
 
 eel.start("index.html", size=(window_width, window_height), port=8080, close_callback=close_window,
-		  cmdline_args=['--incognito'])
+		  cmdline_args=eel_option)
