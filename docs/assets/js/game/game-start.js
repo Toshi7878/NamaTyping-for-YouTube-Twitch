@@ -47,7 +47,8 @@ class Load extends TotalNotes{
 		this.setMedia(setData)
 		this.setMusicTitle()
 
-		if(document.getElementById("notify").lastChild.textContent.slice(0,4) == 'rule'){
+		const NOTIFY_LAST = document.getElementById("notify").lastChild
+		if(NOTIFY_LAST && NOTIFY_LAST.textContent.slice(0,4) == 'rule'){
 			document.getElementById("notify").lastChild.remove()
 		}
 
