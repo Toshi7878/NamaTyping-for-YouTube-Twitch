@@ -1,5 +1,6 @@
 .vscode
 情報
+Chart.php
 dist
 build
 *.spec
@@ -9,3 +10,4 @@ lrc
 json
 *.ini
 .venv
+.env
